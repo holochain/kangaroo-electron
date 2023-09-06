@@ -1,0 +1,30 @@
+name: "publish"
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-2019, macos-11, ubuntu-20.04]
+    env:
+      MACOSX_DEPLOYMENT_TARGET: 10.13
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20
+      - name: install app dependencies and info
+        run: npm install
+      - name: make distributables & publish release
+        uses: npm run publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
