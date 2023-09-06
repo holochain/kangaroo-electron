@@ -5,10 +5,11 @@
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
+    "dist": "rimraf holochain-data && rimraf src && make-dir ./src && cpy './electron-src/*' ./src && cross-unzip ./pouch/ui.zip ./src && cpy node_modules/@lightningrodlabs/electron-holochain/binaries/ ./binaries --flat",
+    "start": "npm run dist && electron-forge start",
+    "package": "npm run dist && electron-forge package",
+    "make": "npm run dist && electron-forge make",
+    "publish": "npm run dist && electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },
   "keywords": [],
@@ -25,15 +26,21 @@
     "@electron-forge/maker-zip": "^6.4.1",
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.1",
     "@electron-forge/plugin-vite": "^6.4.1",
+    "@reforged/maker-appimage": "^3.3.1",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
+    "cpy-cli": "^5.0.0",
+    "cross-zip-cli": "^1.0.0",
     "electron": "26.1.0",
     "eslint": "^8.0.1",
     "eslint-plugin-import": "^2.25.0",
+    "make-dir-cli": "^3.1.0",
+    "rimraf": "^5.0.1",
     "ts-node": "^10.0.0",
     "typescript": "~4.5.4"
   },
   "dependencies": {
+    "@lightningrodlabs/electron-holochain": "^0.7.6",
     "electron-squirrel-startup": "^1.0.0"
   }
 }

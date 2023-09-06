@@ -90,3 +90,8 @@ typings/
 
 # Electron-Forge
 out/
+
+# build
+binaries/
+src/
+holochain-data/
