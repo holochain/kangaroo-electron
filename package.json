@@ -45,6 +45,7 @@
     "vite-plugin-html": "^3.2.0"
   },
   "dependencies": {
+    "@holochain/client": "^0.16.1",
     "@napi-rs/cli": "^2.16.3",
     "electron-holochain": "file:./../Holochain/electron-holochain",
     "electron-squirrel-startup": "^1.0.0",
