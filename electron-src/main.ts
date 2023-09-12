@@ -1,17 +1,17 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Event, ipcMain, ipcRenderer } from 'electron';
+import process from "node:process";
 import path from 'path';
-import initAgent, {
+import {
+  initAgent,
   StateSignal,
-  StatusUpdates,
   STATUS_EVENT,
   APP_PORT_EVENT,
-  ElectronHolochainOptions,
-  PathOptions
-} from '@lightningrodlabs/electron-holochain';
+  LAIR_SOCKET_EVENT,
+} from 'electron-holochain';
+import { signZomeCallWithClient, ZomeCallUnsignedNapi } from 'holochain-lair-signer';
 
-const HAPP_FILE = "replace-me.happ"; // replace-me Enter the path to your happ
+const HAPP_FILE = "mewsfeed.happ"; // replace-me Enter the path to your happ
 const APP_ID = "main-app"; // replace-me
-const NETWORK_SEED: string | undefined = undefined; // replace-me (optional) Enter the network seed for your happ
 const LAIR_PASSWORD = "password";
 const WINDOW_TITLE = "replace-me".toUpperCase(); //replace-me
 
@@ -20,9 +20,123 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const createWindow = async () => {
-  // Setup holochain
-  const runnerOptions: ElectronHolochainOptions = {
+let LAIR_SOCKET_URL: string | undefined;
+let CONDUCTOR_APP_PORT: number | undefined;
+
+const handleSignZomeCall = (e: Event, zomeCall: ZomeCallUnsignedNapi) => {
+  if(!LAIR_SOCKET_URL) throw Error('Lair socket url is not defined');
+  if(!LAIR_PASSWORD) throw Error('Lair password is not defined');
+
+  console.log("Calling native signZomeCallWithClient: ", zomeCall, LAIR_SOCKET_URL, LAIR_PASSWORD);
+  return signZomeCallWithClient(zomeCall, LAIR_SOCKET_URL, LAIR_PASSWORD);
+};
+
+
+export function stateSignalToText(state: StateSignal): string {
+  switch (state) {
+    case StateSignal.IsFirstRun:
+      return 'Welcome to replace-me...';
+    case StateSignal.IsNotFirstRun:
+      return 'Loading...';
+    case StateSignal.CreatingKeys:
+      return 'Creating cryptographic keys...';
+    case StateSignal.RegisteringDna:
+      return 'Registering DNA to Holochain...';
+    case StateSignal.InstallingApp:
+      return 'Installing DNA bundle to Holochain...';
+    case StateSignal.EnablingApp:
+      return 'Enabling DNA...';
+    case StateSignal.AddingAppInterface:
+      return 'Attaching API network port...';
+  }
+}
+
+// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+if (require('electron-squirrel-startup')) {
+  app.quit()
+}
+
+process.on('uncaughtException', (e) => {
+  console.error('an unhandled error occurred:', e)
+})
+
+const setHcLauncherEnv = (window: BrowserWindow) => {
+  window.webContents.send('update-launcher-env', { APP_INTERFACE_PORT: CONDUCTOR_APP_PORT, INSTALLED_APP_ID: APP_ID });
+};
+
+const createMainWindow = (): BrowserWindow => {
+  const options: Electron.BrowserWindowConstructorOptions = {
+    height: 1080,
+    width: 1920,
+    show: false,
+    title: WINDOW_TITLE,
+    backgroundColor: "#fbf9f7",
+    webPreferences: {
+      sandbox: true,
+      preload: path.join(__dirname, 'preload.js'),
+    },
+  }
+
+  const mainWindow = new BrowserWindow(options)
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+  } else {
+    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+  }
+
+  mainWindow.on('ready-to-show', () => {
+    setHcLauncherEnv(mainWindow);
+    mainWindow.show()
+  });
+  
+  mainWindow.on("restore", () => {
+    setHcLauncherEnv(mainWindow);
+  });
+
+  return mainWindow;
+}
+
+const createSplashWindow = (): BrowserWindow => {
+  const splashWindow = new BrowserWindow({
+    height: 450,
+    width: 800,
+    center: true,
+    resizable: false,
+    frame: false,
+    show: false,
+    backgroundColor: "#fbf9f7",
+    webPreferences: {
+      sandbox: true,
+      preload: path.join(__dirname, 'preload.js'),
+    },
+  })
+
+  // and load the splashscreen.html of the app.
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    splashWindow.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/splashscreen/`);
+  } else {
+    splashWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/splashscreen.html`));
+  }
+
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    splashWindow.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/splashscreen/`);
+  } else {
+    splashWindow.loadFile(path.join(__dirname, `../renderer/splashscreen/index.html`));
+  }
+
+  splashWindow.once('ready-to-show', () => {
+    splashWindow.show()
+  })
+
+  return splashWindow
+}
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', async () => {
+  const splashWindow = createSplashWindow()
+  const opts = {
     happPath: `pouch/${HAPP_FILE}`,
     appId: APP_ID,
     passphrase: LAIR_PASSWORD,
@@ -33,62 +147,52 @@ const createWindow = async () => {
     // webrtcSignalUrl?: string
     // membraneProof?: string
     // networkSeed: NETWORK_SEED,
-  }
+  };
 
-  const { statusEmitter, shutdown } = await initAgent(app, runnerOptions)
-
-  // listen on the statusEmitter for status update
-  statusEmitter.on(STATUS_EVENT, (status: StateSignal) => {
-    // do stuff
+  // shutdown will be called automatically on application
+  // quit. It is just here in case you must control it manually
+  const { statusEmitter, shutdown } = await initAgent(app, opts)
+  statusEmitter.on(STATUS_EVENT, (state: StateSignal) => {
+    switch (state) {
+      case StateSignal.IsReady:
+        // important that this line comes before the next one
+        // otherwise this triggers the 'all-windows-closed'
+        // event
+        createMainWindow()
+        splashWindow.close()
+        break
+      default: {
+        splashWindow.webContents.send('update-status', stateSignalToText(state));
+      }
+    }
   });
 
-  // listen on the statusEmitter for the websocket port used for app
-  statusEmitter.on(APP_PORT_EVENT, (appPort: string) => {
-    // do stuff
+  statusEmitter.on(APP_PORT_EVENT, (port: string) => {
+    CONDUCTOR_APP_PORT = parseInt(port);
   });
 
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-    },
-    title: WINDOW_TITLE
+  statusEmitter.on(LAIR_SOCKET_EVENT, (path: string) => {
+    LAIR_SOCKET_URL = path;
+  });  
+
+  app.whenReady().then(() => {
+    ipcMain.handle('sign-zome-call', handleSignZomeCall);
   });
-
-  // and load the index.html of the app.
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
-  } else {
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
-  }
-
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
-};
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+})
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    app.quit()
   }
-});
+})
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createMainWindow()
   }
-});
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+})
