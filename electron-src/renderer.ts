@@ -4,5 +4,4 @@ import { LauncherEnvironment } from "./types";
 
 window.electronAPI.handleLauncherEnv((e: Event, env: LauncherEnvironment) => {
   window.__HC_LAUNCHER_ENV__ = env;
-  console.log("Set __HC_LAUNCHER_ENV__", env);
 });

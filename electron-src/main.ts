@@ -21,16 +21,14 @@ if (require('electron-squirrel-startup')) {
 }
 
 let LAIR_SOCKET_URL: string | undefined;
-let CONDUCTOR_APP_PORT: number | undefined;
+let APP_INTERFACE_PORT: number | undefined;
 
 const handleSignZomeCall = (e: Event, zomeCall: ZomeCallUnsignedNapi) => {
   if(!LAIR_SOCKET_URL) throw Error('Lair socket url is not defined');
   if(!LAIR_PASSWORD) throw Error('Lair password is not defined');
 
-  console.log("Calling native signZomeCallWithClient: ", zomeCall, LAIR_SOCKET_URL, LAIR_PASSWORD);
   return signZomeCallWithClient(zomeCall, LAIR_SOCKET_URL, LAIR_PASSWORD);
 };
-
 
 export function stateSignalToText(state: StateSignal): string {
   switch (state) {
@@ -61,7 +59,11 @@ process.on('uncaughtException', (e) => {
 })
 
 const setHcLauncherEnv = (window: BrowserWindow) => {
-  window.webContents.send('update-launcher-env', { APP_INTERFACE_PORT: CONDUCTOR_APP_PORT, INSTALLED_APP_ID: APP_ID });
+  window.webContents.send('update-launcher-env', { 
+    APP_INTERFACE_PORT, 
+    INSTALLED_APP_ID: APP_ID,
+    FRAMEWORK: 'electron',
+  });
 };
 
 const createMainWindow = (): BrowserWindow => {
@@ -168,7 +170,7 @@ app.on('ready', async () => {
   });
 
   statusEmitter.on(APP_PORT_EVENT, (port: string) => {
-    CONDUCTOR_APP_PORT = parseInt(port);
+    APP_INTERFACE_PORT = parseInt(port);
   });
 
   statusEmitter.on(LAIR_SOCKET_EVENT, (path: string) => {
