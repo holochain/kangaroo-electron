@@ -8,13 +8,7 @@ export default defineConfig({
     browserField: false,
     mainFields: ['module', 'jsnext:main', 'jsnext'],
   },
-  optimizeDeps: {
-    include: ['electron-holochain'],
-  },
   build: {
-    commonjsOptions: { 
-      include: [/electron-holochain/],
-    },
     rollupOptions: {
       external: [/holochain-lair-signer/],
     }

@@ -5,7 +5,7 @@
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "scripts": {
-    "dist": "rimraf holochain-data && rimraf src && make-dir ./src && ncp ./electron-src/ ./src/ && cross-unzip ./pouch/ui.zip ./src && make-dir binaries && ncp node_modules/electron-holochain/binaries/ ./binaries/",
+    "dist": "rimraf holochain-data && rimraf src && make-dir ./src && ncp ./electron-src/ ./src/ && cross-unzip ./pouch/ui.zip ./src && make-dir binaries && ncp node_modules/@lightningrodlabs/electron-holochain/binaries/ ./binaries/",
     "build-rs": "cd lair-sign && napi build --platform --release",
     "start": "npm run dist && electron-forge start",
     "package": "npm run dist && electron-forge package",
@@ -46,8 +46,8 @@
   },
   "dependencies": {
     "@holochain/client": "^0.16.1",
+    "@lightningrodlabs/electron-holochain": "^0.7.8",
     "@napi-rs/cli": "^2.16.3",
-    "electron-holochain": "file:./../Holochain/electron-holochain",
     "electron-squirrel-startup": "^1.0.0",
     "holochain-lair-signer": "^0.0.4"
   }

@@ -1,13 +1,12 @@
-import { app, BrowserWindow, Event, ipcMain, ipcRenderer } from 'electron';
+import { app, BrowserWindow, Event, ipcMain } from 'electron';
 import process from "node:process";
 import path from 'path';
-import {
-  initAgent,
+import initAgent, {
   StateSignal,
   STATUS_EVENT,
   APP_PORT_EVENT,
   LAIR_SOCKET_EVENT,
-} from 'electron-holochain';
+} from '@lightningrodlabs/electron-holochain';
 import { signZomeCallWithClient, ZomeCallUnsignedNapi } from 'holochain-lair-signer';
 
 const HAPP_FILE = "mewsfeed.happ"; // replace-me Enter the path to your happ
