@@ -17,11 +17,11 @@ const config: ForgeConfig = {
       build: [
         {
           // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
-          entry: 'src/main.ts',
+          entry: 'main_window/main.ts',
           config: 'vite.main.config.ts',
         },
         {
-          entry: 'src/preload.ts',
+          entry: 'main_window/preload.ts',
           config: 'vite.preload.config.ts',
         },
       ],
@@ -29,6 +29,10 @@ const config: ForgeConfig = {
         {
           name: 'main_window',
           config: 'vite.renderer.config.ts',
+        },
+        {
+          name: 'splashscreen_window',
+          config: 'vite.splashscreen_renderer.config.ts',
         },
       ],
     }),

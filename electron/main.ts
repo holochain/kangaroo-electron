@@ -8,6 +8,7 @@ import initAgent, {
   LAIR_SOCKET_EVENT,
 } from '@lightningrodlabs/electron-holochain';
 import { signZomeCallWithClient, ZomeCallUnsignedNapi } from 'holochain-lair-signer';
+import console from "console";
 
 const HAPP_FILE = "mewsfeed.happ"; // replace-me Enter the path to your happ
 const APP_ID = "main-app"; // replace-me
@@ -108,21 +109,14 @@ const createSplashWindow = (): BrowserWindow => {
     backgroundColor: "#fbf9f7",
     webPreferences: {
       sandbox: true,
-      preload: path.join(__dirname, 'preload.js'),
     },
   })
 
   // and load the splashscreen.html of the app.
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    splashWindow.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/splashscreen/`);
+  if (SPLASHSCREEN_WINDOW_VITE_DEV_SERVER_URL) {
+    splashWindow.loadURL(SPLASHSCREEN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    splashWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/splashscreen.html`));
-  }
-
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    splashWindow.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/splashscreen/`);
-  } else {
-    splashWindow.loadFile(path.join(__dirname, `../renderer/splashscreen/index.html`));
+    splashWindow.loadFile(path.join(__dirname, `../renderer/${SPLASHSCREEN_WINDOW_VITE_NAME}/index.html`));
   }
 
   splashWindow.once('ready-to-show', () => {
@@ -141,8 +135,8 @@ app.on('ready', async () => {
     happPath: `pouch/${HAPP_FILE}`,
     appId: APP_ID,
     passphrase: LAIR_PASSWORD,
-    keystorePath: `${process.cwd()}/holochain-data/keystore`,
-    datastorePath:`${process.cwd()}/holochain-data/databases`,
+    keystorePath: path.join(app.getPath('userData'), 'holochain-data/keystore'),
+    datastorePath: path.join(app.getPath('userData'), 'holochain-data/databases'),
     // appWsPort?: number
     // adminWsPort?: number
     // webrtcSignalUrl?: string

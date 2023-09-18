@@ -12,5 +12,5 @@
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
-  "include": ["electron-src", "src"]
+  "include": ["electron", "main_window"]
 }

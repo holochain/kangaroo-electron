@@ -1,10 +1,9 @@
 import path from 'path';
 import { defineConfig } from 'vite';
-import { createHtmlPlugin } from 'vite-plugin-html'
 
 // https://vitejs.dev/config
 export default defineConfig({
-  root: path.resolve(__dirname, "src"),
+  root: path.resolve(__dirname, "main_window"),
   plugins: [
     {
       name: "html-inject-renderer-into-head",
