@@ -7,7 +7,7 @@ import initAgent, {
   APP_PORT_EVENT,
   LAIR_SOCKET_EVENT,
 } from '@lightningrodlabs/electron-holochain';
-import { signZomeCallWithClient, ZomeCallUnsignedNapi } from 'holochain-lair-signer';
+import { ZomeCallSigner, ZomeCallUnsignedNapi } from 'holochain-lair-signer';
 import console from "console";
 
 const HAPP_FILE = "mewsfeed.happ"; // replace-me Enter the path to your happ
@@ -20,14 +20,12 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-let LAIR_SOCKET_URL: string | undefined;
 let APP_INTERFACE_PORT: number | undefined;
+let ZOME_CALL_SIGNER: ZomeCallSigner | undefined;
 
 const handleSignZomeCall = (e: Event, zomeCall: ZomeCallUnsignedNapi) => {
-  if(!LAIR_SOCKET_URL) throw Error('Lair socket url is not defined');
-  if(!LAIR_PASSWORD) throw Error('Lair password is not defined');
-
-  return signZomeCallWithClient(zomeCall, LAIR_SOCKET_URL, LAIR_PASSWORD);
+  if(!ZOME_CALL_SIGNER) throw Error('Lair signer is not ready');
+  return ZOME_CALL_SIGNER.signZomeCall(zomeCall);
 };
 
 export function stateSignalToText(state: StateSignal): string {
@@ -109,6 +107,7 @@ const createSplashWindow = (): BrowserWindow => {
     backgroundColor: "#fbf9f7",
     webPreferences: {
       sandbox: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   })
 
@@ -137,11 +136,6 @@ app.on('ready', async () => {
     passphrase: LAIR_PASSWORD,
     keystorePath: path.join(app.getPath('userData'), 'holochain-data/keystore'),
     datastorePath: path.join(app.getPath('userData'), 'holochain-data/databases'),
-    // appWsPort?: number
-    // adminWsPort?: number
-    // webrtcSignalUrl?: string
-    // membraneProof?: string
-    // networkSeed: NETWORK_SEED,
   };
 
   // shutdown will be called automatically on application
@@ -162,12 +156,12 @@ app.on('ready', async () => {
     }
   });
 
-  statusEmitter.on(APP_PORT_EVENT, (port: string) => {
-    APP_INTERFACE_PORT = parseInt(port);
+  statusEmitter.on(APP_PORT_EVENT, (app_port: string) => {
+    APP_INTERFACE_PORT = parseInt(app_port);
   });
 
-  statusEmitter.on(LAIR_SOCKET_EVENT, (path: string) => {
-    LAIR_SOCKET_URL = path;
+  statusEmitter.on(LAIR_SOCKET_EVENT, async (lair_socket_url: string) => {
+    ZOME_CALL_SIGNER = await ZomeCallSigner.connect(lair_socket_url, LAIR_PASSWORD);
   });  
 
   app.whenReady().then(() => {
