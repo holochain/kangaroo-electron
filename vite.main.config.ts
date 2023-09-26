@@ -10,7 +10,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: [/holochain-lair-signer/],
+      external: [/holochain-lair-signer-/],
     }
   },
 });
