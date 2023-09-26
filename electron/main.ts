@@ -14,6 +14,7 @@ const HAPP_FILE = "mewsfeed.happ"; // replace-me Enter the path to your happ
 const APP_ID = "main-app"; // replace-me
 const LAIR_PASSWORD = "password";
 const WINDOW_TITLE = "replace-me".toUpperCase(); //replace-me
+const NETWORK_SEED: string | undefined = undefined; // replace-me
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -136,6 +137,7 @@ app.on('ready', async () => {
     passphrase: LAIR_PASSWORD,
     keystorePath: path.join(app.getPath('userData'), 'holochain-data/keystore'),
     datastorePath: path.join(app.getPath('userData'), 'holochain-data/databases'),
+    network_seed: NETWORK_SEED,
   };
 
   // shutdown will be called automatically on application
