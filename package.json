@@ -48,6 +48,6 @@
     "@lightningrodlabs/electron-holochain": "^0.7.8",
     "@napi-rs/cli": "^2.16.3",
     "electron-squirrel-startup": "^1.0.0",
-    "holochain-lair-signer": "^0.1.0"
+    "holochain-lair-signer": "^0.1.1"
   }
 }
