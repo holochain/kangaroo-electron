@@ -2,7 +2,8 @@ import { defineConfig } from "./src/main/defineConfig";
 
 export default defineConfig({
   appId: "kangaroo-electron",
-  productName: "electron.kangaroo.holochain",
+  productName: "org.holochain.kangaroo-electron",
+  version: "0.1.0",
   usePassword: true,
   bins: {
     holochain: {

@@ -7,13 +7,7 @@ const childProcess = require('child_process');
 
 tsNode.register();
 
-// eslint-disable-next-line import/no-unresolved
-// import kangarooConfig from '../kangaroo.config.ts';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-// export const kangarooConfig = require('kangaroo.config.ts').default;
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const kangarooConfig = require(path.join(process.cwd(), 'kangaroo.config.ts')).default;
-
 
 const binariesDir = path.join('resources', 'bins');
 fs.mkdirSync(binariesDir, { recursive: true });

@@ -1,5 +1,5 @@
-appId: electron.kangaroo.test
-productName: Holochain Kangaroo Electron
+appId: ____REPLACE____
+productName: ____REPLACE____
 directories:
   buildResources: build
 files:
@@ -7,9 +7,8 @@ files:
   - out
 asarUnpack:
   - resources/**
-afterSign: scripts/notarize.js
 win:
-  executableName: holochain-kangaroo-electron
+  executableName: ____REPLACE____
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -29,7 +28,7 @@ dmg:
 linux:
   target:
     - AppImage
-    # - deb
+    - deb
     # - snap
   maintainer: electronjs.org
   category: Utility

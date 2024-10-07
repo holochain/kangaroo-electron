@@ -6,12 +6,27 @@ export type KangarooConfig = {
    * the storage location of data. Should not contain whitespaces.
    * Typically, this is an id in reverse domain notation, like
    * "org.holochain.kangaroo".
+   *
+   * Will also be used as the package name in package.json.
    */
   appId: string,
   /**
-   * The name of the app as displayed in places such as the Window bar
+   * The name of the app as displayed in places such as the Window bar.
    */
   productName: string,
+  /**
+   * This version will overwrite the version in package.json.
+   * **IMPORTANT** Breaking version semver changes here will lead to
+   * the app using a new, independent conductor.
+   *
+   * Examples:
+   * 0.0.1 -> 0.0.2: Breaking change;
+   * 0.1.0 -> 0.2.0: Breaking change;
+   * 0.1.0 -> 0.1.1: *No* breaking change;
+   * 0.13.0-alpha.0 -> 0.13.0-beta.0: Breaking change;
+   * 0.13.0-alpha.0 -> 0.13.0-alpha.1: *No* breaking change;
+   */
+  version: string,
   /**
    * Whether or not the app should have the user set up a password.
    */

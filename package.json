@@ -1,8 +1,7 @@
 {
-  "name": "replace-me",
-  "productName": "replace-me",
-  "version": "0.0.1",
-  "description": "My Electron application description",
+  "name": "____REPLACE____",
+  "version": "0.1.0",
+  "license": "CAL-1.0",
   "main": "./out/main/index.js",
   "scripts": {
     "start": "electron-vite preview",
@@ -18,8 +17,6 @@
     "build:linux": "yarn build && electron-builder --linux --config",
     "lint": "eslint --ext .ts,.tsx ."
   },
-  "keywords": [],
-  "license": "CAL-1.0",
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
@@ -45,6 +42,7 @@
     "electron-vite": "^2.3.0",
     "eslint": "^8.0.1",
     "eslint-plugin-import": "^2.25.0",
+    "js-yaml": "4.1.0",
     "make-dir-cli": "^3.1.0",
     "ncp": "^2.0.0",
     "rimraf": "^5.0.1",
