@@ -4,7 +4,7 @@
   "license": "CAL-1.0",
   "main": "./out/main/index.js",
   "scripts": {
-    "dev": "yarn write:configs && yarn pouch:unpack && create:icons && electron-vite dev",
+    "dev": "yarn write:configs && yarn pouch:unpack && yarn create:icons && electron-vite dev",
     "setup": "yarn && yarn fetch:binaries",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
@@ -13,7 +13,7 @@
     "pouch:unpack": "node ./scripts/unpack-pouch.js",
     "create:icons": "node ./scripts/create-icons.js",
     "write:configs": "node ./scripts/write-builder-config.js",
-    "build": "yarn write:configs && yarn pouch:unpack && create:icons && yarn typecheck && electron-vite build",
+    "build": "yarn write:configs && yarn pouch:unpack && yarn create:icons && yarn typecheck && electron-vite build",
     "build:win": "yarn build && electron-builder --win --config",
     "build:mac-arm64": "yarn build && electron-builder --mac --arm64 --config",
     "build:mac-x64": "yarn build && electron-builder --mac --x64 --config",
