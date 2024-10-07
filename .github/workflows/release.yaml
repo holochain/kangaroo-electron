@@ -64,7 +64,7 @@ jobs:
 
       # This step is only used for testing in the official kangaroo repo
       - name: Overwrite Names for release testing and fetch kando webhapp from github
-        if: ${{ github.repository }} == 'https://github.com/holochain-apps/holochain-kangaroo-electron'
+        if: ${{ github.repository }} == 'holochain-apps/holochain-kangaroo-electron'
         run: |
           echo ${{ github.repository }}
           echo "overwriting names for release testing"
