@@ -4,6 +4,7 @@ export default defineConfig({
   appId: "org.holochain.kangaroo-electron",
   productName: "Holochain Kangaroo Electron",
   version: "0.1.0",
+  windowsEVCodeSigning: true,
   bins: {
     holochain: {
       version: "0.3.3",

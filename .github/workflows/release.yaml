@@ -1,30 +1,139 @@
-name: "publish"
+name: 'publish'
 on:
   push:
     branches:
       - release
 
 jobs:
-  publish-tauri:
-    permissions:
-      contents: write
+  publish:
     strategy:
       fail-fast: false
       matrix:
-        platform: [windows-2019, macos-11, ubuntu-20.04]
+        platform: [windows-2019, macos-12, macos-latest, ubuntu-22.04]
     env:
       MACOSX_DEPLOYMENT_TARGET: 10.13
 
+    permissions:
+      contents: write
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v2
+
+      - name: Setup for macOS code signing
+        if: matrix.platform == 'macos-12' || matrix.platform == 'macos-latest'
+        uses: matthme/import-codesign-certs@5565bb656f60c98c8fc515f3444dd8db73545dc2
+        with:
+          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
+          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+
       - name: setup node
         uses: actions/setup-node@v1
         with:
           node-version: 20
-      - name: install app dependencies and info
-        run: npm install
-      - name: make distributables & publish release
-        uses: npm run publish
+
+      - name: Retrieve version
+        run: |
+          echo "Retrieved App version: $(node -p -e "require('./package.json').version")"
+          echo "APP_VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
+        id: version
+        shell: bash
+
+      - name: Retrieve appId
+        run: |
+          echo "APP_ID=$(node ./scripts/read-app-id.js)" >> $GITHUB_OUTPUT
+        id: appId
+        shell: bash
+
+      - name: Retrieve whether Windows code signing should be attempted
+        run: |
+          echo "WINDOWS_CODE_SIGNING=$(node ./scripts/read-windows-code-signing.js)" >> $GITHUB_OUTPUT
+        id: shouldWindowsCodeSign
+        shell: bash
+
+      - name: install Rust
+        uses: dtolnay/rust-toolchain@1.75.0
+
+      - name: install Go stable
+        uses: actions/setup-go@v4
+        with:
+          go-version: 'stable'
+
+      - name: Environment setup
+        run: |
+          yarn setup
+
+      - name: build and upload the app (macOS arm64)
+        if: matrix.platform == 'macos-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_DEV_IDENTITY: ${{ secrets.APPLE_DEV_IDENTITY }}
+          APPLE_ID_EMAIL: ${{ secrets.APPLE_ID_EMAIL }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          DEBUG: electron-osx-sign*,electron-notarize*
+        run: |
+          yarn build:mac-arm64
+          ls dist
+
+      - name: build and upload the app (macOS x86)
+        if: matrix.platform == 'macos-12'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_DEV_IDENTITY: ${{ secrets.APPLE_DEV_IDENTITY }}
+          APPLE_ID_EMAIL: ${{ secrets.APPLE_ID_EMAIL }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          DEBUG: electron-osx-sign*,electron-notarize*
+        run: |
+          yarn build:mac-x64
+          ls dist
+
+      - name: build and upload the app (Ubuntu 22.04)
+        if: matrix.platform == 'ubuntu-22.04'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          yarn build:linux
+          ls dist
+
+          # Modify the postinst script of the .deb file
+          node ./scripts/extend-deb-postinst.mjs
+          gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "latest-linux.yml" --clobber
+          gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "dist/${{ steps.appId.outputs.APP_ID }}_${{ steps.version.outputs.APP_VERSION }}_amd64.deb" --clobber
+
+      - name: build, sign and upload the app (Windows)
+        shell: bash
+        if: matrix.platform == 'windows-2019'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          yarn build:win
+          ls dist
+
+          # If Windows EV code signing is set to true in kangaroo.config.ts, do code signing here
+          if [ "${{steps.shouldWindowsCodeSign.output.WINDOWS_CODE_SIGNING}}" == true ]; then
+
+            # Assumes this setup of EV certificates:
+            # https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/
+
+            # Sign the .exe file
+            dotnet tool install --global --version 4.0.1 AzureSignTool
+            echo "sha512 before code signing"
+            CertUtil -hashfile "dist/${{ steps.appId.outputs.APP_ID }}-${{ steps.version.outputs.APP_VERSION }}-setup.exe" SHA512
+            AzureSignTool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" -kvi "${{ secrets.AZURE_CLIENT_ID }}" -kvt "${{ secrets.AZURE_TENANT_ID }}" -kvs "${{ secrets.AZURE_CLIENT_SECRET }}" -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v "dist/${{ steps.appId.outputs.APP_ID }}-${{ steps.version.outputs.APP_VERSION }}-setup.exe"
+            echo "sha512 after code signing"
+            CertUtil -hashfile "dist/${{ steps.appId.outputs.APP_ID }}-${{ steps.version.outputs.APP_VERSION }}-setup.exe" SHA512
+
+            # Overwrite the latest.yml one with one containing the sha512 of the code signed .exe file
+            node ./scripts/latest-yaml.js
+            gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "latest.yml" --clobber
+            gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "dist/${{ steps.appId.outputs.APP_ID }}-${{ steps.version.outputs.APP_VERSION }}-setup.exe" --clobber
+
+          fi
+
+      - name: Merge latest-mac.yml mac release files
+        if: matrix.platform == 'macos-latest' || matrix.platform == 'macos-12'
+        run: |
+          node ./scripts/merge-mac-yamls.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

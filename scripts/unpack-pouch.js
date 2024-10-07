@@ -9,10 +9,13 @@ if (!webhappFilename) throw new Error("No webhapp file found in pouch folder.");
 const webhappPath = path.join(process.cwd(), "pouch", webhappFilename);
 
 const resourcesDir = path.join(process.cwd(), "resources");
+const uiDir = path.join(resourcesDir, "ui");
+fs.mkdirSync(uiDir, { recursive: true });
+
 
 rustUtils.saveHappOrWebhapp(
   webhappPath,
   'kangaroo',
-  path.join(resourcesDir, "ui"),
+  uiDir,
   resourcesDir
 );
