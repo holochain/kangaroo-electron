@@ -5,6 +5,7 @@ directories:
 files:
   - resources
   - out
+  - kangaroo.config.ts
 asarUnpack:
   - resources/**
 win:
