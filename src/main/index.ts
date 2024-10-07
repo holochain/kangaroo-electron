@@ -102,6 +102,7 @@ const handleSignZomeCall = async (
 let ZOME_CALL_SIGNER: ZomeCallSigner | undefined;
 let HOLOCHAIN_MANAGER: HolochainManager | undefined;
 let LAIR_HANDLE: childProcess.ChildProcessWithoutNullStreams | undefined;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let MAIN_WINDOW: BrowserWindow | undefined | null;
 let SPLASH_SCREEN_WINDOW: BrowserWindow | undefined;
 
@@ -184,6 +185,8 @@ app.whenReady().then(async () => {
     appToken,
     false
   );
+  // This is just here to make it compile for now.
+  console.log(MAIN_WINDOW);
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

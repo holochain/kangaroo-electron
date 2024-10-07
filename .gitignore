@@ -8,6 +8,7 @@ lerna-debug.log*
 
 # build
 resources
+dist
 
 # pouch
 pouch/*.webhapp

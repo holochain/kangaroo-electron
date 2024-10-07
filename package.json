@@ -1,5 +1,5 @@
 {
-  "name": "org.holochain.kangaroo-electron",
+  "name": "org.holochain.kangaroo-electron2",
   "version": "0.1.0",
   "license": "CAL-1.0",
   "main": "./out/main/index.js",
@@ -41,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "electron": "^29.4.1",
+    "electron-builder": "^24.6.3",
     "electron-vite": "^2.3.0",
     "eslint": "^8.0.1",
     "eslint-plugin-import": "^2.25.0",
@@ -49,7 +50,7 @@
     "ncp": "^2.0.0",
     "octokit": "4.0.2",
     "rimraf": "^5.0.1",
-    "typescript": "~4.5.4",
+    "typescript": "^5.2.2",
     "vite": "^4.4.9"
   }
 }
