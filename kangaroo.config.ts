@@ -4,7 +4,7 @@ export default defineConfig({
   appId: "kangaroo-electron",
   productName: "org.holochain.kangaroo-electron",
   version: "0.1.0",
-  usePassword: true,
+  usePassword: false,
   bins: {
     holochain: {
       version: "0.3.3",
