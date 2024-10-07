@@ -10,6 +10,10 @@ const webhappPath = path.join(process.cwd(), "pouch", webhappFilename);
 
 const resourcesDir = path.join(process.cwd(), "resources");
 const uiDir = path.join(resourcesDir, "ui");
+// remove existing UI directory
+if (fs.existsSync(uiDir)) {
+  fs.rmSync(uiDir, { recursive: true});
+}
 fs.mkdirSync(uiDir, { recursive: true });
 
 
