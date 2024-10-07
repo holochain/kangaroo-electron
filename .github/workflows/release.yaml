@@ -80,7 +80,7 @@ jobs:
       # macOS WITHOUT code signing
       #---------------------------------------------------------------------------------------
       - name: build and upload the app (macOS x86)
-        if: matrix.platform == 'macos-12' && ${{ steps.shouldMacOSCodeSign.output }} == false
+        if: matrix.platform == 'macos-12' && ${{ steps.shouldMacOSCodeSign.output }} == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -88,7 +88,7 @@ jobs:
           ls dist
 
       - name: build and upload the app (macOS arm64)
-        if: matrix.platform == 'macos-latest' && ${{ steps.shouldMacOSCodeSign.output }} == false
+        if: matrix.platform == 'macos-latest' && ${{ steps.shouldMacOSCodeSign.output }} == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -98,7 +98,7 @@ jobs:
       # macOS WITH code signing
       #---------------------------------------------------------------------------------------
       - name: build and upload the app (macOS x86)
-        if: matrix.platform == 'macos-12' && ${{ steps.shouldMacOSCodeSign.output }} == true
+        if: matrix.platform == 'macos-12' && ${{ steps.shouldMacOSCodeSign.output }} == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_DEV_IDENTITY: ${{ secrets.APPLE_DEV_IDENTITY }}
@@ -111,7 +111,7 @@ jobs:
           ls dist
 
       - name: build and upload the app (macOS arm64)
-        if: matrix.platform == 'macos-latest' && ${{ steps.shouldMacOSCodeSign.output }} == true
+        if: matrix.platform == 'macos-latest' && ${{ steps.shouldMacOSCodeSign.output }} == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_DEV_IDENTITY: ${{ secrets.APPLE_DEV_IDENTITY }}
