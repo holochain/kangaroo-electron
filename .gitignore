@@ -6,6 +6,15 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# build
+resources
+
+# pouch
+pouch/*.webhapp
+
+# electron-builder
+out/
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
@@ -64,34 +73,6 @@ typings/
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
-# next.js build output
-.next
-
-# nuxt.js build output
-.nuxt
-
-# vuepress build output
-.vuepress/dist
-
-# Serverless directories
-.serverless/
-
-# FuseBox cache
-.fusebox/
-
-# DynamoDB Local files
-.dynamodb/
-
-# Webpack
-.webpack/
-
 # Vite
 .vite/
 
-# Electron-Forge
-out/
-
-# build
-binaries/
-main_window/
-holochain-data/
