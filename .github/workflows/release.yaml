@@ -71,21 +71,34 @@ jobs:
         id: shouldWindowsCodeSign
         shell: bash
 
-      - name: build and upload the app (macOS arm64)
-        if: matrix.platform == 'macos-latest'
+      - name: Retrieve whether macOS code signing should be attempted
+        run: |
+          echo "MACOS_CODE_SIGNING=$(node ./scripts/read-macos-code-signing.js)" >> $GITHUB_OUTPUT
+        id: shouldMacOSCodeSign
+        shell: bash
+
+      # macOS WITHOUT code signing
+      #---------------------------------------------------------------------------------------
+      - name: build and upload the app (macOS x86)
+        if: matrix.platform == 'macos-12' && ${{ steps.shouldMacOSCodeSign.output }} == false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          APPLE_DEV_IDENTITY: ${{ secrets.APPLE_DEV_IDENTITY }}
-          APPLE_ID_EMAIL: ${{ secrets.APPLE_ID_EMAIL }}
-          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          DEBUG: electron-osx-sign*,electron-notarize*
+        run: |
+          yarn build:mac-x64
+          ls dist
+
+      - name: build and upload the app (macOS arm64)
+        if: matrix.platform == 'macos-latest' && ${{ steps.shouldMacOSCodeSign.output }} == false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           yarn build:mac-arm64
           ls dist
 
+      # macOS WITH code signing
+      #---------------------------------------------------------------------------------------
       - name: build and upload the app (macOS x86)
-        if: matrix.platform == 'macos-12'
+        if: matrix.platform == 'macos-12' && ${{ steps.shouldMacOSCodeSign.output }} == true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_DEV_IDENTITY: ${{ secrets.APPLE_DEV_IDENTITY }}
@@ -97,6 +110,21 @@ jobs:
           yarn build:mac-x64
           ls dist
 
+      - name: build and upload the app (macOS arm64)
+        if: matrix.platform == 'macos-latest' && ${{ steps.shouldMacOSCodeSign.output }} == true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_DEV_IDENTITY: ${{ secrets.APPLE_DEV_IDENTITY }}
+          APPLE_ID_EMAIL: ${{ secrets.APPLE_ID_EMAIL }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          DEBUG: electron-osx-sign*,electron-notarize*
+        run: |
+          yarn build:mac-arm64
+          ls dist
+
+      # Linux
+      #---------------------------------------------------------------------------------------
       - name: build and upload the app (Ubuntu 22.04)
         if: matrix.platform == 'ubuntu-22.04'
         env:
@@ -110,6 +138,9 @@ jobs:
           gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "latest-linux.yml" --clobber
           gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "dist/${{ steps.appId.outputs.APP_ID }}_${{ steps.version.outputs.APP_VERSION }}_amd64.deb" --clobber
 
+
+      # Windows
+      #---------------------------------------------------------------------------------------
       - name: build, sign and upload the app (Windows)
         shell: bash
         if: matrix.platform == 'windows-2019'

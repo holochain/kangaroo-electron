@@ -28,6 +28,11 @@ export type KangarooConfig = {
    */
   version: string,
   /**
+   * Whether to attempt macOS code signing in CI. Requires the corresponding
+   * secrets to be available in the github repository.
+   */
+  macOSCodeSigning: boolean,
+  /**
    * Whether to attempt Windows code signing with an EV certificate in CI.
    * Assumes that the relevant secrets are available in the repository
    * in the format of this guide: https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/
