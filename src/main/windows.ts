@@ -36,12 +36,9 @@ export const createHappWindow = async (
   if (uiSource.type === "path") {
     const ses = session.defaultSession;
     ses.protocol.handle("webhapp", async (request) => {
-      console.log("Got 'webhapp' request: ", request);
       const uriWithoutProtocol = request.url.slice("webhapp://".length);
       const filePathComponents = uriWithoutProtocol.split("/").slice(1);
       const filePath = path.join(...filePathComponents);
-
-      console.log("filePath: ", filePath);
 
       if (!filePath.endsWith("index.html")) {
         return net.fetch(
@@ -235,6 +232,13 @@ export const createSplashWindow = (): BrowserWindow => {
   }
 
   splashWindow.once("ready-to-show", () => {
+    splashWindow.webContents.send(
+      "name-and-version",
+      {
+        productName: KANGAROO_CONFIG.productName,
+        version: KANGAROO_CONFIG.version,
+      }
+    );
     splashWindow.show();
   });
 

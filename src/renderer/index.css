@@ -42,6 +42,8 @@ body {
 }
 
 .splash-content-wrapper {
+  align-items: center;
+  margin-top: 30px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -49,7 +51,7 @@ body {
   padding: 30px 40px;
 }
 
-.splash-logo {
+.splash-product-name {
   font-family: 'gilroyextrabold', Helvetica, sans-serif;
   font-size: 40px;
   color: #222222;
@@ -65,8 +67,9 @@ body {
 
 .splash-loading-message {
   font-family: 'gilroyextrabold', Helvetica, sans-serif;
+  margin-top: 110px;
   font-size: 18px;
-  color: #222222;
+  color: #414141;
 }
 
 .splash-description {
@@ -78,6 +81,9 @@ body {
 
 .splash-license {
   font-family: 'PlusJakartaSans-bold', Helvetica, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   color: #898989;
+  position: absolute;
+  bottom: 3px;
+  left: 5px;
 }

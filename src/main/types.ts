@@ -27,10 +27,10 @@ export type KangarooConfig = {
    * 0.13.0-alpha.0 -> 0.13.0-alpha.1: *No* breaking change;
    */
   version: string,
-  /**
-   * Whether or not the app should have the user set up a password.
-   */
-  usePassword: boolean,
+  // /**
+  //  * Whether or not the app should have the user set up a password.
+  //  */
+  // usePassword: boolean,
   /**
    * URL of the bootstrap server to use.
    */

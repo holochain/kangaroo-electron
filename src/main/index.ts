@@ -45,8 +45,7 @@ const LAIR_PASSWORD = "password";
 // file whether or not to show the splashscreen or use a default password
 
 if (!app.isPackaged) {
-  const appName = app.getName();
-  app.setName(appName + '-dev');
+  app.setName(KANGAROO_CONFIG.appId + '-dev');
 }
 
 const KANGAROO_FILESYSTEM = KangarooFileSystem.connect(app);
@@ -109,7 +108,9 @@ let SPLASH_SCREEN_WINDOW: BrowserWindow | undefined;
 app.whenReady().then(async () => {
   SPLASH_SCREEN_WINDOW = createSplashWindow();
   ipcMain.handle("sign-zome-call", handleSignZomeCall);
-
+  ipcMain.handle('exit', () => {
+    app.exit(0);
+  });
   if (!KANGAROO_FILESYSTEM.keystoreInitialized()) {
     if (SPLASH_SCREEN_WINDOW)
       SPLASH_SCREEN_WINDOW.webContents.send(

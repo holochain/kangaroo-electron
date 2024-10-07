@@ -11,15 +11,17 @@ const kangarooConfig = require(path.join(
   "kangaroo.config.ts"
 )).default;
 
-// CHECK THAT NO DEFAULT VALUES ANYMORE
-if (kangarooConfig.appId === "kangaroo-electron")
-  throw new Error(
-    "The appId field in 'kangaroo.config.ts' is still using the default value. Change it to the appId of your app."
-  );
-if (kangarooConfig.productName === "org.holochain.kangaroo-electron")
-  throw new Error(
-    "The productName field in 'kangaroo.config.ts' is still using the default value. Change it to the productName of your app."
-  );
+if (!process.env.KANGAROO_DEV) {
+  // CHECK THAT NO DEFAULT VALUES ANYMORE
+  if (kangarooConfig.appId === "org.holochain.kangaroo-electron")
+    throw new Error(
+      "The appId field in 'kangaroo.config.ts' is still using the default value. Change it to the appId of your app."
+    );
+  if (kangarooConfig.productName === "Holochain Kangaroo Electron")
+    throw new Error(
+      "The productName field in 'kangaroo.config.ts' is still using the default value. Change it to the productName of your app."
+    );
+}
 
 // Overwrite package.json values
 const packageJsonString = fs.readFileSync('package.json', 'utf-8');

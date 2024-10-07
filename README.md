@@ -21,6 +21,7 @@ yarn setup
 3. In the `kangaroo.config.ts` file, replace the `appId` and `productName` fields with names appropriate for your own app.
 
 4. Paste the `.webhapp` file of your holochain app into the `pouch` folder.
+**Note**: The kangaroo expects a 1024x1024 pixel `icon.png` at the root level of your webhapp's UI assets.
 
 5. To test it, run
 ```
