@@ -38,18 +38,6 @@ jobs:
         id: version
         shell: bash
 
-      - name: Retrieve appId
-        run: |
-          echo "APP_ID=$(node ./scripts/read-app-id.js)" >> $GITHUB_OUTPUT
-        id: appId
-        shell: bash
-
-      - name: Retrieve whether Windows code signing should be attempted
-        run: |
-          echo "WINDOWS_CODE_SIGNING=$(node ./scripts/read-windows-code-signing.js)" >> $GITHUB_OUTPUT
-        id: shouldWindowsCodeSign
-        shell: bash
-
       - name: install Rust
         uses: dtolnay/rust-toolchain@1.75.0
 
@@ -70,6 +58,18 @@ jobs:
           echo "overwriting names for release testing"
           curl -f -L --output ./pouch/kando.webhapp https://github.com/holochain-apps/kando/releases/download/v0.10.9/kando.webhapp
           node ./scripts/overwrite-with-test-name.js
+
+      - name: Retrieve appId
+        run: |
+          echo "APP_ID=$(node ./scripts/read-app-id.js)" >> $GITHUB_OUTPUT
+        id: appId
+        shell: bash
+
+      - name: Retrieve whether Windows code signing should be attempted
+        run: |
+          echo "WINDOWS_CODE_SIGNING=$(node ./scripts/read-windows-code-signing.js)" >> $GITHUB_OUTPUT
+        id: shouldWindowsCodeSign
+        shell: bash
 
       - name: build and upload the app (macOS arm64)
         if: matrix.platform == 'macos-latest'
