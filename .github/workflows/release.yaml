@@ -63,11 +63,12 @@ jobs:
           yarn setup
 
       # This step is only used for testing in the official kangaroo repo
-      - name: Overwrite Names for release testing
+      - name: Overwrite Names for release testing and fetch kando webhapp from github
         if: ${{ github.repository }} == 'https://github.com/holochain-apps/holochain-kangaroo-electron'
         run: |
           echo ${{ github.repository }}
           echo "overwriting names for release testing"
+          curl -f -L --output ./pouch/kando.webhapp https://github.com/holochain-apps/kando/releases/download/v0.10.9/kando.webhapp
           node ./scripts/overwrite-with-test-name.js
 
       - name: build and upload the app (macOS arm64)
