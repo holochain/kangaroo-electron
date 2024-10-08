@@ -85,6 +85,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: false
         run: |
+          echo hello
+          echo ${{ steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }}
           yarn build:mac-x64
           ls dist
 
