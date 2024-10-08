@@ -80,18 +80,19 @@ jobs:
       # macOS WITHOUT code signing
       #---------------------------------------------------------------------------------------
       - name: build and upload the app (macOS x86)
-        if: matrix.platform == 'macos-12' && ${{ steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }} == 'false'
+        if: matrix.platform == 'macos-12' && ${{ !steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: false
         run: |
           echo hello
           echo ${{ steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }}
+          echo ${{ !steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }}
           yarn build:mac-x64
           ls dist
 
       - name: build and upload the app (macOS arm64)
-        if: matrix.platform == 'macos-latest' && ${{ steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }} == 'false'
+        if: matrix.platform == 'macos-latest' && ${{ !steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: false
@@ -102,7 +103,7 @@ jobs:
       # macOS WITH code signing
       #---------------------------------------------------------------------------------------
       - name: build and upload the app (macOS x86)
-        if: matrix.platform == 'macos-12' && ${{ steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }} == 'true'
+        if: matrix.platform == 'macos-12' && ${{ steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_DEV_IDENTITY: ${{ secrets.APPLE_DEV_IDENTITY }}
@@ -115,7 +116,7 @@ jobs:
           ls dist
 
       - name: build and upload the app (macOS arm64)
-        if: matrix.platform == 'macos-latest' && ${{ steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }} == 'true'
+        if: matrix.platform == 'macos-latest' && ${{ steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_DEV_IDENTITY: ${{ secrets.APPLE_DEV_IDENTITY }}
