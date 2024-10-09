@@ -3,6 +3,7 @@ import {
   BrowserWindow,
   ipcMain,
   IpcMainInvokeEvent,
+  Menu,
   protocol,
 } from "electron";
 import childProcess from "child_process";
@@ -11,6 +12,7 @@ import {
   ZomeCallSigner,
   ZomeCallUnsignedNapi,
 } from "@holochain/hc-spin-rust-utils";
+import contextMenu from 'electron-context-menu';
 import { encode } from "@msgpack/msgpack";
 import {
   CallZomeRequest,
@@ -33,6 +35,7 @@ import {
   UI_DIRECTORY,
 } from "./const";
 import { initializeLairKeystore, launchLairKeystore } from "./lairKeystore";
+import { kangarooMenu } from "./menu";
 
 // Read CLI options
 
@@ -47,6 +50,22 @@ const LAIR_PASSWORD = "password";
 if (!app.isPackaged) {
   app.setName(KANGAROO_CONFIG.appId + '-dev');
 }
+
+contextMenu({
+  showSaveImageAs: true,
+  showSearchWithGoogle: false,
+  showInspectElement: true,
+  append: (_defaultActions, _parameters, browserWindow) => [
+    {
+      label: 'Reload',
+      click: () => (browserWindow as BrowserWindow).reload(),
+    },
+    {
+      label: 'Quit Launcher',
+      click: () => app.quit(),
+    },
+  ],
+});
 
 const KANGAROO_FILESYSTEM = KangarooFileSystem.connect(app);
 
@@ -105,6 +124,8 @@ let LAIR_HANDLE: childProcess.ChildProcessWithoutNullStreams | undefined;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let MAIN_WINDOW: BrowserWindow | undefined | null;
 let SPLASH_SCREEN_WINDOW: BrowserWindow | undefined;
+
+Menu.setApplicationMenu(kangarooMenu(KANGAROO_FILESYSTEM));
 
 app.whenReady().then(async () => {
   SPLASH_SCREEN_WINDOW = createSplashWindow();

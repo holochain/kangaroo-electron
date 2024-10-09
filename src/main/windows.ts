@@ -147,8 +147,6 @@ export const createHappWindow = async (
     throw new Error(`Unsupported uiSource type: ${(uiSource as any).type}`);
   }
 
-  console.log("Showing browser window");
-
   happWindow.show();
 
   return happWindow;

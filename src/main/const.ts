@@ -37,3 +37,7 @@ export const HAPP_APP_ID = 'kangaroo.happ';
 export const UI_DIRECTORY = path.join(RESOURCES_DIRECTORY, 'ui');
 
 export const ICON_PATH = path.join(RESOURCES_DIRECTORY, 'ui', 'icon.png');
+
+export const isMac = process.platform === 'darwin';
+export const isWindows = process.platform === 'win32';
+export const isLinux = process.platform === 'linux';
