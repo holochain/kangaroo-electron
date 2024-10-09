@@ -9,6 +9,8 @@ This repository let's you easily convert your Holochain app into a standalone, e
 
 # Instructions
 
+## Setup and Testing Locally
+
 1. Either use this repository as a template (by clicking on the green "Use this template" button) or fork it.
 Using it as a template allows you to start with a clean git history and the contributors of this repository won't show up as contributors to your new repository. **Forking has the advantage of being able to relatively easily pull in updates from this parent repository at a later point in time.**
 
@@ -28,7 +30,11 @@ yarn setup
 yarn dev
 ```
 
-6. To build it locally for your platform, run the build command for your respecive platform
+## Build the Distributable
+
+### Build locally
+To build the app locally for your platform, run the build command for your respecive platform:
+
 ```
 yarn build:linux
 
@@ -38,22 +44,58 @@ yarn build:mac
 # or
 yarn build:windows
 ```
+### Build on CI for all platforms
 
-7. To build the app in CI the first time, create a Draft release on github and set its "Tag verion" to the value of the `version` field that you chose in `kangaroo.config.ts` and prefix it with `v`, e.g. `v0.1.0`. Then create a release branch, merge the main branch into it and push to github.
+The general workflow goes as follows:
 
+1. Create a draft release on github and set its "Tag verion" to the value of the `version` field that you chose in `kangaroo.config.ts` and prefix it with `v`, for example `v0.1.0`.
+
+2. Merge the main branch into the release branch and push it to github to trigger the release workflow.
+
+If you do this for the first time you will need to create the `release` branch first:
 ```
 git checkout -b release
 git merge main
 git push --set-upstream origin release
 ```
 
+For subsequent releases after that you can run
+```
+git checkout release
+git merge main
+git push
+```
 
 
+## Code Signing
+
+### macOS
+
+To use code signing on macOS for your release in CI you will have to
+
+1. Set the `macOSCodeSigning` field to `true` in `kangaroo.config.ts`
+2. Add the following secrets to your github repository with the appropriate values:
+- `APPLE_DEV_IDENTITY`
+- `APPLE_ID_EMAIL`
+- `APPLE_ID_PASSWORD`
+- `APPLE_TEAM_ID`
 
 
+### Windows
+
+If you want to code sign your app with an EV certificate, you can follow [this guide](https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/) to get your EV certificate hosted on Azure Key Vault and then
+
+1. Set the `windowsEVCodeSigning` field to `true` in `kangaroo.config.ts`
+2. Add all the necessary secrets to the repository:
+- `AZURE_KEY_VAULT_URI`
+- `AZURE_CERT_NAME`
+- `AZURE_TENANT_ID`
+- `AZURE_CLIENT_ID`
+- `AZURE_CLIENT_SECRET`
 
 
+## Permissions on macOS
 
-
+Access to things like camera and microphone on macOS require special permissions to be set in the .plist file. For this, uncomment the corresponding permissions in `./templates/electron-builder-template.yml` as needed.
 
 

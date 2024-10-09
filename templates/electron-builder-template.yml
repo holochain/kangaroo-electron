@@ -1,5 +1,5 @@
-appId: ____REPLACE____
-productName: ____REPLACE____
+appId: ____PLACEHOLDER____
+productName: ____PLACEHOLDER____
 directories:
   buildResources: build
 files:
@@ -9,7 +9,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: ____REPLACE____
+  executableName: ____PLACEHOLDER____
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
