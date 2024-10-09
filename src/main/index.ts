@@ -59,11 +59,7 @@ contextMenu({
     {
       label: 'Reload',
       click: () => (browserWindow as BrowserWindow).reload(),
-    },
-    {
-      label: 'Quit Launcher',
-      click: () => app.quit(),
-    },
+    }
   ],
 });
 
