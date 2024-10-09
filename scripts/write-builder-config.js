@@ -23,13 +23,24 @@ if (!process.env.KANGAROO_DEV) {
     );
 }
 
+// Store config to json file
+fs.writeFileSync(
+  path.join("resources", "kangaroo.config.json"),
+  JSON.stringify(kangarooConfig, undefined, 2),
+  "utf-8"
+);
+
 // Overwrite package.json values
-const packageJsonString = fs.readFileSync('package.json', 'utf-8');
+const packageJsonString = fs.readFileSync("package.json", "utf-8");
 const packageJSON = JSON.parse(packageJsonString);
 packageJSON.name = kangarooConfig.appId;
 packageJSON.version = kangarooConfig.version;
 
-fs.writeFileSync('package.json', JSON.stringify(packageJSON, undefined, 2), 'utf-8');
+fs.writeFileSync(
+  "package.json",
+  JSON.stringify(packageJSON, undefined, 2),
+  "utf-8"
+);
 
 const eletronBuilderYml = jsYaml.load(
   fs.readFileSync(
@@ -41,5 +52,8 @@ eletronBuilderYml.appId = kangarooConfig.appId;
 eletronBuilderYml.productName = kangarooConfig.productName;
 eletronBuilderYml.win.executableName = kangarooConfig.appId;
 
-fs.writeFileSync('electron-builder.yml', jsYaml.dump(eletronBuilderYml), 'utf-8');
-
+fs.writeFileSync(
+  "electron-builder.yml",
+  jsYaml.dump(eletronBuilderYml),
+  "utf-8"
+);

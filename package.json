@@ -33,8 +33,6 @@
     "get-port": "7.0.0",
     "nanoid": "5.0.4",
     "split": "1.0.1",
-    "ts-node": "10.9.2",
-    "typescript": "^5.2.2",
     "utf-8-validate": "^6.0.3",
     "winston": "3.11.0"
   },
@@ -55,6 +53,8 @@
     "octokit": "4.0.2",
     "png2icons": "2.0.1",
     "rimraf": "^5.0.1",
+    "ts-node": "10.9.2",
+    "typescript": "^5.2.2",
     "vite": "^4.4.9"
   }
 }

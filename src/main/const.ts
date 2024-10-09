@@ -1,22 +1,20 @@
 import { app } from "electron";
 import path from 'path';
+import fs from 'fs';
 import { KangarooConfig } from './types';
-import tsNode from 'ts-node';
 
-const kangarooConfigPath = path.join(app.getAppPath(), 'kangaroo.config.ts');
 
-tsNode.register();
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-export const KANGAROO_CONFIG: KangarooConfig = require(kangarooConfigPath).default;
+const RESOURCES_DIRECTORY = app.isPackaged
+  ? path.join(app.getAppPath(), '../app.asar.unpacked/resources')
+  : path.join(app.getAppPath(), './resources');
+
+const kangarooConfigString = fs.readFileSync(path.join(RESOURCES_DIRECTORY, 'kangaroo.config.json'), 'utf-8');
+export const KANGAROO_CONFIG: KangarooConfig = JSON.parse(kangarooConfigString);
 
 export const DEFAULT_BOOTSTRAP_SERVER = 'https://bootstrap.holo.host';
 export const DEFAULT_SIGNALING_SERVER = 'wss://signal.holo.host';
 
 const binariesAppendix = KANGAROO_CONFIG.appId.slice(0,10).replace(' ', '-');
-
-const RESOURCES_DIRECTORY = app.isPackaged
-  ? path.join(app.getAppPath(), '../app.asar.unpacked/resources')
-  : path.join(app.getAppPath(), './resources');
 
 
 const BINARIES_DIRECTORY = path.join(RESOURCES_DIRECTORY, 'bins');
