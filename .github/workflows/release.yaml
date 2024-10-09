@@ -79,23 +79,16 @@ jobs:
 
       # macOS WITHOUT code signing
       #---------------------------------------------------------------------------------------
-      - name: build and upload the app (macOS x86)
-        if: matrix.platform == 'macos-12' && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == false
+      - name: build and upload the app WITHOUT code signing (macOS x86)
+        if: matrix.platform == 'macos-12' && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: false
         run: |
-          echo hello
-          echo ${{ matrix.platform }}
-          echo ${{ matrix.platform == 'macos-12' }}
-          echo ${{ ! steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }}
-          echo ${{ (matrix.platform == 'macos-12') && ! steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }}
-          echo ${{ steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }}
-          echo ${{ ! steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING }}
           yarn build:mac-x64
           ls dist
 
-      - name: build and upload the app (macOS arm64)
+      - name: build and upload the app WITHOUT code signing (macOS arm64)
         if: matrix.platform == 'macos-latest' && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -106,7 +99,8 @@ jobs:
 
       # macOS WITH code signing
       #---------------------------------------------------------------------------------------
-      - name: build and upload the app (macOS x86)
+      # Note this issue regarding the if condition: https://github.com/actions/runner/issues/1173
+      - name: build and upload the app WITH code signing (macOS x86)
         if: matrix.platform == 'macos-12' && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -119,7 +113,7 @@ jobs:
           yarn build:mac-x64
           ls dist
 
-      - name: build and upload the app (macOS arm64)
+      - name: build and upload the app WITH code signing (macOS arm64)
         if: matrix.platform == 'macos-latest' && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
