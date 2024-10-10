@@ -6,6 +6,7 @@ This repository let's you easily convert your Holochain app into a standalone, e
 
 **Note:** Support for non-breaking updates to happ coordinator zomes is currently not built into the kangaroo.
 
+**Holochain Version**: Kangaroo Electron currently uses holochain 0.3.3.
 
 # Instructions
 
