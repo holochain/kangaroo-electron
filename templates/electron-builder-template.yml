@@ -8,7 +8,6 @@ files:
   - kangaroo.config.ts
 asarUnpack:
   - resources/**
-  - '**/*.node'
 win:
   executableName: ____PLACEHOLDER____
 nsis:
