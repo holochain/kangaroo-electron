@@ -38,14 +38,17 @@ export const createHappWindow = async (
     ses.protocol.handle("webhapp", async (request) => {
       const uriWithoutProtocol = request.url.slice("webhapp://".length);
       const filePathComponents = uriWithoutProtocol.split("/").slice(1);
-      const filePath = path.join(...filePathComponents);
+      const relativeFilePath = path.join(...filePathComponents);
+      const absoluteFilePath = path.join(uiSource.path, relativeFilePath);
 
-      if (!filePath.endsWith("index.html")) {
+      const fallbackToIndexHtml = KANGAROO_CONFIG.fallbackToIndexHtml ? !fs.existsSync(absoluteFilePath) : false;
+
+      if (!relativeFilePath.endsWith("index.html") && !fallbackToIndexHtml) {
         return net.fetch(
-          url.pathToFileURL(path.join(uiSource.path, filePath)).toString()
+          url.pathToFileURL(absoluteFilePath).toString()
         );
       } else {
-        const indexHtmlResponse = await net.fetch(url.pathToFileURL(path.join(uiSource.path, filePath)).toString());
+        const indexHtmlResponse = await net.fetch(url.pathToFileURL(absoluteFilePath).toString());
         const content = await indexHtmlResponse.text();
         let modifiedContent = content.replace(
           "<head>",

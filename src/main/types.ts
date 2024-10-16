@@ -38,6 +38,11 @@ export type KangarooConfig = {
    * in the format of this guide: https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/
    */
   windowsEVCodeSigning: boolean,
+  /**
+   * Fall back to serving the index.html if a resources is not found. Often required for router-based
+   * frameworks like svelte-kit or vue-router
+   */
+  fallbackToIndexHtml: boolean,
   // /**
   //  * Whether or not the app should have the user set up a password.
   //  */
