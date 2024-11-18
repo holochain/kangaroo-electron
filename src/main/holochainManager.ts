@@ -181,7 +181,7 @@ export class HolochainManager {
     )
       return;
     if (!networkSeed) {
-      networkSeed = `${KANGAROO_CONFIG.productName}-${breakingAppVersion(app)}`;
+      networkSeed = `${KANGAROO_CONFIG.productName}-${breakingAppVersion()}`;
     }
     console.log(`Installing happ...`);
     const pubKey = await this.adminWebsocket.generateAgentPubKey();
