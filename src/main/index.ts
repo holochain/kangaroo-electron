@@ -13,7 +13,7 @@ import {
   ZomeCallSigner,
   ZomeCallUnsignedNapi,
 } from "@holochain/hc-spin-rust-utils";
-import { autoUpdater } from "@matthme/electron-updater";
+import { autoUpdater, UpdateCheckResult } from "@matthme/electron-updater";
 import contextMenu from "electron-context-menu";
 import { encode } from "@msgpack/msgpack";
 import {
@@ -138,7 +138,13 @@ app.whenReady().then(async () => {
     autoUpdater.allowPrerelease = true;
     autoUpdater.autoDownload = false;
 
-    const updateCheckResult = await autoUpdater.checkForUpdates();
+    let updateCheckResult: UpdateCheckResult | null | undefined;
+
+    try {
+      updateCheckResult = await autoUpdater.checkForUpdates();
+    } catch (e) {
+      console.warn('Failed to check for updates: ', e);
+    }
 
     console.log("updateCheckResult: ", updateCheckResult);
 
