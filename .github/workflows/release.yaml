@@ -33,6 +33,7 @@ jobs:
 
       - name: Retrieve version
         run: |
+          yarn write:configs
           echo "Retrieved App version: $(node -p -e "require('./package.json').version")"
           echo "APP_VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
         id: version
