@@ -11,7 +11,6 @@ import {
 } from "@holochain/client";
 import { breakingAppVersion, KangarooFileSystem } from "./filesystem";
 import { HAPP_APP_ID, HAPP_PATH, KANGAROO_CONFIG } from "./const";
-import { app } from "electron";
 
 const rustUtils = require("@lightningrodlabs/we-rust-utils");
 
