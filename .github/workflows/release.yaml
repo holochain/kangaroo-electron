@@ -31,14 +31,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Retrieve version
-        run: |
-          yarn write:configs
-          echo "Retrieved App version: $(node -p -e "require('./package.json').version")"
-          echo "APP_VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
-        id: version
-        shell: bash
-
       - name: install Rust
         uses: dtolnay/rust-toolchain@1.75.0
 
@@ -50,6 +42,14 @@ jobs:
       - name: Environment setup
         run: |
           yarn setup
+
+      - name: Retrieve version
+        run: |
+          yarn write:configs
+          echo "Retrieved App version: $(node -p -e "require('./package.json').version")"
+          echo "APP_VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
+        id: version
+        shell: bash
 
       # This step is only used for testing in the official kangaroo repo
       - name: Overwrite Names for release testing and fetch kando webhapp from github
