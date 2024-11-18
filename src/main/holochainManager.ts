@@ -11,7 +11,6 @@ import {
 } from "@holochain/client";
 import { breakingAppVersion, KangarooFileSystem } from "./filesystem";
 import { HAPP_APP_ID, HAPP_PATH, KANGAROO_CONFIG } from "./const";
-import { app } from "electron";
 
 const rustUtils = require("@lightningrodlabs/we-rust-utils");
 
@@ -181,7 +180,7 @@ export class HolochainManager {
     )
       return;
     if (!networkSeed) {
-      networkSeed = `${KANGAROO_CONFIG.productName}-${breakingAppVersion(app)}`;
+      networkSeed = `${KANGAROO_CONFIG.productName}-${breakingAppVersion()}`;
     }
     console.log(`Installing happ...`);
     const pubKey = await this.adminWebsocket.generateAgentPubKey();
