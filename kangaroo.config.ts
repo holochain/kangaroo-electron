@@ -7,6 +7,7 @@ export default defineConfig({
   macOSCodeSigning: false,
   windowsEVCodeSigning: false,
   fallbackToIndexHtml: true,
+  autoUpdates: true,
   bins: {
     holochain: {
       version: "0.3.3",

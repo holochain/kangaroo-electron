@@ -1,6 +1,7 @@
 import {
   app,
   BrowserWindow,
+  dialog,
   ipcMain,
   IpcMainInvokeEvent,
   Menu,
@@ -12,7 +13,8 @@ import {
   ZomeCallSigner,
   ZomeCallUnsignedNapi,
 } from "@holochain/hc-spin-rust-utils";
-import contextMenu from 'electron-context-menu';
+import { autoUpdater } from "@matthme/electron-updater";
+import contextMenu from "electron-context-menu";
 import { encode } from "@msgpack/msgpack";
 import {
   CallZomeRequest,
@@ -20,7 +22,7 @@ import {
   getNonceExpiration,
   randomNonce,
 } from "@holochain/client";
-import { KangarooFileSystem } from "./filesystem";
+import { breakingVersion, KangarooFileSystem } from "./filesystem";
 import { KangarooEmitter } from "./eventEmitter";
 import { setupLogs } from "./logs";
 import { HolochainManager } from "./holochainManager";
@@ -36,6 +38,7 @@ import {
 } from "./const";
 import { initializeLairKeystore, launchLairKeystore } from "./lairKeystore";
 import { kangarooMenu } from "./menu";
+import semver from "semver";
 
 // Read CLI options
 
@@ -48,7 +51,7 @@ const LAIR_PASSWORD = "password";
 // file whether or not to show the splashscreen or use a default password
 
 if (!app.isPackaged) {
-  app.setName(KANGAROO_CONFIG.appId + '-dev');
+  app.setName(KANGAROO_CONFIG.appId + "-dev");
 }
 
 contextMenu({
@@ -57,9 +60,9 @@ contextMenu({
   showInspectElement: true,
   append: (_defaultActions, _parameters, browserWindow) => [
     {
-      label: 'Reload',
+      label: "Reload",
       click: () => (browserWindow as BrowserWindow).reload(),
-    }
+    },
   ],
 });
 
@@ -126,9 +129,43 @@ Menu.setApplicationMenu(kangarooMenu(KANGAROO_FILESYSTEM));
 app.whenReady().then(async () => {
   SPLASH_SCREEN_WINDOW = createSplashWindow();
   ipcMain.handle("sign-zome-call", handleSignZomeCall);
-  ipcMain.handle('exit', () => {
+  ipcMain.handle("exit", () => {
     app.exit(0);
   });
+
+  // Check for updates
+  if (app.isPackaged && KANGAROO_CONFIG.autoUpdates) {
+    autoUpdater.allowPrerelease = true;
+    autoUpdater.autoDownload = false;
+
+    const updateCheckResult = await autoUpdater.checkForUpdates();
+
+    console.log("updateCheckResult: ", updateCheckResult);
+
+    // We only install semver compatible updates
+    const appVersion = app.getVersion();
+    if (
+      updateCheckResult &&
+      breakingVersion(updateCheckResult.updateInfo.version) ===
+        breakingVersion(appVersion) &&
+      semver.gt(updateCheckResult.updateInfo.version, appVersion)
+    ) {
+      const userDecision = await dialog.showMessageBox({
+        title: "Update Available",
+        type: "question",
+        buttons: ["Deny", "Install and Restart"],
+        defaultId: 0,
+        cancelId: 0,
+        message: `A new compatible version of ${KANGAROO_CONFIG.productName} is available (${updateCheckResult.updateInfo.version}). Do you want to install it?`,
+      });
+      if (userDecision.response === 1) {
+        // downloading means that with the next start of the application it's automatically going to be installed
+        autoUpdater.on("update-downloaded", () => autoUpdater.quitAndInstall());
+        await autoUpdater.downloadUpdate();
+      }
+    }
+  }
+
   if (!KANGAROO_FILESYSTEM.keystoreInitialized()) {
     if (SPLASH_SCREEN_WINDOW)
       SPLASH_SCREEN_WINDOW.webContents.send(
@@ -136,14 +173,14 @@ app.whenReady().then(async () => {
         "Initializing lair keystore..."
       );
 
-    console.log("initializing lair keystore...")
+    console.log("initializing lair keystore...");
     await initializeLairKeystore(
       LAIR_BINARY,
       KANGAROO_FILESYSTEM.keystoreDir,
       KANGAROO_EMITTER,
       LAIR_PASSWORD
     );
-    console.log("lair keystore initialized.")
+    console.log("lair keystore initialized.");
   }
   if (SPLASH_SCREEN_WINDOW)
     SPLASH_SCREEN_WINDOW.webContents.send(
