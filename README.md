@@ -74,11 +74,11 @@ git push
 By default, the kangaroo is set up to check github releases for semver compatible releases by their tag name whenever the app starts up and will prompt to install and restart if one is available. This can be disabled by setting `autoUpdates` to `false` in `kangaroo.config.ts`.
 
 > [!NOTE]
-> Note that once your app is displayed, this setting can only be turned on again for newer releases and users will have to manually install new versions.
+> Note that once your app is deployed, this setting can only be turned on again for newer releases and users will have to manually install new versions.
 
 ## Versioning
 
-To allow for subsequent incompatible releases of your app (for example due to switching to a new Holochain version or introducing a breaking change in the integrity zomes of your .happ) without having to change the app's name or identifier, the kangaroo is set up such that semver incompatible versions of your app will be able to run fully independently from each other and store their data in dedicated locations on disk.
+To allow for subsequent incompatible releases of your app (for example due to switching to a new Holochain version or introducing a breaking change in the integrity zomes of your .happ) without having to change the app's name or identifier, the kangaroo is set up to use semver to support incompatible versions of your app running fully independently from each other and store their data in dedicated locations on disk.
 
 Examples:
 * version 0.0.2 and 0.0.3 of your app will store their data in independent locations on disk and version 0.0.3 will not have access to any data created/obtained in version 0.0.2
