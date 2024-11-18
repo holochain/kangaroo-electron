@@ -44,7 +44,7 @@ export type KangarooConfig = {
    */
   fallbackToIndexHtml: boolean,
   /**
-   * Whether the app should check for available, semver compatbile releases on github on startup
+   * Whether the app should check for available, semver compatible releases on github on startup
    * and prompt to install and restart if a new release is available.
    */
   autoUpdates: boolean,
