@@ -42,7 +42,6 @@ import { kangarooMenu } from "./menu";
 // Read and validate the config file to check that the content does not contain
 // default values
 
-const LAIR_PASSWORD = "password";
 
 // Check whether lair is initialized or not and if not, decide based on the config
 // file whether or not to show the splashscreen or use a default password
@@ -120,6 +119,7 @@ let LAIR_HANDLE: childProcess.ChildProcessWithoutNullStreams | undefined;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let MAIN_WINDOW: BrowserWindow | undefined | null;
 let SPLASH_SCREEN_WINDOW: BrowserWindow | undefined;
+let LAIR_PASSWORD: string | undefined;
 
 Menu.setApplicationMenu(kangarooMenu(KANGAROO_FILESYSTEM));
 
@@ -129,6 +129,9 @@ app.whenReady().then(async () => {
   ipcMain.handle('exit', () => {
     app.exit(0);
   });
+
+  LAIR_PASSWORD = KANGAROO_FILESYSTEM.readOrCreatePassword();
+
   if (!KANGAROO_FILESYSTEM.keystoreInitialized()) {
     if (SPLASH_SCREEN_WINDOW)
       SPLASH_SCREEN_WINDOW.webContents.send(
