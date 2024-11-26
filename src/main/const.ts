@@ -12,7 +12,7 @@ const kangarooConfigString = fs.readFileSync(path.join(RESOURCES_DIRECTORY, 'kan
 export const KANGAROO_CONFIG: KangarooConfig = JSON.parse(kangarooConfigString);
 
 export const DEFAULT_BOOTSTRAP_SERVER = 'https://bootstrap.holo.host';
-export const DEFAULT_SIGNALING_SERVER = 'wss://signal.holo.host';
+export const DEFAULT_SIGNALING_SERVER = 'wss://sbd.holo.host';
 
 const binariesAppendix = KANGAROO_CONFIG.appId.slice(0,10).replace(' ', '-');
 

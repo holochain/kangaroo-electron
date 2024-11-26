@@ -23,9 +23,9 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
-    "@holochain/client": "0.17.1",
-    "@holochain/hc-spin-rust-utils": "0.300.1",
-    "@lightningrodlabs/we-rust-utils": "0.300.2",
+    "@holochain/client": "0.18.0-rc.0",
+    "@holochain/hc-spin-rust-utils": "0.400.0-rc.0",
+    "@lightningrodlabs/we-rust-utils": "0.400.0-rc.0",
     "@msgpack/msgpack": "^2.8.0",
     "adm-zip": "0.5.14",
     "bufferutil": "4.0.8",
