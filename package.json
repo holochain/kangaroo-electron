@@ -1,5 +1,5 @@
 {
-  "name": "org.holochain.kangaroo-electron",
+  "name": "org.holochain.kangaroo-electron.test.local",
   "version": "0.1.0",
   "license": "CAL-1.0",
   "main": "./out/main/index.js",
@@ -29,6 +29,7 @@
     "@msgpack/msgpack": "^2.8.0",
     "adm-zip": "0.5.14",
     "bufferutil": "4.0.8",
+    "commander": "12.1.0",
     "electron-context-menu": "3.6.1",
     "get-port": "7.0.0",
     "nanoid": "5.0.4",
