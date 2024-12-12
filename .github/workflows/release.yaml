@@ -56,7 +56,7 @@ jobs:
         run: |
           echo ${{ github.repository }}
           echo "overwriting names for release testing"
-          curl -f -L --output ./pouch/presence.webhapp https://github.com/holochain-apps/kando/releases/download/v0.11.3/kando.webhapp
+          curl -f -L --output ./pouch/ziptest.webhapp https://github.com/holochain-apps/ziptest/releases/download/ziptest-v0.0.9/ziptest.webhapp
           node ./scripts/overwrite-with-test-name.js
 
       - name: Retrieve appId
