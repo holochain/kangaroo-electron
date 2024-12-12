@@ -1,5 +1,5 @@
 {
-  "name": "org.holochain.kangaroo-electron.test.local",
+  "name": "org.holochain.kangaroo-electron",
   "version": "0.1.0",
   "license": "CAL-1.0",
   "main": "./out/main/index.js",
