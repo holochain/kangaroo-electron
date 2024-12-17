@@ -74,7 +74,7 @@ export class HolochainManager {
       lairUrl,
       bootstrapUrl,
       signalingUrl,
-      "moss-admin-main",
+      "kangaroo",
       false,
       iceUrls,
       undefined,
@@ -138,7 +138,7 @@ export class HolochainManager {
           const adminWebsocket = await AdminWebsocket.connect({
             url: new URL(`ws://127.0.0.1:${adminPort}`),
             wsClientOptions: {
-              origin: "*",
+              origin: "kangaroo",
             },
           });
           console.log("Connected to admin websocket.");

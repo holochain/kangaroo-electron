@@ -186,7 +186,7 @@ app.whenReady().then(async () => {
 
     console.log("initializing lair keystore...")
     await initializeLairKeystore(
-      RUN_OPTIONS.customLairBinary ? RUN_OPTIONS.customLairBinary : LAIR_BINARY,
+      RUN_OPTIONS.lairPath ? RUN_OPTIONS.lairPath : LAIR_BINARY,
       KANGAROO_FILESYSTEM.keystoreDir,
       KANGAROO_EMITTER,
       LAIR_PASSWORD
@@ -202,7 +202,7 @@ app.whenReady().then(async () => {
   let lairUrl;
 
   [LAIR_HANDLE, lairUrl] = await launchLairKeystore(
-    RUN_OPTIONS.customLairBinary ? RUN_OPTIONS.customLairBinary : LAIR_BINARY,
+    RUN_OPTIONS.lairPath ? RUN_OPTIONS.lairPath : LAIR_BINARY,
     KANGAROO_FILESYSTEM.keystoreDir,
     KANGAROO_EMITTER,
     LAIR_PASSWORD
@@ -219,7 +219,7 @@ app.whenReady().then(async () => {
   HOLOCHAIN_MANAGER = await HolochainManager.launch(
     KANGAROO_EMITTER,
     KANGAROO_FILESYSTEM,
-    RUN_OPTIONS.customHolochainBinary ? RUN_OPTIONS.customHolochainBinary : HOLOCHAIN_BINARY,
+    RUN_OPTIONS.holochainPath ? RUN_OPTIONS.holochainPath : HOLOCHAIN_BINARY,
     LAIR_PASSWORD,
     KANGAROO_CONFIG.bins.holochain.version,
     KANGAROO_FILESYSTEM.conductorDir,

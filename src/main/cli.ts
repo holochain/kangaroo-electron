@@ -22,8 +22,8 @@ export interface RunOptions {
   bootstrapUrl: URL | undefined;
   signalingUrl: URL | undefined;
   iceUrls: string[] | undefined;
-  customHolochainBinary: string | undefined;
-  customLairBinary: string | undefined;
+  holochainPath: string | undefined;
+  lairPath: string | undefined;
   holochainRustLog: string | undefined;
   holochainWasmLog: string | undefined;
   lairRustLog: string | undefined;
@@ -83,8 +83,8 @@ export function validateArgs(args: CliOpts): RunOptions {
     bootstrapUrl,
     signalingUrl,
     iceUrls: args.iceUrls ? args.iceUrls.split(',') : undefined,
-    customHolochainBinary: args.holochainPath ? args.holochainPath : undefined,
-    customLairBinary: args.lairPath ? args.lairPath : undefined,
+    holochainPath: args.holochainPath ? args.holochainPath : undefined,
+    lairPath: args.lairPath ? args.lairPath : undefined,
     holochainRustLog: args.holochainRustLog ? args.holochainRustLog : undefined,
     holochainWasmLog: args.holochainWasmLog ? args.holochainWasmLog : undefined,
     lairRustLog: args.lairRustLog ? args.lairRustLog : undefined,
