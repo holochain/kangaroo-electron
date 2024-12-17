@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Setup for macOS code signing
-        if: matrix.platform == 'macos-12' || matrix.platform == 'macos-latest'
+        if: (matrix.platform == 'macos-12' || matrix.platform == 'macos-latest') && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'true'
         uses: matthme/import-codesign-certs@5565bb656f60c98c8fc515f3444dd8db73545dc2
         with:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
@@ -30,13 +30,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 20
-
-      - name: Retrieve version
-        run: |
-          echo "Retrieved App version: $(node -p -e "require('./package.json').version")"
-          echo "APP_VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
-        id: version
-        shell: bash
 
       - name: install Rust
         uses: dtolnay/rust-toolchain@1.75.0
@@ -56,8 +49,16 @@ jobs:
         run: |
           echo ${{ github.repository }}
           echo "overwriting names for release testing"
-          curl -f -L --output ./pouch/presence.webhapp https://github.com/matthme/presence/releases/download/0.7.3/presence.webhapp
+          curl -f -L --output ./pouch/kando.webhapp https://github.com/holochain-apps/kando/releases/download/v0.10.9/kando.webhapp
           node ./scripts/overwrite-with-test-name.js
+
+      - name: Retrieve version
+        run: |
+          yarn write:configs
+          echo "Retrieved App version: $(node -p -e "require('./package.json').version")"
+          echo "APP_VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
+        id: version
+        shell: bash
 
       - name: Retrieve appId
         run: |

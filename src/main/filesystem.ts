@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import semver from 'semver';
+import { app } from 'electron';
 
 export type Profile = string;
 
@@ -27,7 +28,7 @@ export class KangarooFileSystem {
 
   static connect(app: Electron.App, profile?: Profile, tempDir?: string) {
     profile = profile ? profile : 'default';
-    const versionString = breakingAppVersion(app);
+    const versionString = breakingAppVersion();
 
     const defaultLogsPath = app.getPath('logs');
     console.log('defaultLogsPath: ', defaultLogsPath);
@@ -76,9 +77,12 @@ function createDirIfNotExists(path: fs.PathLike) {
   }
 }
 
-
-export function breakingAppVersion(app: Electron.App): string {
+export function breakingAppVersion(): string {
   const version = app.getVersion();
+  return breakingVersion(version);
+}
+
+export function breakingVersion(version: string): string {
   if (!semver.valid(version)) {
     throw new Error('App has an invalid version number.');
   }
