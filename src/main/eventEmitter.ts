@@ -41,7 +41,7 @@ export declare interface WeEmitter {
       | WASM_LOG
       | HAPP_INSTALLED
       | string, // arbitrary string, e.g. a one-time event with a unique id
-    listener: (event: HolochainData | string | Error) => void,
+    listener: (event: HolochainData | string | Error) => void
   ): this;
 }
 

@@ -36,12 +36,11 @@ switch (process.platform) {
     throw new Error(`Got unexpected OS platform: ${process.platform}`);
 }
 
-const binariesAppendix = kangarooConfig.appId.slice(0,10).replace(' ', '-');
+const binariesAppendix = kangarooConfig.appId.slice(0, 10).replace(' ', '-');
 
-
-const holochainBinaryFilename = `holochain-v${kangarooConfig.bins.holochain.version}-${binariesAppendix}${
-  process.platform === 'win32' ? '.exe' : ''
-}`;
+const holochainBinaryFilename = `holochain-v${
+  kangarooConfig.bins.holochain.version
+}-${binariesAppendix}${process.platform === 'win32' ? '.exe' : ''}`;
 
 const lairBinaryFilename = `lair-keystore-v${kangarooConfig.bins.lair.version}-${binariesAppendix}${
   process.platform === 'win32' ? '.exe' : ''
@@ -62,7 +61,7 @@ function downloadFile(url, targetPath, expectedSha256Hex, chmod = false) {
       const sha256Hex = hasher.digest('hex');
       if (sha256Hex !== expectedSha256Hex)
         throw new Error(
-          `sha256 does not match the expected sha256. Got ${sha256Hex} but expected ${expectedSha256Hex}`,
+          `sha256 does not match the expected sha256. Got ${sha256Hex} but expected ${expectedSha256Hex}`
         );
 
       console.log('Download successful. sha256 of file (hex): ', sha256Hex);
@@ -82,7 +81,7 @@ function downloadHolochainBinary() {
     holochainBinaryUrl,
     destinationPath,
     kangarooConfig.bins.holochain.sha256[targetEnding],
-    true,
+    true
   );
 }
 

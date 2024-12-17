@@ -1,32 +1,20 @@
-import {
-  app,
-  BrowserWindow,
-  dialog,
-  ipcMain,
-  IpcMainInvokeEvent,
-  Menu,
-  protocol,
-} from "electron";
-import childProcess from "child_process";
-import {
-  ZomeCallNapi,
-  ZomeCallSigner,
-  ZomeCallUnsignedNapi,
-} from "@holochain/hc-spin-rust-utils";
-import { autoUpdater, UpdateCheckResult } from "@matthme/electron-updater";
-import contextMenu from "electron-context-menu";
-import { encode } from "@msgpack/msgpack";
+import { app, BrowserWindow, dialog, ipcMain, IpcMainInvokeEvent, Menu, protocol } from 'electron';
+import childProcess from 'child_process';
+import { ZomeCallNapi, ZomeCallSigner, ZomeCallUnsignedNapi } from '@holochain/hc-spin-rust-utils';
+import { autoUpdater, UpdateCheckResult } from '@matthme/electron-updater';
+import contextMenu from 'electron-context-menu';
+import { encode } from '@msgpack/msgpack';
 import {
   CallZomeRequest,
   CallZomeRequestSigned,
   getNonceExpiration,
   randomNonce,
-} from "@holochain/client";
-import { breakingVersion, KangarooFileSystem } from "./filesystem";
-import { KangarooEmitter } from "./eventEmitter";
-import { setupLogs } from "./logs";
-import { HolochainManager } from "./holochainManager";
-import { createHappWindow, createSplashWindow } from "./windows";
+} from '@holochain/client';
+import { breakingVersion, KangarooFileSystem } from './filesystem';
+import { KangarooEmitter } from './eventEmitter';
+import { setupLogs } from './logs';
+import { HolochainManager } from './holochainManager';
+import { createHappWindow, createSplashWindow } from './windows';
 import {
   DEFAULT_BOOTSTRAP_SERVER,
   DEFAULT_SIGNALING_SERVER,
@@ -35,23 +23,23 @@ import {
   KANGAROO_CONFIG,
   LAIR_BINARY,
   UI_DIRECTORY,
-} from "./const";
-import { initializeLairKeystore, launchLairKeystore } from "./lairKeystore";
-import { kangarooMenu } from "./menu";
-import semver from "semver";
+} from './const';
+import { initializeLairKeystore, launchLairKeystore } from './lairKeystore';
+import { kangarooMenu } from './menu';
+import semver from 'semver';
 
 // Read CLI options
 
 // Read and validate the config file to check that the content does not contain
 // default values
 
-const LAIR_PASSWORD = "password";
+const LAIR_PASSWORD = 'password';
 
 // Check whether lair is initialized or not and if not, decide based on the config
 // file whether or not to show the splashscreen or use a default password
 
 if (!app.isPackaged) {
-  app.setName(KANGAROO_CONFIG.appId + "-dev");
+  app.setName(KANGAROO_CONFIG.appId + '-dev');
 }
 
 contextMenu({
@@ -60,7 +48,7 @@ contextMenu({
   showInspectElement: true,
   append: (_defaultActions, _parameters, browserWindow) => [
     {
-      label: "Reload",
+      label: 'Reload',
       click: () => (browserWindow as BrowserWindow).reload(),
     },
   ],
@@ -74,16 +62,13 @@ setupLogs(KANGAROO_EMITTER, KANGAROO_FILESYSTEM, true);
 
 protocol.registerSchemesAsPrivileged([
   {
-    scheme: "webhapp",
+    scheme: 'webhapp',
     privileges: { standard: true, secure: true, stream: true },
   },
 ]);
 
-const handleSignZomeCall = async (
-  _e: IpcMainInvokeEvent,
-  request: CallZomeRequest
-) => {
-  if (!ZOME_CALL_SIGNER) throw new Error("Zome call signer undefined.");
+const handleSignZomeCall = async (_e: IpcMainInvokeEvent, request: CallZomeRequest) => {
+  if (!ZOME_CALL_SIGNER) throw new Error('Zome call signer undefined.');
   // console.log("Got zome call request: ", request);
   const zomeCallUnsignedNapi: ZomeCallUnsignedNapi = {
     provenance: Array.from(request.provenance),
@@ -128,8 +113,8 @@ Menu.setApplicationMenu(kangarooMenu(KANGAROO_FILESYSTEM));
 
 app.whenReady().then(async () => {
   SPLASH_SCREEN_WINDOW = createSplashWindow();
-  ipcMain.handle("sign-zome-call", handleSignZomeCall);
-  ipcMain.handle("exit", () => {
+  ipcMain.handle('sign-zome-call', handleSignZomeCall);
+  ipcMain.handle('exit', () => {
     app.exit(0);
   });
 
@@ -146,27 +131,26 @@ app.whenReady().then(async () => {
       console.warn('Failed to check for updates: ', e);
     }
 
-    console.log("updateCheckResult: ", updateCheckResult);
+    console.log('updateCheckResult: ', updateCheckResult);
 
     // We only install semver compatible updates
     const appVersion = app.getVersion();
     if (
       updateCheckResult &&
-      breakingVersion(updateCheckResult.updateInfo.version) ===
-        breakingVersion(appVersion) &&
+      breakingVersion(updateCheckResult.updateInfo.version) === breakingVersion(appVersion) &&
       semver.gt(updateCheckResult.updateInfo.version, appVersion)
     ) {
       const userDecision = await dialog.showMessageBox({
-        title: "Update Available",
-        type: "question",
-        buttons: ["Deny", "Install and Restart"],
+        title: 'Update Available',
+        type: 'question',
+        buttons: ['Deny', 'Install and Restart'],
         defaultId: 0,
         cancelId: 0,
         message: `A new compatible version of ${KANGAROO_CONFIG.productName} is available (${updateCheckResult.updateInfo.version}). Do you want to install it?`,
       });
       if (userDecision.response === 1) {
         // downloading means that with the next start of the application it's automatically going to be installed
-        autoUpdater.on("update-downloaded", () => autoUpdater.quitAndInstall());
+        autoUpdater.on('update-downloaded', () => autoUpdater.quitAndInstall());
         await autoUpdater.downloadUpdate();
       }
     }
@@ -175,24 +159,21 @@ app.whenReady().then(async () => {
   if (!KANGAROO_FILESYSTEM.keystoreInitialized()) {
     if (SPLASH_SCREEN_WINDOW)
       SPLASH_SCREEN_WINDOW.webContents.send(
-        "loading-progress-update",
-        "Initializing lair keystore..."
+        'loading-progress-update',
+        'Initializing lair keystore...'
       );
 
-    console.log("initializing lair keystore...");
+    console.log('initializing lair keystore...');
     await initializeLairKeystore(
       LAIR_BINARY,
       KANGAROO_FILESYSTEM.keystoreDir,
       KANGAROO_EMITTER,
       LAIR_PASSWORD
     );
-    console.log("lair keystore initialized.");
+    console.log('lair keystore initialized.');
   }
   if (SPLASH_SCREEN_WINDOW)
-    SPLASH_SCREEN_WINDOW.webContents.send(
-      "loading-progress-update",
-      "Starting lair keystore..."
-    );
+    SPLASH_SCREEN_WINDOW.webContents.send('loading-progress-update', 'Starting lair keystore...');
 
   let lairUrl;
 
@@ -206,10 +187,7 @@ app.whenReady().then(async () => {
   ZOME_CALL_SIGNER = await ZomeCallSigner.connect(lairUrl, LAIR_PASSWORD);
 
   if (SPLASH_SCREEN_WINDOW)
-    SPLASH_SCREEN_WINDOW.webContents.send(
-      "loading-progress-update",
-      "Starting Holochain..."
-    );
+    SPLASH_SCREEN_WINDOW.webContents.send('loading-progress-update', 'Starting Holochain...');
 
   HOLOCHAIN_MANAGER = await HolochainManager.launch(
     KANGAROO_EMITTER,
@@ -227,17 +205,17 @@ app.whenReady().then(async () => {
   // Install happ if necessary
   await HOLOCHAIN_MANAGER.installHappIfNecessary();
 
-  console.log("Happ installed.");
+  console.log('Happ installed.');
 
   const appToken = await HOLOCHAIN_MANAGER.getAppToken();
 
-  console.log("Starting main window...");
+  console.log('Starting main window...');
 
   SPLASH_SCREEN_WINDOW.close();
 
   MAIN_WINDOW = await createHappWindow(
     {
-      type: "path",
+      type: 'path',
       path: UI_DIRECTORY,
     },
     HAPP_APP_ID,
@@ -252,14 +230,14 @@ app.whenReady().then(async () => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on("window-all-closed", () => {
+app.on('window-all-closed', () => {
   app.quit();
   // if (process.platform !== 'darwin') {
   //   app.quit()
   // }
 });
 
-app.on("quit", () => {
+app.on('quit', () => {
   if (LAIR_HANDLE) {
     LAIR_HANDLE.kill();
   }
