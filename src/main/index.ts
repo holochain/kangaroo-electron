@@ -225,8 +225,8 @@ app.whenReady().then(async () => {
     KANGAROO_FILESYSTEM.conductorDir,
     KANGAROO_FILESYSTEM.conductorConfigPath,
     lairUrl,
-    RUN_OPTIONS.bootstrapUrl ? RUN_OPTIONS.bootstrapUrl : DEFAULT_BOOTSTRAP_SERVER,
-    RUN_OPTIONS.signalingUrl ? RUN_OPTIONS.signalingUrl : DEFAULT_SIGNALING_SERVER,
+    RUN_OPTIONS.bootstrapUrl ? RUN_OPTIONS.bootstrapUrl.toString() : DEFAULT_BOOTSTRAP_SERVER,
+    RUN_OPTIONS.signalingUrl ? RUN_OPTIONS.signalingUrl.toString() : DEFAULT_SIGNALING_SERVER,
     RUN_OPTIONS.iceUrls ? RUN_OPTIONS.iceUrls : undefined,
   );
 

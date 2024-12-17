@@ -138,7 +138,7 @@ export class HolochainManager {
           const adminWebsocket = await AdminWebsocket.connect({
             url: new URL(`ws://127.0.0.1:${adminPort}`),
             wsClientOptions: {
-              origin: "moss-admin-main",
+              origin: "*",
             },
           });
           console.log("Connected to admin websocket.");

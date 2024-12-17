@@ -4,12 +4,12 @@ import { app } from 'electron';
 
 export interface CliOpts {
   profile?: string;
-  networkSeed?: string | undefined;
-  holochainPath?: string | undefined;
-  lairPath?: string | undefined;
-  holochainRustLog?: string | undefined;
-  holochainWasmLog?: string | undefined;
-  lairRustLog?: string | undefined;
+  networkSeed?: string;
+  holochainPath?: string;
+  lairPath?: string;
+  holochainRustLog?: string;
+  holochainWasmLog?: string;
+  lairRustLog?: string;
   bootstrapUrl?: string;
   signalingUrl?: string;
   iceUrls?: string;
@@ -19,8 +19,8 @@ export interface CliOpts {
 export interface RunOptions {
   profile: string | undefined;
   networkSeed: string;
-  bootstrapUrl: string | undefined;
-  signalingUrl: string | undefined;
+  bootstrapUrl: URL | undefined;
+  signalingUrl: URL | undefined;
   iceUrls: string[] | undefined;
   customHolochainBinary: string | undefined;
   customLairBinary: string | undefined;
@@ -74,11 +74,14 @@ export function validateArgs(args: CliOpts): RunOptions {
     ? args.networkSeed
     : defaultAppNetworkSeed();
 
+  const bootstrapUrl = args.bootstrapUrl ? new URL(args.bootstrapUrl) : undefined;
+  const signalingUrl = args.signalingUrl ? new URL(args.signalingUrl) : undefined;
+
   return {
     profile,
     networkSeed,
-    bootstrapUrl: args.bootstrapUrl,
-    signalingUrl: args.signalingUrl,
+    bootstrapUrl,
+    signalingUrl,
     iceUrls: args.iceUrls ? args.iceUrls.split(',') : undefined,
     customHolochainBinary: args.holochainPath ? args.holochainPath : undefined,
     customLairBinary: args.lairPath ? args.lairPath : undefined,
