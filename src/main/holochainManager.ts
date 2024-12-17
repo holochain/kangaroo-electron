@@ -9,11 +9,11 @@ import {
   AppAuthenticationToken,
   AppInfo,
 } from "@holochain/client";
-import { breakingAppVersion, KangarooFileSystem } from "./filesystem";
-import { HAPP_APP_ID, HAPP_PATH, KANGAROO_CONFIG } from "./const";
-import { app } from "electron";
+import { KangarooFileSystem } from "./filesystem";
+import { HAPP_APP_ID, HAPP_PATH } from "./const";
 
-const rustUtils = require("@lightningrodlabs/we-rust-utils");
+import { defaultConductorConfig } from "@lightningrodlabs/we-rust-utils";
+import { app } from "electron";
 
 export type AdminPort = number;
 export type AppPort = number;
@@ -60,6 +60,7 @@ export class HolochainManager {
     lairUrl: string,
     bootstrapUrl: string,
     signalingUrl: string,
+    iceUrls?: string[],
     rustLog?: string,
     wasmLog?: string
   ): Promise<HolochainManager> {
@@ -67,15 +68,15 @@ export class HolochainManager {
       ? parseInt(process.env.ADMIN_PORT, 10)
       : await getPort();
 
-    const conductorConfig = rustUtils.defaultConductorConfig(
+    const conductorConfig = defaultConductorConfig(
       adminPort,
       rootDir,
       lairUrl,
       bootstrapUrl,
       signalingUrl,
-      "*",
+      "kangaroo",
       false,
-      undefined,
+      iceUrls,
       undefined,
     );
 
@@ -137,7 +138,7 @@ export class HolochainManager {
           const adminWebsocket = await AdminWebsocket.connect({
             url: new URL(`ws://127.0.0.1:${adminPort}`),
             wsClientOptions: {
-              origin: "moss-admin-main",
+              origin: "kangaroo",
             },
           });
           console.log("Connected to admin websocket.");
@@ -150,7 +151,7 @@ export class HolochainManager {
           } else {
             const attachAppInterfaceResponse =
               await adminWebsocket.attachAppInterface({
-                allowed_origins: "*",
+                allowed_origins: app.isPackaged ? 'webhapp://webhappwindow' : '*',
               });
             console.log(
               "Attached app interface port: ",
@@ -175,7 +176,7 @@ export class HolochainManager {
     });
   }
 
-  async installHappIfNecessary(networkSeed?: string) {
+  async installHappIfNecessary(networkSeed) {
     const installedApps = await this.adminWebsocket.listApps({});
     if (
       installedApps
@@ -183,18 +184,11 @@ export class HolochainManager {
         .includes(HAPP_APP_ID)
     )
       return;
-    if (!networkSeed) {
-      networkSeed = `${KANGAROO_CONFIG.productName}-${breakingAppVersion(app)}`;
-      if (!app.isPackaged) {
-        networkSeed += "-dev";
-      }
-    }
     console.log(`Installing happ...`);
     const pubKey = await this.adminWebsocket.generateAgentPubKey();
     const appInfo = await this.adminWebsocket.installApp({
       agent_key: pubKey,
       installed_app_id: HAPP_APP_ID,
-      membrane_proofs: {},
       path: HAPP_PATH,
       network_seed: networkSeed,
     });

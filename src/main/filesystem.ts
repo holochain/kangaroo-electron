@@ -54,7 +54,9 @@ export class KangarooFileSystem {
     createDirIfNotExists(configDir);
     createDirIfNotExists(dataDir);
 
-    console.log('Got logsDir, configDir and dataDir: ', logsDir, configDir, dataDir);
+    console.log('dataDir: ', dataDir);
+    console.log('logsDir:', logsDir);
+    console.log('configDir: ', configDir);
 
     const kangarooFs = new KangarooFileSystem(dataDir, configDir, logsDir);
 

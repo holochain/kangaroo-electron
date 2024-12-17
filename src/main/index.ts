@@ -20,6 +20,7 @@ import {
   getNonceExpiration,
   randomNonce,
 } from "@holochain/client";
+import { Command } from 'commander';
 import { KangarooFileSystem } from "./filesystem";
 import { KangarooEmitter } from "./eventEmitter";
 import { setupLogs } from "./logs";
@@ -36,8 +37,55 @@ import {
 } from "./const";
 import { initializeLairKeystore, launchLairKeystore } from "./lairKeystore";
 import { kangarooMenu } from "./menu";
+import { validateArgs } from "./cli";
 
 // Read CLI options
+
+const kangarooCli = new Command();
+
+kangarooCli
+  .name(KANGAROO_CONFIG.productName)
+  .description(`Run ${KANGAROO_CONFIG.productName} via the command line`)
+  .version(KANGAROO_CONFIG.version)
+  .option(
+    '-p, --profile <string>',
+    `Runs ${KANGAROO_CONFIG.productName} with a custom profile with its own dedicated data store.`,
+  )
+  .option(
+    '-n, --network-seed <string>',
+    'If this is the first time running kangaroo with the given profile, this installs the happ with the provided network seed.',
+  )
+  .option(
+    '--holochain-path <path>',
+    `Runs ${KANGAROO_CONFIG.productName} with the holochain binary at the provided path. Use with caution since this may potentially corrupt your databases if the binary you use is not compatible with existing databases.`,
+  )
+  .option(
+    '--lair-path <path>',
+    `Runs the ${KANGAROO_CONFIG.productName} with the lair binary at the provided path. Use with caution since this may potentially corrupt your databases if the binary you use is not compatible with existing databases.`,
+  )
+  .option('--holochain-rust-log <string>', 'RUST_LOG value to pass to the holochain binary')
+  .option('--holochain-wasm-log <string>', 'WASM_LOG value to pass to the holochain binary')
+  .option('--lair-rust-log <string>', 'RUST_LOG value to pass to the lair keystore binary')
+  .option(
+    '-b, --bootstrap-url <url>',
+    'URL of the bootstrap server to use (not persisted across restarts).',
+  )
+  .option(
+    '-s, --signaling-url <url>',
+    'URL of the signaling server to use (not persisted across restarts).',
+  )
+  .option(
+    '--ice-urls <string>',
+    'Comma separated string of ICE server URLs to use. Is ignored if an external holochain binary is being used (not persisted across restarts).',
+  )
+  .option(
+    '--print-holochain-logs',
+    'Print holochain logs directly to the terminal (they will be still written to the logfile as well)',
+  );
+
+kangarooCli.parse();
+
+const RUN_OPTIONS = validateArgs(kangarooCli.opts());
 
 // Read and validate the config file to check that the content does not contain
 // default values
@@ -63,11 +111,11 @@ contextMenu({
   ],
 });
 
-const KANGAROO_FILESYSTEM = KangarooFileSystem.connect(app);
+const KANGAROO_FILESYSTEM = KangarooFileSystem.connect(app, RUN_OPTIONS.profile);
 
 const KANGAROO_EMITTER = new KangarooEmitter();
 
-setupLogs(KANGAROO_EMITTER, KANGAROO_FILESYSTEM, true);
+setupLogs(KANGAROO_EMITTER, KANGAROO_FILESYSTEM, RUN_OPTIONS.printHolochainLogs);
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -138,7 +186,7 @@ app.whenReady().then(async () => {
 
     console.log("initializing lair keystore...")
     await initializeLairKeystore(
-      LAIR_BINARY,
+      RUN_OPTIONS.lairPath ? RUN_OPTIONS.lairPath : LAIR_BINARY,
       KANGAROO_FILESYSTEM.keystoreDir,
       KANGAROO_EMITTER,
       LAIR_PASSWORD
@@ -154,7 +202,7 @@ app.whenReady().then(async () => {
   let lairUrl;
 
   [LAIR_HANDLE, lairUrl] = await launchLairKeystore(
-    LAIR_BINARY,
+    RUN_OPTIONS.lairPath ? RUN_OPTIONS.lairPath : LAIR_BINARY,
     KANGAROO_FILESYSTEM.keystoreDir,
     KANGAROO_EMITTER,
     LAIR_PASSWORD
@@ -171,18 +219,19 @@ app.whenReady().then(async () => {
   HOLOCHAIN_MANAGER = await HolochainManager.launch(
     KANGAROO_EMITTER,
     KANGAROO_FILESYSTEM,
-    HOLOCHAIN_BINARY,
+    RUN_OPTIONS.holochainPath ? RUN_OPTIONS.holochainPath : HOLOCHAIN_BINARY,
     LAIR_PASSWORD,
     KANGAROO_CONFIG.bins.holochain.version,
     KANGAROO_FILESYSTEM.conductorDir,
     KANGAROO_FILESYSTEM.conductorConfigPath,
     lairUrl,
-    DEFAULT_BOOTSTRAP_SERVER,
-    DEFAULT_SIGNALING_SERVER
+    RUN_OPTIONS.bootstrapUrl ? RUN_OPTIONS.bootstrapUrl.toString() : DEFAULT_BOOTSTRAP_SERVER,
+    RUN_OPTIONS.signalingUrl ? RUN_OPTIONS.signalingUrl.toString() : DEFAULT_SIGNALING_SERVER,
+    RUN_OPTIONS.iceUrls ? RUN_OPTIONS.iceUrls : undefined,
   );
 
   // Install happ if necessary
-  await HOLOCHAIN_MANAGER.installHappIfNecessary();
+  await HOLOCHAIN_MANAGER.installHappIfNecessary(RUN_OPTIONS.networkSeed);
 
   console.log("Happ installed.");
 

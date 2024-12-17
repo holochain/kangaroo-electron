@@ -105,3 +105,29 @@ If you want to code sign your app with an EV certificate, you can follow [this g
 Access to things like camera and microphone on macOS require special permissions to be set in the .plist file. For this, uncomment the corresponding permissions in `./templates/electron-builder-template.yml` as needed.
 
 
+## Run your App from the command line
+
+If you want to customize some runtime parameters you can run your app via the terminal and pass additional options:
+
+```
+Options:
+  -V, --version                  output the version number
+  -p, --profile <string>         Runs Holochain Kangaroo Electron (Test) with a custom profile with its own dedicated data store.
+  -n, --network-seed <string>    If this is the first time running kangaroo with the given profile, this installs the happ with the
+                                 provided network seed.
+  --holochain-path <path>        Runs Holochain Kangaroo Electron (Test) with the holochain binary at the provided path. Use with caution
+                                 since this may potentially corrupt your databases if the binary you use is not compatible with existing
+                                 databases.
+  --lair-path <path>             Runs the Holochain Kangaroo Electron (Test) with the lair binary at the provided path. Use with caution
+                                 since this may potentially corrupt your databases if the binary you use is not compatible with existing
+                                 databases.
+  --holochain-rust-log <string>  RUST_LOG value to pass to the holochain binary
+  --holochain-wasm-log <string>  WASM_LOG value to pass to the holochain binary
+  --lair-rust-log <string>       RUST_LOG value to pass to the lair keystore binary
+  -b, --bootstrap-url <url>      URL of the bootstrap server to use (not persisted across restarts).
+  -s, --signaling-url <url>      URL of the signaling server to use (not persisted across restarts).
+  --ice-urls <string>            Comma separated string of ICE server URLs to use. Is ignored if an external holochain binary is being used
+                                 (not persisted across restarts).
+  --print-holochain-logs         Print holochain logs directly to the terminal (they will be still written to the logfile as well)
+  -h, --help                     display help for command
+```
