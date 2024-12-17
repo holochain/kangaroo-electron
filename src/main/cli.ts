@@ -91,7 +91,7 @@ export function validateArgs(args: CliOpts): RunOptions {
 }
 
 function defaultAppNetworkSeed() {
-  let networkSeed = `${KANGAROO_CONFIG.productName}-${breakingAppVersion(app)}`;
+  let networkSeed = `${KANGAROO_CONFIG.productName}-${breakingAppVersion()}`;
   if (!app.isPackaged) {
     networkSeed += '-dev';
   }

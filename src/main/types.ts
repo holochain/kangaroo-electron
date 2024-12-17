@@ -41,6 +41,11 @@ export type KangarooConfig = {
    * frameworks like svelte-kit or vue-router
    */
   fallbackToIndexHtml: boolean;
+  /**
+   * Whether the app should check for available, semver compatible releases on github on startup
+   * and prompt to install and restart if a new release is available.
+   */
+  autoUpdates: boolean;
   // /**
   //  * Whether or not the app should have the user set up a password.
   //  */

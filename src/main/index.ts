@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, IpcMainInvokeEvent, Menu, protocol } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, IpcMainInvokeEvent, Menu, protocol } from 'electron';
 import childProcess from 'child_process';
 import { ZomeCallNapi, ZomeCallSigner, ZomeCallUnsignedNapi } from '@holochain/hc-spin-rust-utils';
 import contextMenu from 'electron-context-menu';
@@ -10,7 +10,9 @@ import {
   randomNonce,
 } from '@holochain/client';
 import { Command } from 'commander';
-import { KangarooFileSystem } from './filesystem';
+import semver from "semver";
+
+import { breakingVersion, KangarooFileSystem } from './filesystem';
 import { KangarooEmitter } from './eventEmitter';
 import { setupLogs } from './logs';
 import { HolochainManager } from './holochainManager';
@@ -27,6 +29,7 @@ import {
 import { initializeLairKeystore, launchLairKeystore } from './lairKeystore';
 import { kangarooMenu } from './menu';
 import { validateArgs } from './cli';
+import { autoUpdater, UpdateCheckResult } from '@matthme/electron-updater';
 
 // Read CLI options
 
@@ -163,6 +166,45 @@ app.whenReady().then(async () => {
   ipcMain.handle('exit', () => {
     app.exit(0);
   });
+
+  // Check for updates
+  if (app.isPackaged && KANGAROO_CONFIG.autoUpdates) {
+    autoUpdater.allowPrerelease = true;
+    autoUpdater.autoDownload = false;
+
+    let updateCheckResult: UpdateCheckResult | null | undefined;
+
+    try {
+      updateCheckResult = await autoUpdater.checkForUpdates();
+    } catch (e) {
+      console.warn('Failed to check for updates: ', e);
+    }
+
+    console.log('updateCheckResult: ', updateCheckResult);
+
+    // We only install semver compatible updates
+    const appVersion = app.getVersion();
+    if (
+      updateCheckResult &&
+      breakingVersion(updateCheckResult.updateInfo.version) === breakingVersion(appVersion) &&
+      semver.gt(updateCheckResult.updateInfo.version, appVersion)
+    ) {
+      const userDecision = await dialog.showMessageBox({
+        title: 'Update Available',
+        type: 'question',
+        buttons: ['Deny', 'Install and Restart'],
+        defaultId: 0,
+        cancelId: 0,
+        message: `A new compatible version of ${KANGAROO_CONFIG.productName} is available (${updateCheckResult.updateInfo.version}). Do you want to install it?`,
+      });
+      if (userDecision.response === 1) {
+        // downloading means that with the next start of the application it's automatically going to be installed
+        autoUpdater.on('update-downloaded', () => autoUpdater.quitAndInstall());
+        await autoUpdater.downloadUpdate();
+      }
+    }
+  }
+
   if (!KANGAROO_FILESYSTEM.keystoreInitialized()) {
     if (SPLASH_SCREEN_WINDOW)
       SPLASH_SCREEN_WINDOW.webContents.send(
