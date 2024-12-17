@@ -141,7 +141,6 @@ jobs:
           gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "latest-linux.yml" --clobber
           gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "dist/${{ steps.appId.outputs.APP_ID }}_${{ steps.version.outputs.APP_VERSION }}_amd64.deb" --clobber
 
-
       # Windows
       #---------------------------------------------------------------------------------------
       - name: build, sign and upload the app (Windows)

@@ -1,31 +1,20 @@
-import {
-  app,
-  BrowserWindow,
-  ipcMain,
-  IpcMainInvokeEvent,
-  Menu,
-  protocol,
-} from "electron";
-import childProcess from "child_process";
-import {
-  ZomeCallNapi,
-  ZomeCallSigner,
-  ZomeCallUnsignedNapi,
-} from "@holochain/hc-spin-rust-utils";
+import { app, BrowserWindow, ipcMain, IpcMainInvokeEvent, Menu, protocol } from 'electron';
+import childProcess from 'child_process';
+import { ZomeCallNapi, ZomeCallSigner, ZomeCallUnsignedNapi } from '@holochain/hc-spin-rust-utils';
 import contextMenu from 'electron-context-menu';
-import { encode } from "@msgpack/msgpack";
+import { encode } from '@msgpack/msgpack';
 import {
   CallZomeRequest,
   CallZomeRequestSigned,
   getNonceExpiration,
   randomNonce,
-} from "@holochain/client";
+} from '@holochain/client';
 import { Command } from 'commander';
-import { KangarooFileSystem } from "./filesystem";
-import { KangarooEmitter } from "./eventEmitter";
-import { setupLogs } from "./logs";
-import { HolochainManager } from "./holochainManager";
-import { createHappWindow, createSplashWindow } from "./windows";
+import { KangarooFileSystem } from './filesystem';
+import { KangarooEmitter } from './eventEmitter';
+import { setupLogs } from './logs';
+import { HolochainManager } from './holochainManager';
+import { createHappWindow, createSplashWindow } from './windows';
 import {
   DEFAULT_BOOTSTRAP_SERVER,
   DEFAULT_SIGNALING_SERVER,
@@ -34,10 +23,10 @@ import {
   KANGAROO_CONFIG,
   LAIR_BINARY,
   UI_DIRECTORY,
-} from "./const";
-import { initializeLairKeystore, launchLairKeystore } from "./lairKeystore";
-import { kangarooMenu } from "./menu";
-import { validateArgs } from "./cli";
+} from './const';
+import { initializeLairKeystore, launchLairKeystore } from './lairKeystore';
+import { kangarooMenu } from './menu';
+import { validateArgs } from './cli';
 
 // Read CLI options
 
@@ -49,38 +38,38 @@ kangarooCli
   .version(KANGAROO_CONFIG.version)
   .option(
     '-p, --profile <string>',
-    `Runs ${KANGAROO_CONFIG.productName} with a custom profile with its own dedicated data store.`,
+    `Runs ${KANGAROO_CONFIG.productName} with a custom profile with its own dedicated data store.`
   )
   .option(
     '-n, --network-seed <string>',
-    'If this is the first time running kangaroo with the given profile, this installs the happ with the provided network seed.',
+    'If this is the first time running kangaroo with the given profile, this installs the happ with the provided network seed.'
   )
   .option(
     '--holochain-path <path>',
-    `Runs ${KANGAROO_CONFIG.productName} with the holochain binary at the provided path. Use with caution since this may potentially corrupt your databases if the binary you use is not compatible with existing databases.`,
+    `Runs ${KANGAROO_CONFIG.productName} with the holochain binary at the provided path. Use with caution since this may potentially corrupt your databases if the binary you use is not compatible with existing databases.`
   )
   .option(
     '--lair-path <path>',
-    `Runs the ${KANGAROO_CONFIG.productName} with the lair binary at the provided path. Use with caution since this may potentially corrupt your databases if the binary you use is not compatible with existing databases.`,
+    `Runs the ${KANGAROO_CONFIG.productName} with the lair binary at the provided path. Use with caution since this may potentially corrupt your databases if the binary you use is not compatible with existing databases.`
   )
   .option('--holochain-rust-log <string>', 'RUST_LOG value to pass to the holochain binary')
   .option('--holochain-wasm-log <string>', 'WASM_LOG value to pass to the holochain binary')
   .option('--lair-rust-log <string>', 'RUST_LOG value to pass to the lair keystore binary')
   .option(
     '-b, --bootstrap-url <url>',
-    'URL of the bootstrap server to use (not persisted across restarts).',
+    'URL of the bootstrap server to use (not persisted across restarts).'
   )
   .option(
     '-s, --signaling-url <url>',
-    'URL of the signaling server to use (not persisted across restarts).',
+    'URL of the signaling server to use (not persisted across restarts).'
   )
   .option(
     '--ice-urls <string>',
-    'Comma separated string of ICE server URLs to use. Is ignored if an external holochain binary is being used (not persisted across restarts).',
+    'Comma separated string of ICE server URLs to use. Is ignored if an external holochain binary is being used (not persisted across restarts).'
   )
   .option(
     '--print-holochain-logs',
-    'Print holochain logs directly to the terminal (they will be still written to the logfile as well)',
+    'Print holochain logs directly to the terminal (they will be still written to the logfile as well)'
   );
 
 kangarooCli.parse();
@@ -90,7 +79,7 @@ const RUN_OPTIONS = validateArgs(kangarooCli.opts());
 // Read and validate the config file to check that the content does not contain
 // default values
 
-const LAIR_PASSWORD = "password";
+const LAIR_PASSWORD = 'password';
 
 // Check whether lair is initialized or not and if not, decide based on the config
 // file whether or not to show the splashscreen or use a default password
@@ -107,7 +96,7 @@ contextMenu({
     {
       label: 'Reload',
       click: () => (browserWindow as BrowserWindow).reload(),
-    }
+    },
   ],
 });
 
@@ -119,16 +108,13 @@ setupLogs(KANGAROO_EMITTER, KANGAROO_FILESYSTEM, RUN_OPTIONS.printHolochainLogs)
 
 protocol.registerSchemesAsPrivileged([
   {
-    scheme: "webhapp",
+    scheme: 'webhapp',
     privileges: { standard: true, secure: true, stream: true },
   },
 ]);
 
-const handleSignZomeCall = async (
-  _e: IpcMainInvokeEvent,
-  request: CallZomeRequest
-) => {
-  if (!ZOME_CALL_SIGNER) throw new Error("Zome call signer undefined.");
+const handleSignZomeCall = async (_e: IpcMainInvokeEvent, request: CallZomeRequest) => {
+  if (!ZOME_CALL_SIGNER) throw new Error('Zome call signer undefined.');
   // console.log("Got zome call request: ", request);
   const zomeCallUnsignedNapi: ZomeCallUnsignedNapi = {
     provenance: Array.from(request.provenance),
@@ -173,31 +159,28 @@ Menu.setApplicationMenu(kangarooMenu(KANGAROO_FILESYSTEM));
 
 app.whenReady().then(async () => {
   SPLASH_SCREEN_WINDOW = createSplashWindow();
-  ipcMain.handle("sign-zome-call", handleSignZomeCall);
+  ipcMain.handle('sign-zome-call', handleSignZomeCall);
   ipcMain.handle('exit', () => {
     app.exit(0);
   });
   if (!KANGAROO_FILESYSTEM.keystoreInitialized()) {
     if (SPLASH_SCREEN_WINDOW)
       SPLASH_SCREEN_WINDOW.webContents.send(
-        "loading-progress-update",
-        "Initializing lair keystore..."
+        'loading-progress-update',
+        'Initializing lair keystore...'
       );
 
-    console.log("initializing lair keystore...")
+    console.log('initializing lair keystore...');
     await initializeLairKeystore(
       RUN_OPTIONS.lairPath ? RUN_OPTIONS.lairPath : LAIR_BINARY,
       KANGAROO_FILESYSTEM.keystoreDir,
       KANGAROO_EMITTER,
       LAIR_PASSWORD
     );
-    console.log("lair keystore initialized.")
+    console.log('lair keystore initialized.');
   }
   if (SPLASH_SCREEN_WINDOW)
-    SPLASH_SCREEN_WINDOW.webContents.send(
-      "loading-progress-update",
-      "Starting lair keystore..."
-    );
+    SPLASH_SCREEN_WINDOW.webContents.send('loading-progress-update', 'Starting lair keystore...');
 
   let lairUrl;
 
@@ -211,10 +194,7 @@ app.whenReady().then(async () => {
   ZOME_CALL_SIGNER = await ZomeCallSigner.connect(lairUrl, LAIR_PASSWORD);
 
   if (SPLASH_SCREEN_WINDOW)
-    SPLASH_SCREEN_WINDOW.webContents.send(
-      "loading-progress-update",
-      "Starting Holochain..."
-    );
+    SPLASH_SCREEN_WINDOW.webContents.send('loading-progress-update', 'Starting Holochain...');
 
   HOLOCHAIN_MANAGER = await HolochainManager.launch(
     KANGAROO_EMITTER,
@@ -227,23 +207,23 @@ app.whenReady().then(async () => {
     lairUrl,
     RUN_OPTIONS.bootstrapUrl ? RUN_OPTIONS.bootstrapUrl.toString() : DEFAULT_BOOTSTRAP_SERVER,
     RUN_OPTIONS.signalingUrl ? RUN_OPTIONS.signalingUrl.toString() : DEFAULT_SIGNALING_SERVER,
-    RUN_OPTIONS.iceUrls ? RUN_OPTIONS.iceUrls : undefined,
+    RUN_OPTIONS.iceUrls ? RUN_OPTIONS.iceUrls : undefined
   );
 
   // Install happ if necessary
   await HOLOCHAIN_MANAGER.installHappIfNecessary(RUN_OPTIONS.networkSeed);
 
-  console.log("Happ installed.");
+  console.log('Happ installed.');
 
   const appToken = await HOLOCHAIN_MANAGER.getAppToken();
 
-  console.log("Starting main window...");
+  console.log('Starting main window...');
 
   SPLASH_SCREEN_WINDOW.close();
 
   MAIN_WINDOW = await createHappWindow(
     {
-      type: "path",
+      type: 'path',
       path: UI_DIRECTORY,
     },
     HAPP_APP_ID,
@@ -258,14 +238,14 @@ app.whenReady().then(async () => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on("window-all-closed", () => {
+app.on('window-all-closed', () => {
   app.quit();
   // if (process.platform !== 'darwin') {
   //   app.quit()
   // }
 });
 
-app.on("quit", () => {
+app.on('quit', () => {
   if (LAIR_HANDLE) {
     LAIR_HANDLE.kill();
   }

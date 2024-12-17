@@ -12,7 +12,7 @@ import {
   WASM_LOG,
   KANGAROO_ERROR,
   KANGAROO_LOG,
-  KangarooEmitter
+  KangarooEmitter,
 } from './eventEmitter';
 import { KANGAROO_CONFIG } from './const';
 
@@ -26,9 +26,12 @@ const HOLOCHAIN_LOGGERS: Record<HolochainVersion, winston.Logger> = {};
 export function setupLogs(
   kangarooEmitter: KangarooEmitter,
   kangarooFs: KangarooFileSystem,
-  holochainLogsToTerminal: boolean,
+  holochainLogsToTerminal: boolean
 ) {
-  const logFilePath = path.join(kangarooFs.appLogsDir, `${KANGAROO_CONFIG.productName.replace(' ', '_')}.log`);
+  const logFilePath = path.join(
+    kangarooFs.appLogsDir,
+    `${KANGAROO_CONFIG.productName.replace(' ', '_')}.log`
+  );
   if (fs.existsSync(logFilePath)) {
     const stats = fs.statSync(logFilePath);
     // If existing logfile is larger than 1GB, delete it
@@ -81,7 +84,7 @@ export function setupLogs(
 function logHolochain(
   holochainData: HolochainData,
   logFileTransport: winston.transports.FileTransportInstance,
-  printToTerminal: boolean,
+  printToTerminal: boolean
 ) {
   const holochainVersion = (holochainData as HolochainData).version;
   const line = (holochainData as HolochainData).data;
@@ -101,7 +104,7 @@ function logHolochain(
 
 function createHolochainLogger(
   holochainVersion: HolochainVersion,
-  logFileTransport: winston.transports.FileTransportInstance,
+  logFileTransport: winston.transports.FileTransportInstance
 ): winston.Logger {
   return createLogger({
     transports: [logFileTransport],
@@ -114,13 +117,13 @@ function createHolochainLogger(
           level,
           message,
         });
-      }),
+      })
     ),
   });
 }
 
 function createLairLogger(
-  logFileTransport: winston.transports.FileTransportInstance,
+  logFileTransport: winston.transports.FileTransportInstance
 ): winston.Logger {
   return createLogger({
     transports: [logFileTransport],
@@ -133,7 +136,7 @@ function createLairLogger(
           level,
           message,
         });
-      }),
+      })
     ),
   });
 }

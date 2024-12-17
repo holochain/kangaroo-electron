@@ -35,7 +35,7 @@ export function validateArgs(args: CliOpts): RunOptions {
   const allowedProfilePattern = /^[0-9a-zA-Z-]+$/;
   if (args.profile && !allowedProfilePattern.test(args.profile)) {
     throw new Error(
-      `The --profile argument may only contain digits (0-9), letters (a-z,A-Z) and dashes (-) but got '${args.profile}'`,
+      `The --profile argument may only contain digits (0-9), letters (a-z,A-Z) and dashes (-) but got '${args.profile}'`
     );
   }
   if (args.networkSeed && typeof args.networkSeed !== 'string') {
@@ -47,8 +47,8 @@ export function validateArgs(args: CliOpts): RunOptions {
   if (args.signalingUrl && typeof args.signalingUrl !== 'string') {
     throw new Error('The --signaling-url argument must be of type string.');
   }
-  console.log("ICE URLS arg: ", args.iceUrls);
-  console.log("ICE URLS arg type: ", typeof args.iceUrls);
+  console.log('ICE URLS arg: ', args.iceUrls);
+  console.log('ICE URLS arg type: ', typeof args.iceUrls);
   if (args.iceUrls && typeof args.iceUrls !== 'string') {
     throw new Error('The --ice-urls argument must be of type string.');
   }
@@ -70,9 +70,7 @@ export function validateArgs(args: CliOpts): RunOptions {
 
   const profile = args.profile ? args.profile : undefined;
   // If provided take the one provided, otherwise check whether it's applet dev mode
-  const networkSeed = args.networkSeed
-    ? args.networkSeed
-    : defaultAppNetworkSeed();
+  const networkSeed = args.networkSeed ? args.networkSeed : defaultAppNetworkSeed();
 
   const bootstrapUrl = args.bootstrapUrl ? new URL(args.bootstrapUrl) : undefined;
   const signalingUrl = args.signalingUrl ? new URL(args.signalingUrl) : undefined;
@@ -95,7 +93,7 @@ export function validateArgs(args: CliOpts): RunOptions {
 function defaultAppNetworkSeed() {
   let networkSeed = `${KANGAROO_CONFIG.productName}-${breakingAppVersion(app)}`;
   if (!app.isPackaged) {
-    networkSeed += "-dev";
+    networkSeed += '-dev';
   }
   return networkSeed;
 }

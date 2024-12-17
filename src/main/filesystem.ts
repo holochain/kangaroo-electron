@@ -4,7 +4,6 @@ import semver from 'semver';
 
 export type Profile = string;
 
-
 export class KangarooFileSystem {
   public appDataDir: string;
   public appConfigDir: string;
@@ -78,7 +77,6 @@ function createDirIfNotExists(path: fs.PathLike) {
   }
 }
 
-
 export function breakingAppVersion(app: Electron.App): string {
   const version = app.getVersion();
   if (!semver.valid(version)) {
@@ -86,7 +84,9 @@ export function breakingAppVersion(app: Electron.App): string {
   }
   const prerelease = semver.prerelease(version);
   if (prerelease) {
-    return `${semver.major(version)}.${semver.minor(version)}.${semver.patch(version)}-${prerelease[0]}`;
+    return `${semver.major(version)}.${semver.minor(version)}.${semver.patch(version)}-${
+      prerelease[0]
+    }`;
   }
   switch (semver.major(version)) {
     case 0:
