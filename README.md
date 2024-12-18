@@ -28,10 +28,12 @@ yarn setup
 
 3. In the `kangaroo.config.ts` file, replace the `appId` and `productName` fields with names appropriate for your own app.
 
-4. Paste the `.webhapp` file of your holochain app into the `pouch` folder.
+4. Choose a version number in the `version` field of `kangaroo.config.ts`. And **Read** the section [Versioning](#Versioning) below to understand the implications.
+
+5. Paste the `.webhapp` file of your holochain app into the `pouch` folder.
    **Note**: The kangaroo expects a 1024x1024 pixel `icon.png` at the root level of your webhapp's UI assets.
 
-5. To test it, run
+6. To test it, run
 
 ```
 yarn dev
@@ -76,6 +78,27 @@ git checkout release
 git merge main
 git push
 ```
+
+## Automatic Updates
+
+By default, the kangaroo is set up to check github releases for semver compatible releases by their tag name whenever the app starts up and will prompt to install and restart if one is available. This can be disabled by setting `autoUpdates` to `false` in `kangaroo.config.ts`.
+
+> [!NOTE]
+> Note that once your app is deployed, this setting can only be turned on again for newer releases and users will have to manually install new versions.
+
+## Versioning
+
+To allow for subsequent incompatible releases of your app (for example due to switching to a new Holochain version or introducing a breaking change in the integrity zomes of your .happ) without having to change the app's name or identifier, the kangaroo is set up to use semver to support incompatible versions of your app running fully independently from each other and store their data in dedicated locations on disk.
+
+Examples:
+
+- version 0.0.2 and 0.0.3 of your app will store their data in independent locations on disk and version 0.0.3 will not have access to any data created/obtained in version 0.0.2
+- version 0.3.4 will reuse the same Holochain conductor and data as version 0.3.2
+- versions 0.3.0-alpha and 0.3.0-beta will _not_ share data
+- versions 0.3.0-alpha.0 and 0.3.0-alpha.1 _will_ share data
+
+> [!NOTE]
+> It is your responsibility to make sure that if you mark two versions of your app as semver compatible they actually are compatible (e.g. that you don't try to run a new incompatible version of Holochain on existing databases).
 
 ## Code Signing
 
