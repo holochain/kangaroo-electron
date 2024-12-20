@@ -26,6 +26,23 @@ export type KangarooConfig = {
    */
   version: string;
   /**
+   * Which password mode to use. Available modes are:
+   *
+   * - "no-password":       Users do not have to set up a password and kangaroo
+   *                        instead generates a random password under the hood
+   *                        to encrypt the conductor database and private keys.
+   *
+   * - "password-optional": Users can choose once at setup time whether to use
+   *                        a password or not. Cannot be changed later and the
+   *                        password cannot be reset.
+   *
+   * - "password-required": Users have to set up a password when they start the
+   *                        app for the first time. This password cannot be reset
+   *                        and if users forget it they lose access to their data
+   *                        and private keys.
+   */
+  passwordMode: PasswordMode;
+  /**
    * Whether to attempt macOS code signing in CI. Requires the corresponding
    * secrets to be available in the github repository.
    */
@@ -92,3 +109,21 @@ type VersionAndSha256 = {
     'aarch64-apple-darwin': string;
   };
 };
+
+export type PasswordMode = 'no-password' | 'password-optional' | 'password-required';
+
+export type PasswordType =
+  | {
+      type: 'user-provided';
+      password: string;
+    }
+  | {
+      type: 'random';
+    };
+
+export enum SplashScreenType {
+  LoadingOnly,
+  EnterPassword,
+  PasswordSetup,
+  PasswordSetupOtional,
+}

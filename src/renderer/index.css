@@ -11,7 +11,34 @@ body {
   margin: 0;
   padding: 0;
   /* to match the main window */
-  background-color: #f7f5f3;
+  font-family: 'gilroyextrabold', Helvetica, sans-serif;
+  /* background: linear-gradient(90deg, #0edad3, #4622e3); */
+}
+
+.flex {
+  display: flex;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.hidden {
+  display: none;
 }
 
 .splash-wrapper {
@@ -20,11 +47,11 @@ body {
 }
 
 .splash-image-wrapper {
-  background-color: #fff;
+  /* background-color: #fff; */
   /* background-image: url('img/iuliu-illes-MkMvM2T0gVE-unsplash.jpg'); */
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: center; */
   width: 320px;
   height: 450px;
   padding: 30px;

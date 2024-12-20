@@ -5,6 +5,7 @@ import { AppAuthenticationToken, InstalledAppId } from '@holochain/client';
 import { BrowserWindow, NativeImage, nativeImage, net, session, shell } from 'electron';
 import { is } from '@electron-toolkit/utils';
 import { ICON_PATH, KANGAROO_CONFIG } from './const';
+import { SplashScreenType } from './types';
 
 export type UISource =
   | {
@@ -131,6 +132,7 @@ export const createHappWindow = async (
       return happWindow;
     }
   } else {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     throw new Error(`Unsupported uiSource type: ${(uiSource as any).type}`);
   }
 
@@ -182,7 +184,27 @@ export function setLinkOpenHandlers(browserWindow: BrowserWindow): void {
   });
 }
 
-export const createSplashWindow = (): BrowserWindow => {
+export const createSplashWindow = (type: SplashScreenType): BrowserWindow => {
+  let htmlFile: string;
+  switch (type) {
+    case SplashScreenType.EnterPassword: {
+      htmlFile = 'enterPassword.html';
+      break;
+    }
+    case SplashScreenType.LoadingOnly: {
+      htmlFile = 'loading.html';
+      break;
+    }
+    case SplashScreenType.PasswordSetup: {
+      htmlFile = 'setupPassword.html';
+      break;
+    }
+    case SplashScreenType.PasswordSetupOtional: {
+      htmlFile = 'setupPasswordOptional.html';
+      break;
+    }
+  }
+
   const splashWindow = new BrowserWindow({
     height: 450,
     width: 800,
@@ -198,9 +220,9 @@ export const createSplashWindow = (): BrowserWindow => {
 
   // and load the splashscreen.html of the app.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    splashWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}/splashscreen.html`);
+    splashWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}/${htmlFile}`);
   } else {
-    splashWindow.loadFile(path.join(__dirname, '../renderer/splashscreen.html'));
+    splashWindow.loadFile(path.join(__dirname, `../renderer/${htmlFile}`));
   }
 
   splashWindow.once('ready-to-show', () => {

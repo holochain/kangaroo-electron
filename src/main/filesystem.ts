@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import semver from 'semver';
+import { v4 as uuidv4 } from 'uuid';
 import { app } from 'electron';
 
 export type Profile = string;
@@ -70,6 +71,20 @@ export class KangarooFileSystem {
   keystoreInitialized = () => {
     return fs.existsSync(path.join(this.keystoreDir, 'lair-keystore-config.yaml'));
   };
+
+  readOrCreatePassword() {
+    const pwPath = path.join(this.appDataDir, '.pw');
+    if (!fs.existsSync(pwPath)) {
+      const pw = uuidv4();
+      fs.writeFileSync(pwPath, pw, 'utf-8');
+    }
+    return fs.readFileSync(pwPath, 'utf-8');
+  }
+
+  randomPasswordExists() {
+    const pwPath = path.join(this.appDataDir, '.pw');
+    return fs.existsSync(pwPath);
+  }
 }
 
 function createDirIfNotExists(path: fs.PathLike) {
