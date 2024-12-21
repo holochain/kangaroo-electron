@@ -22,7 +22,7 @@ import { kangarooMenu } from './menu';
 import { validateArgs } from './cli';
 import { autoUpdater, UpdateCheckResult } from '@matthme/electron-updater';
 import { launch } from './launch';
-import { SplashScreenType } from './types';
+import { PasswordType, SplashScreenType } from './types';
 
 // Read CLI options
 
@@ -186,7 +186,6 @@ app.whenReady().then(async () => {
     );
   }
 
-  // TODO chosse splashscreen depending on the password mode
   SPLASH_SCREEN_WINDOW = createSplashWindow(splashScreenType);
 
   /**
@@ -202,12 +201,12 @@ app.whenReady().then(async () => {
   });
   // Will be called by the splashscreen UI in the "password-optional"
   // or "user-provided" password modes
-  ipcMain.handle('launch', async (_e, password: string): Promise<void> => {
+  ipcMain.handle('launch', async (_e, passwordInput: PasswordType): Promise<void> => {
     const { lairHandle, holochainManager, mainWindow, zomeCallSigner } = await launch(
       KANGAROO_FILESYSTEM,
       KANGAROO_EMITTER,
       SPLASH_SCREEN_WINDOW,
-      { type: 'user-provided', password },
+      passwordInput,
       RUN_OPTIONS
     );
 
