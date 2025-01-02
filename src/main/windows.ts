@@ -218,7 +218,6 @@ export const createSplashWindow = (type: SplashScreenType): BrowserWindow => {
     },
   });
 
-  // and load the splashscreen.html of the app.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     splashWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}/${htmlFile}`);
   } else {

@@ -55,6 +55,7 @@ export class KangarooFileSystem {
     createDirIfNotExists(configDir);
     createDirIfNotExists(dataDir);
 
+    console.log('userData directory (the one to be deleted for a factory reset): ', app.getPath('userData'));
     console.log('dataDir: ', dataDir);
     console.log('logsDir:', logsDir);
     console.log('configDir: ', configDir);
