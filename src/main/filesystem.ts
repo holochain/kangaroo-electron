@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import semver from 'semver';
+import { nanoid } from 'nanoid';
 import { app } from 'electron';
 
 export type Profile = string;
@@ -54,6 +55,7 @@ export class KangarooFileSystem {
     createDirIfNotExists(configDir);
     createDirIfNotExists(dataDir);
 
+    console.log('userData directory (the one to be deleted for a factory reset): ', app.getPath('userData'));
     console.log('dataDir: ', dataDir);
     console.log('logsDir:', logsDir);
     console.log('configDir: ', configDir);
@@ -70,6 +72,20 @@ export class KangarooFileSystem {
   keystoreInitialized = () => {
     return fs.existsSync(path.join(this.keystoreDir, 'lair-keystore-config.yaml'));
   };
+
+  readOrCreatePassword() {
+    const pwPath = path.join(this.appDataDir, '.pw');
+    if (!fs.existsSync(pwPath)) {
+      const pw = nanoid();
+      fs.writeFileSync(pwPath, pw, 'utf-8');
+    }
+    return fs.readFileSync(pwPath, 'utf-8');
+  }
+
+  randomPasswordExists() {
+    const pwPath = path.join(this.appDataDir, '.pw');
+    return fs.existsSync(pwPath);
+  }
 }
 
 function createDirIfNotExists(path: fs.PathLike) {
