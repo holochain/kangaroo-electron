@@ -162,7 +162,7 @@ export class HolochainManager {
     });
   }
 
-  async installHappIfNecessary(networkSeed) {
+  async installHappIfNecessary(networkSeed: string) {
     const installedApps = await this.adminWebsocket.listApps({});
     if (installedApps.map((appInfo) => appInfo.installed_app_id).includes(HAPP_APP_ID)) return;
     console.log(`Installing happ...`);
