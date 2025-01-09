@@ -2,10 +2,11 @@
 const fs = require('fs');
 const path = require('path');
 const png2icons = require('png2icons');
+const jimp = require('jimp');
 
 generateIcons();
 
-function generateIcons() {
+async function generateIcons() {
   const uiDir = path.join('resources', 'ui');
   const buildDir = 'build';
 
@@ -30,11 +31,31 @@ function generateIcons() {
     console.log('Generating icon.ico');
     const icoIcon = png2icons.createICO(pngBuffer, png2icons.BICUBIC2, 0, false, true);
     fs.writeFileSync(icoOutPath, icoIcon);
+  } else {
+    fs.cpSync(icoPath, icoOutPath);
   }
 
   if (!fs.existsSync(icnsPath)) {
     console.log('Generating icon.icns');
     const icnsIcon = png2icons.createICNS(pngBuffer, png2icons.BILINEAR, 0);
     fs.writeFileSync(icnsOutPath, icnsIcon);
+  } else {
+    fs.cpSync(icnsPath, icnsOutPath);
   }
+
+  // Generate the systray icon
+  console.log('Generating systray icon');
+  const systrayIcon = await jimp.Jimp.fromBuffer(pngBuffer);
+  systrayIcon.resize({ w: 64, h: 64});
+  const iconsDir = path.join('resources', 'icons');
+  if (!fs.existsSync(iconsDir)) {
+    fs.mkdirSync(iconsDir);
+  }
+  systrayIcon.write(path.join(iconsDir, '32x32@2.png'));
+
+  // Generate the icon for OS notifications
+  console.log('Generating notifications icon');
+  const icon128x128 = await jimp.Jimp.fromBuffer(pngBuffer);
+  icon128x128.resize({ w: 128, h: 128});
+  icon128x128.write(path.join(iconsDir, '128x128.png'));
 }

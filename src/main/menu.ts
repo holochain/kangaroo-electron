@@ -28,7 +28,7 @@ export const kangarooMenu = (kangarooFs: KangarooFileSystem) => {
             const exportToPathResponse = await dialog.showSaveDialog({
               title: 'Export Logs',
               buttonLabel: 'Export',
-              defaultPath: `Moss_${app.getVersion()}_logs_${new Date().toISOString()}.zip`,
+              defaultPath: `${KANGAROO_CONFIG.productName}_${app.getVersion()}_logs_${new Date().toISOString()}.zip`,
             });
             if (exportToPathResponse.filePath) {
               zip.writeZip(exportToPathResponse.filePath);

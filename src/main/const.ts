@@ -41,6 +41,9 @@ export const UI_DIRECTORY = path.join(RESOURCES_DIRECTORY, 'ui');
 
 export const ICON_PATH = path.join(RESOURCES_DIRECTORY, 'ui', 'icon.png');
 
+export const SYSTRAY_ICON_PATH = path.join(RESOURCES_DIRECTORY, 'icons', '32x32@2.png');
+export const NOTIFICATIONS_ICON_PATH = path.join(RESOURCES_DIRECTORY, 'icons', '128x128.png');
+
 export const isMac = process.platform === 'darwin';
 export const isWindows = process.platform === 'win32';
 export const isLinux = process.platform === 'linux';
