@@ -2,7 +2,14 @@ import path from 'path';
 import fs from 'fs';
 import url from 'url';
 import { AppAuthenticationToken, InstalledAppId } from '@holochain/client';
-import { BrowserWindow, NativeImage, nativeImage, net, session, shell } from 'electron';
+import {
+  BrowserWindow,
+  NativeImage,
+  nativeImage,
+  net,
+  session,
+  shell,
+} from 'electron';
 import { is } from '@electron-toolkit/utils';
 import { ICON_PATH, KANGAROO_CONFIG } from './const';
 import { SplashScreenType } from './types';

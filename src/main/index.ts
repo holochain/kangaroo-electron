@@ -1,4 +1,16 @@
-import { app, BrowserWindow, dialog, ipcMain, IpcMainInvokeEvent, Menu, protocol } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  dialog,
+  ipcMain,
+  IpcMainInvokeEvent,
+  Menu,
+  nativeImage,
+  protocol,
+  Tray,
+  Notification,
+  Event
+} from 'electron';
 import childProcess from 'child_process';
 import { ZomeCallNapi, ZomeCallSigner, ZomeCallUnsignedNapi } from '@holochain/hc-spin-rust-utils';
 import contextMenu from 'electron-context-menu';
@@ -17,7 +29,7 @@ import { KangarooEmitter } from './eventEmitter';
 import { setupLogs } from './logs';
 import { HolochainManager } from './holochainManager';
 import { createSplashWindow } from './windows';
-import { KANGAROO_CONFIG } from './const';
+import { KANGAROO_CONFIG, NOTIFICATIONS_ICON_PATH, SYSTRAY_ICON_PATH } from './const';
 import { kangarooMenu } from './menu';
 import { validateArgs } from './cli';
 import { autoUpdater, UpdateCheckResult } from '@matthme/electron-updater';
@@ -148,6 +160,7 @@ let LAIR_HANDLE: childProcess.ChildProcessWithoutNullStreams | undefined;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let MAIN_WINDOW: BrowserWindow | undefined | null;
 let SPLASH_SCREEN_WINDOW: BrowserWindow | undefined;
+let IS_APP_QUITTING = false;
 
 Menu.setApplicationMenu(kangarooMenu(KANGAROO_FILESYSTEM));
 
@@ -187,6 +200,57 @@ app.whenReady().then(async () => {
   }
 
   SPLASH_SCREEN_WINDOW = createSplashWindow(splashScreenType);
+  SPLASH_SCREEN_WINDOW.on('closed', () => {
+    // We need to drop the variable here to be able to distinguish
+    // in other places whether the splah screen window is still open
+    // or not.
+    SPLASH_SCREEN_WINDOW = undefined;
+  });
+
+  if (KANGAROO_CONFIG.systray) {
+    const systray = new Tray(SYSTRAY_ICON_PATH);
+    systray.setToolTip(KANGAROO_CONFIG.productName);
+
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'Open',
+        type: 'normal',
+        click() {
+          if (SPLASH_SCREEN_WINDOW) {
+            SPLASH_SCREEN_WINDOW.show();
+          } else if(MAIN_WINDOW) {
+            MAIN_WINDOW.show();
+          }
+        },
+      },
+      {
+        label: 'Restart',
+        type: 'normal',
+        click() {
+          const options: Electron.RelaunchOptions = {
+            args: process.argv,
+          };
+          // https://github.com/electron-userland/electron-builder/issues/1727#issuecomment-769896927
+          if (process.env.APPIMAGE) {
+            console.log('process.execPath: ', process.execPath);
+            options.args?.unshift('--appimage-extract-and-run');
+            options.execPath = process.env.APPIMAGE;
+          }
+          app.relaunch(options);
+          app.quit();
+        },
+      },
+      {
+        label: 'Quit',
+        type: 'normal',
+        click() {
+          app.quit();
+        },
+      },
+    ]);
+
+    systray.setContextMenu(contextMenu);
+  }
 
   /**
    * IPC handlers
@@ -214,6 +278,10 @@ app.whenReady().then(async () => {
     HOLOCHAIN_MANAGER = holochainManager;
     MAIN_WINDOW = mainWindow;
     ZOME_CALL_SIGNER = zomeCallSigner;
+
+    if (KANGAROO_CONFIG.systray) {
+      MAIN_WINDOW.on('close', mainWindowCloseHandler);
+    }
   });
 
   /**
@@ -275,8 +343,9 @@ app.whenReady().then(async () => {
     MAIN_WINDOW = mainWindow;
     ZOME_CALL_SIGNER = zomeCallSigner;
 
-    // Only logged for now to get rid of unused warning
-    console.log('MAIN_WINDOW: ', MAIN_WINDOW);
+    if (KANGAROO_CONFIG.systray) {
+      MAIN_WINDOW.on('close', mainWindowCloseHandler);
+    }
   }
 });
 
@@ -290,6 +359,14 @@ app.on('window-all-closed', () => {
   // }
 });
 
+// This is here to distinguish in the 'close' listener of the main window,
+// for the case that a systray icon is used, whether the main window should
+// indeed be closed (if the app is attempted to be quit via the systray menu)
+// or only hidden
+app.on('before-quit', () => {
+  IS_APP_QUITTING = true;
+});
+
 app.on('quit', () => {
   if (LAIR_HANDLE) {
     LAIR_HANDLE.kill();
@@ -299,49 +376,40 @@ app.on('quit', () => {
   }
 });
 
-// app.on("activate", () => {
-//   // On OS X it's common to re-create a window in the app when the
-//   // dock icon is clicked and there are no other windows open.
-//   if (BrowserWindow.getAllWindows().length === 0) {
-//     createMainWindow();
-//   }
-// });
+/**
+ * This handler will make sure that the main window only gets hidden instead of
+ * closed (to maintain the javascript state) if the systray icon option is
+ * used.
+ *
+ * @param e Window close event
+ */
+const mainWindowCloseHandler = (e: Event) => {
+  if (!IS_APP_QUITTING && MAIN_WINDOW) {
+    e.preventDefault();
+    MAIN_WINDOW.hide();
 
-// const contextMenu = Menu.buildFromTemplate([
-//   {
-//     label: 'Open',
-//     type: 'normal',
-//     click() {
-//       if (SPLASH_SCREEN_WINDOW) {
-//         SPLASH_SCREEN_WINDOW.show();
-//       } else if (MAIN_WINDOW) {
-//         MAIN_WINDOW.show();
-//       }
-//     },
-//   },
-//   {
-//     label: 'Restart',
-//     type: 'normal',
-//     click() {
-//       const options: Electron.RelaunchOptions = {
-//         args: process.argv,
-//       };
-//       // https://github.com/electron-userland/electron-builder/issues/1727#issuecomment-769896927
-//       if (process.env.APPIMAGE) {
-//         console.log('process.execPath: ', process.execPath);
-//         options.args?.unshift('--appimage-extract-and-run');
-//         options.execPath = process.env.APPIMAGE;
-//       }
-//       app.relaunch(options);
-//       app.quit();
-//     },
-//   },
-//   {
-//     label: 'Quit',
-//     type: 'normal',
-//     click() {
-//       app.quit();
-//     },
-//   },
-// ]);
-// });
+    const notificationIcon = nativeImage.createFromPath(NOTIFICATIONS_ICON_PATH);
+    new Notification({
+      title: `${KANGAROO_CONFIG.productName} keeps running in the background`,
+      body: `To close ${KANGAROO_CONFIG.productName} and stop synching with peers, quit from the icon in the system tray.`,
+      icon: notificationIcon,
+    })
+      .on('click', async () => {
+        if (MAIN_WINDOW) {
+          MAIN_WINDOW.show();
+          const response = await dialog.showMessageBox(MAIN_WINDOW, {
+            type: 'info',
+            message: `${KANGAROO_CONFIG.productName} keeps running in the background if you close the Window.\n\nThis is to keep synchronizing data with peers.\n\nDo you want to quit ${KANGAROO_CONFIG.productName} fully?`,
+            buttons: ['Keep Running', 'Quit'],
+            defaultId: 0,
+            cancelId: 1,
+          });
+          if (response.response === 1) {
+            app.quit();
+          }
+        }
+      })
+      .show();
+  }
+  console.log("Is main window still defined?", MAIN_WINDOW);
+};

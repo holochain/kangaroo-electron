@@ -63,6 +63,11 @@ export type KangarooConfig = {
    * and prompt to install and restart if a new release is available.
    */
   autoUpdates: boolean;
+  /**
+   * Whether or not to use a systray. If true, the app will remain running in the background
+   * upon closing its window and can be re-opened via its icon in the systray.
+   */
+  systray: boolean;
   // /**
   //  * Whether or not the app should have the user set up a password.
   //  */

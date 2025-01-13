@@ -28,7 +28,7 @@ export class HolochainManager {
   constructor(
     processHandle: childProcess.ChildProcessWithoutNullStreams,
     kangarooEmitter: KangarooEmitter,
-    mossFileSystem: KangarooFileSystem,
+    kangarooFileSystem: KangarooFileSystem,
     adminPort: AdminPort,
     appPort: AppPort,
     adminWebsocket: AdminWebsocket,
@@ -40,7 +40,7 @@ export class HolochainManager {
     this.adminPort = adminPort;
     this.appPort = appPort;
     this.adminWebsocket = adminWebsocket;
-    this.fs = mossFileSystem;
+    this.fs = kangarooFileSystem;
     this.installedApps = installedApps;
     this.version = version;
   }
