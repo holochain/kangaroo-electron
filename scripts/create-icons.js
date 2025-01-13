@@ -19,7 +19,7 @@ async function generateIcons() {
   const icnsOutPath = path.join(buildDir, 'icon.icns');
 
   if (!fs.existsSync(pngPath)) {
-    console.warn("WARNING: No icon.png found. If you're using the systray option, an icon.png is required (1024x1024 pixel PNG) to be provided at the root level of your webhapp's UI assets.");
+    console.warn("WARNING: No icon.png found. If you're using the systray option, an icon.png (1024x1024 pixel PNG) is required  to be provided at the root level of your webhapp's UI assets.");
     return;
   }
 
