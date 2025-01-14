@@ -49,12 +49,11 @@ jobs:
         run: |
           echo ${{ github.repository }}
           echo "overwriting names for release testing"
-          curl -f -L --output ./pouch/kando.webhapp https://github.com/holochain-apps/kando/releases/download/v0.10.9/kando.webhapp
+          curl -f -L --output ./pouch/ziptest.webhapp https://github.com/holochain-apps/ziptest/releases/download/ziptest-v0.0.9/ziptest.webhapp
           node ./scripts/overwrite-with-test-name.js
 
       - name: Retrieve version
         run: |
-          yarn write:configs
           echo "Retrieved App version: $(node -p -e "require('./package.json').version")"
           echo "APP_VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
         id: version
@@ -141,7 +140,6 @@ jobs:
           node ./scripts/extend-deb-postinst.mjs
           gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "latest-linux.yml" --clobber
           gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "dist/${{ steps.appId.outputs.APP_ID }}_${{ steps.version.outputs.APP_VERSION }}_amd64.deb" --clobber
-
 
       # Windows
       #---------------------------------------------------------------------------------------

@@ -10,7 +10,7 @@ export async function initializeLairKeystore(
   lairBinary: string,
   keystoreDir: string,
   kangarooEmitter: KangarooEmitter,
-  password: string,
+  password: string
 ): Promise<void> {
   const lairHandle = childProcess.spawn(lairBinary, ['init', '-p'], { cwd: keystoreDir });
   lairHandle.stdin.write(password);
@@ -35,7 +35,7 @@ export async function launchLairKeystore(
   keystoreDir: string,
   kangarooEmitter: KangarooEmitter,
   password: string,
-  rustLog?: string,
+  rustLog?: string
 ): Promise<[childProcess.ChildProcessWithoutNullStreams, string]> {
   // On Unix systems, there is a limit to the path length of a domain socket. Create a symlink to the lair directory from the tempdir
   // instead and overwrite the connectionUrl in the lair-keystore-config.yaml

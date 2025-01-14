@@ -73,7 +73,7 @@ profile ${appId} \\"/opt/${productName}/${appId}\\" flags=(unconfined) {
 fi
 
 # SUID chrome-sandbox for Electron 5+
-`,
+`
 );
 
 fs.writeFileSync(posinstPath, postinstScriptModified);
