@@ -9,8 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ubuntu-22.04]
-        # platform: [windows-2019, macos-13, macos-latest, ubuntu-22.04]
+        platform: [windows-2019, macos-13, macos-latest, ubuntu-22.04]
     env:
       MACOSX_DEPLOYMENT_TARGET: 10.13
 
