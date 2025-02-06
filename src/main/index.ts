@@ -199,11 +199,37 @@ app.whenReady().then(async () => {
     );
   }
 
-  // Add handler early that's needed by the splashscreen to get name and version of the app
+  /**
+   * IPC handlers
+   */
+  ipcMain.handle('sign-zome-call', handleSignZomeCall);
+  ipcMain.handle('exit', () => {
+    app.exit(0);
+  });
   ipcMain.handle('get-name-and-version', () => ({
     productName: KANGAROO_CONFIG.productName,
     version: KANGAROO_CONFIG.version,
   }));
+  // Will be called by the splashscreen UI in the "password-optional"
+  // or "user-provided" password modes
+  ipcMain.handle('launch', async (_e, passwordInput: PasswordType): Promise<void> => {
+    const { lairHandle, holochainManager, mainWindow, zomeCallSigner } = await launch(
+      KANGAROO_FILESYSTEM,
+      KANGAROO_EMITTER,
+      SPLASH_SCREEN_WINDOW,
+      passwordInput,
+      RUN_OPTIONS
+    );
+
+    LAIR_HANDLE = lairHandle;
+    HOLOCHAIN_MANAGER = holochainManager;
+    MAIN_WINDOW = mainWindow;
+    ZOME_CALL_SIGNER = zomeCallSigner;
+
+    if (KANGAROO_CONFIG.systray) {
+      MAIN_WINDOW.on('close', mainWindowCloseHandler);
+    }
+  });
 
   SPLASH_SCREEN_WINDOW = createSplashWindow(splashScreenType);
   SPLASH_SCREEN_WINDOW.on('closed', () => {
@@ -257,34 +283,6 @@ app.whenReady().then(async () => {
 
     systray.setContextMenu(contextMenu);
   }
-
-  /**
-   * IPC handlers
-   */
-  ipcMain.handle('sign-zome-call', handleSignZomeCall);
-  ipcMain.handle('exit', () => {
-    app.exit(0);
-  });
-  // Will be called by the splashscreen UI in the "password-optional"
-  // or "user-provided" password modes
-  ipcMain.handle('launch', async (_e, passwordInput: PasswordType): Promise<void> => {
-    const { lairHandle, holochainManager, mainWindow, zomeCallSigner } = await launch(
-      KANGAROO_FILESYSTEM,
-      KANGAROO_EMITTER,
-      SPLASH_SCREEN_WINDOW,
-      passwordInput,
-      RUN_OPTIONS
-    );
-
-    LAIR_HANDLE = lairHandle;
-    HOLOCHAIN_MANAGER = holochainManager;
-    MAIN_WINDOW = mainWindow;
-    ZOME_CALL_SIGNER = zomeCallSigner;
-
-    if (KANGAROO_CONFIG.systray) {
-      MAIN_WINDOW.on('close', mainWindowCloseHandler);
-    }
-  });
 
   /**
    * Checking for app updates
