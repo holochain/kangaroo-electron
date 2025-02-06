@@ -199,6 +199,12 @@ app.whenReady().then(async () => {
     );
   }
 
+  // Add handler early that's needed by the splashscreen to get name and version of the app
+  ipcMain.handle('get-name-and-version', () => ({
+    productName: KANGAROO_CONFIG.productName,
+    version: KANGAROO_CONFIG.version,
+  }));
+
   SPLASH_SCREEN_WINDOW = createSplashWindow(splashScreenType);
   SPLASH_SCREEN_WINDOW.on('closed', () => {
     // We need to drop the variable here to be able to distinguish
@@ -255,10 +261,6 @@ app.whenReady().then(async () => {
   /**
    * IPC handlers
    */
-  ipcMain.handle('get-name-and-version', () => ({
-    productName: KANGAROO_CONFIG.productName,
-    version: KANGAROO_CONFIG.version,
-  }));
   ipcMain.handle('sign-zome-call', handleSignZomeCall);
   ipcMain.handle('exit', () => {
     app.exit(0);
