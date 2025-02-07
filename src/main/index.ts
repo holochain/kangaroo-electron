@@ -201,7 +201,12 @@ app.whenReady().then(async () => {
 
   /**
    * IPC handlers
+   *
+   * Note that any IPC handlers that the splashscreen might be using should be registered
+   * before the splashscreen window is created in order to ensure that they are getting
+   * registered in time.
    */
+  // ------------------------------------------------------------------------------------
   ipcMain.handle('sign-zome-call', handleSignZomeCall);
   ipcMain.handle('exit', () => {
     app.exit(0);
@@ -230,6 +235,7 @@ app.whenReady().then(async () => {
       MAIN_WINDOW.on('close', mainWindowCloseHandler);
     }
   });
+  // ------------------------------------------------------------------------------------
 
   SPLASH_SCREEN_WINDOW = createSplashWindow(splashScreenType);
   SPLASH_SCREEN_WINDOW.on('closed', () => {
