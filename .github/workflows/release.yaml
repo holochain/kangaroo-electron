@@ -19,13 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup for macOS code signing
-        if: (matrix.platform == 'macos-13' || matrix.platform == 'macos-latest') && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'true'
-        uses: matthme/import-codesign-certs@5565bb656f60c98c8fc515f3444dd8db73545dc2
-        with:
-          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
-          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-
       - name: setup node
         uses: actions/setup-node@v1
         with:
@@ -76,6 +69,13 @@ jobs:
           echo "MACOS_CODE_SIGNING=$(node ./scripts/read-macos-code-signing.js)" >> $GITHUB_OUTPUT
         id: shouldMacOSCodeSign
         shell: bash
+
+      - name: Setup for macOS code signing
+        if: (matrix.platform == 'macos-13' || matrix.platform == 'macos-latest') && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'true'
+        uses: matthme/import-codesign-certs@5565bb656f60c98c8fc515f3444dd8db73545dc2
+        with:
+          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
+          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
 
       # macOS WITHOUT code signing
       #---------------------------------------------------------------------------------------
