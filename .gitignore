@@ -9,7 +9,7 @@ lerna-debug.log*
 # build
 resources
 dist
-build
+build/*
 !build/entitlements.mac.plist
 
 # pouch
