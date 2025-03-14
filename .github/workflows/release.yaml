@@ -154,9 +154,9 @@ jobs:
           ls dist
 
           # If Windows EV code signing is set to true in kangaroo.config.ts, do code signing here
-          echo "Should do Windows code signing: ${{steps.shouldWindowsCodeSign.output.WINDOWS_CODE_SIGNING}}"
+          echo "Should do Windows code signing: ${{steps.shouldWindowsCodeSign.outputs.WINDOWS_CODE_SIGNING}}"
 
-          if [ "${{steps.shouldWindowsCodeSign.output.WINDOWS_CODE_SIGNING}}" == "true" ]; then
+          if [ "${{steps.shouldWindowsCodeSign.outputs.WINDOWS_CODE_SIGNING}}" == "true" ]; then
 
             echo "attempting to code sign..."
 
