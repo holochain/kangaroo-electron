@@ -5,7 +5,7 @@ export default defineConfig({
   productName: 'Holochain Kangaroo Electron',
   version: '0.1.0',
   macOSCodeSigning: false,
-  windowsEVCodeSigning: false,
+  windowsEVCodeSigning: true,
   fallbackToIndexHtml: true,
   autoUpdates: true,
   systray: true,

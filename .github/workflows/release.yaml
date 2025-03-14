@@ -2,14 +2,14 @@ name: 'publish'
 on:
   push:
     branches:
-      - release
+      - debug-windows-codesigning
 
 jobs:
   publish:
     strategy:
       fail-fast: false
       matrix:
-        platform: [windows-2019, macos-13, macos-latest, ubuntu-22.04]
+        platform: [windows-2019]
     env:
       MACOSX_DEPLOYMENT_TARGET: 10.13
 
@@ -153,7 +153,11 @@ jobs:
           ls dist
 
           # If Windows EV code signing is set to true in kangaroo.config.ts, do code signing here
-          if [ "${{steps.shouldWindowsCodeSign.output.WINDOWS_CODE_SIGNING}}" == true ]; then
+          echo "Should do Windows code signing: ${{steps.shouldWindowsCodeSign.output.WINDOWS_CODE_SIGNING}}"
+
+          if [ "${{steps.shouldWindowsCodeSign.output.WINDOWS_CODE_SIGNING}}" == "true" ]; then
+
+            echo "attempting to code sign..."
 
             # Assumes this setup of EV certificates:
             # https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/
