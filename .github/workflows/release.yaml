@@ -2,14 +2,14 @@ name: 'publish'
 on:
   push:
     branches:
-      - release
+      - test-systray-size
 
 jobs:
   publish:
     strategy:
       fail-fast: false
       matrix:
-        platform: [windows-2019, macos-13, macos-latest, ubuntu-22.04]
+        platform: [macos-13]
     env:
       MACOSX_DEPLOYMENT_TARGET: 10.13
 
