@@ -9,7 +9,7 @@ import {
   protocol,
   Tray,
   Notification,
-  Event
+  Event,
 } from 'electron';
 import childProcess from 'child_process';
 import { ZomeCallNapi, ZomeCallSigner, ZomeCallUnsignedNapi } from '@holochain/hc-spin-rust-utils';
@@ -246,7 +246,7 @@ app.whenReady().then(async () => {
   });
 
   if (KANGAROO_CONFIG.systray) {
-    const systray = new Tray(SYSTRAY_ICON_PATH);
+    const systray = new Tray(nativeImage.createFromPath(SYSTRAY_ICON_PATH));
     systray.setToolTip(KANGAROO_CONFIG.productName);
 
     const contextMenu = Menu.buildFromTemplate([
@@ -256,7 +256,7 @@ app.whenReady().then(async () => {
         click() {
           if (SPLASH_SCREEN_WINDOW) {
             SPLASH_SCREEN_WINDOW.show();
-          } else if(MAIN_WINDOW) {
+          } else if (MAIN_WINDOW) {
             MAIN_WINDOW.show();
           }
         },
@@ -417,5 +417,5 @@ const mainWindowCloseHandler = (e: Event) => {
       })
       .show();
   }
-  console.log("Is main window still defined?", MAIN_WINDOW);
+  console.log('Is main window still defined?', MAIN_WINDOW);
 };
