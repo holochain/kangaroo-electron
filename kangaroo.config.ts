@@ -1,15 +1,15 @@
 import { defineConfig } from './src/main/defineConfig';
 
 export default defineConfig({
-  appId: 'org.holochain.kangaroo-electron',
-  productName: 'Holochain Kangaroo Electron',
-  version: '0.1.0',
-  macOSCodeSigning: false,
-  windowsEVCodeSigning: false,
+  appId: 'org.holochain.acorn',
+  productName: 'Acorn',
+  version: '11.1.1',
+  macOSCodeSigning: true,
+  windowsEVCodeSigning: true,
   fallbackToIndexHtml: true,
   autoUpdates: true,
   systray: true,
-  passwordMode: 'password-optional',
+  passwordMode: 'no-password',
   bins: {
     holochain: {
       version: '0.4.1',
