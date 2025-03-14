@@ -1,7 +1,7 @@
 import { defineConfig } from './src/main/defineConfig';
 
 export default defineConfig({
-  appId: 'org.holochain.acorn',
+  appId: 'org.lightningrodlabs.acorn',
   productName: 'Acorn',
   version: '11.1.2',
   macOSCodeSigning: true,
