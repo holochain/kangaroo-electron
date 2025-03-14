@@ -60,6 +60,7 @@ jobs:
 
       - name: Retrieve whether Windows code signing should be attempted
         run: |
+          echo "shouldWindowsCodeSign: $(node ./scripts/read-windows-code-signing.js)"
           echo "WINDOWS_CODE_SIGNING=$(node ./scripts/read-windows-code-signing.js)" >> $GITHUB_OUTPUT
         id: shouldWindowsCodeSign
         shell: bash
