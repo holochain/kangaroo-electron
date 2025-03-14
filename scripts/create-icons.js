@@ -51,7 +51,7 @@ async function generateIcons() {
   if (!fs.existsSync(iconsDir)) {
     fs.mkdirSync(iconsDir);
   }
-  systrayIcon.write(path.join(iconsDir, '32x32@2.png'));
+  systrayIcon.write(path.join(iconsDir, '32x32@2x.png'));
 
   // Generate the icon for OS notifications
   console.log('Generating notifications icon');
