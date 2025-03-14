@@ -151,7 +151,7 @@ jobs:
           ls dist
 
           # If Windows EV code signing is set to true in kangaroo.config.ts, do code signing here
-          if [ "${{steps.shouldWindowsCodeSign.output.WINDOWS_CODE_SIGNING}}" == true ]; then
+          if [ "${{ steps.shouldWindowsCodeSign.outputs.WINDOWS_CODE_SIGNING }}" == "true" ]; then
 
             # Assumes this setup of EV certificates:
             # https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/
