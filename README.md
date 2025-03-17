@@ -60,9 +60,13 @@ yarn build:windows
 
 The general workflow goes as follows:
 
-1. Create a draft release on github and set its "Tag verion" to the value of the `version` field that you chose in `kangaroo.config.ts` and prefix it with `v`, for example `v0.1.0`.
+1. Make sure CI has access to your app's .webhapp file by either
+   - specifying the `webhapp` field in `kangaroo.config.ts` pointing to a URL where CI can fetch it and a sha256 to verify its integrity
+   - remove `pouch/*.webhapp` from the `.gitignore` file and commit your .webhapp to git.
 
-2. Merge the main branch into the release branch and push it to github to trigger the release workflow.
+2. Create a draft release on github and set its "Tag verion" to the value of the `version` field that you chose in `kangaroo.config.ts` and prefix it with `v`, for example `v0.1.0`.
+
+3. Merge the main branch into the release branch and push it to github to trigger the release workflow.
 
 If you do this for the first time you will need to create the `release` branch first:
 
