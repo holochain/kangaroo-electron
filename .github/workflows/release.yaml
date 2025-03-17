@@ -49,13 +49,13 @@ jobs:
           if [ -n "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
             curl -f -L --output ./pouch/kangaroo.webhapp ${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}
             actual_hash=$(shasum -a 256 ./pouch/kangaroo.webhapp)
-            if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}"]
+            if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}"]; then
               echo "Error: sha256 of the downloaded .webhapp file does not match the sha256 specified in kangaroo.config.ts."
               exit 1
             fi
 
           else
-            if ! ls ./pouch/*.txt 1>/dev/null 2>&1; then
+            if ! ls ./pouch/*.webhapp 1>/dev/null 2>&1; then
               echo "Error: No .webhapp file in pouch and no webhapp URL specified in kangaroo.config.ts."
               exit 1
             fi
