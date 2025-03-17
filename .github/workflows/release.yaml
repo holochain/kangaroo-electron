@@ -46,7 +46,7 @@ jobs:
       # This step is only used for testing in the official kangaroo repo
       - name: Fetch webhapp if necessary or check that it's available in the pouch folder
         run: |
-          if [ -z "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
+          if [ -n "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
             curl -f -L --output ./pouch/kangaroo.webhapp ${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}
             actual_hash=$(shasum -a 256 ./pouch/kangaroo.webhapp)
             if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}"]
