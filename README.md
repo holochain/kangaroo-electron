@@ -60,7 +60,7 @@ yarn build:windows
 
 The general workflow goes as follows:
 
-1. Make sure CI has access to your app's .webhapp file by either
+1. Make sure that CI has access to your app's .webhapp file by either
    - specifying the `webhapp` field in `kangaroo.config.ts` pointing to a URL where CI can fetch it and a sha256 to verify its integrity
    - remove `pouch/*.webhapp` from the `.gitignore` file and commit your .webhapp to git.
 
