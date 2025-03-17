@@ -32,6 +32,10 @@ jobs:
         with:
           go-version: 'stable'
 
+      - name: Environment setup
+        run: |
+          yarn setup
+
       - name: Read kangaroo config
         shell: bash
         id: kangarooConfig
@@ -45,18 +49,19 @@ jobs:
 
       # This step is only used for testing in the official kangaroo repo
       - name: Fetch webhapp if necessary or check that it's available in the pouch folder
+        shell: bash
         run: |
-          if [ -z "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
+          if [ -n "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
             curl -f -L --output ./pouch/kangaroo.webhapp ${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}
             actual_hash=$(shasum -a 256 ./pouch/kangaroo.webhapp)
-            if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}"]
+            if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}"]; then
               echo "Error: sha256 of the downloaded .webhapp file does not match the sha256 specified in kangaroo.config.ts."
               exit 1
             fi
 
           else
-            if ! ls ./pouch/*.txt 1>/dev/null 2>&1; then
-              echo "Error: No .webhapp file in pouch and no webhapp URL specified in kangaroo.config.ts."
+            if ! ls ./pouch/*.webhapp 1>/dev/null 2>&1; then
+              echo "Error: No .webhapp file in ./pouch folder and no webhapp URL specified in kangaroo.config.ts."
               exit 1
             fi
 
@@ -69,10 +74,6 @@ jobs:
           echo ${{ github.repository }}
           echo "overwriting names for release testing"
           node ./scripts/overwrite-with-test-name.js
-
-      - name: Environment setup
-        run: |
-          yarn setup
 
       - name: Setup for macOS code signing
         if: (matrix.platform == 'macos-13' || matrix.platform == 'macos-latest') && steps.kangarooConfig.outputs.MACOS_CODE_SIGNING == 'true'
