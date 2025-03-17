@@ -45,6 +45,7 @@ jobs:
 
       # This step is only used for testing in the official kangaroo repo
       - name: Fetch webhapp if necessary or check that it's available in the pouch folder
+        shell: bash
         run: |
           if [ -n "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
             curl -f -L --output ./pouch/kangaroo.webhapp ${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}
@@ -56,7 +57,7 @@ jobs:
 
           else
             if ! ls ./pouch/*.webhapp 1>/dev/null 2>&1; then
-              echo "Error: No .webhapp file in pouch and no webhapp URL specified in kangaroo.config.ts."
+              echo "Error: No .webhapp file in ./pouch folder and no webhapp URL specified in kangaroo.config.ts."
               exit 1
             fi
 
