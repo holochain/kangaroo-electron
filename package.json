@@ -5,11 +5,12 @@
   "main": "./out/main/index.js",
   "scripts": {
     "dev": "yarn write:configs && yarn pouch:unpack && yarn create:icons && electron-vite dev",
-    "setup": "yarn && yarn fetch:binaries && yarn write:configs",
+    "setup": "yarn && yarn fetch:binaries && yarn:fetch:webhapp && yarn write:configs",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "yarn typecheck:node && yarn typecheck:web",
     "fetch:binaries": "node ./scripts/fetch-binaries.js",
+    "fetch:webhapp": "node ./scripts/fetch-webhapp.js",
     "pouch:unpack": "node ./scripts/unpack-pouch.js",
     "create:icons": "node ./scripts/create-icons.js",
     "write:configs": "node ./scripts/write-builder-config.js",

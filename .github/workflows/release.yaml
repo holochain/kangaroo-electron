@@ -52,35 +52,6 @@ jobs:
           echo "APP_ID=$(node ./scripts/read-app-id.js)" >> $GITHUB_OUTPUT
           echo "MACOS_CODE_SIGNING=$(node ./scripts/read-macos-code-signing.js)" >> $GITHUB_OUTPUT
           echo "WINDOWS_CODE_SIGNING=$(node ./scripts/read-windows-code-signing.js)" >> $GITHUB_OUTPUT
-          echo "WEBHAPP_URL=$(node ./scripts/read-webhapp-url.js)" >> $GITHUB_OUTPUT
-          echo "WEBHAPP_SHA256=$(node ./scripts/read-webhapp-sha256.js)" >> $GITHUB_OUTPUT
-
-
-      - name: Fetch and validate webhapp if necessary (Unix)
-        if: matrix.platform != 'windows-2019'
-        shell: bash
-        run: |
-          if [ -n "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
-            curl -f -L --output ./pouch/kangaroo.webhapp ${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}
-            actual_hash=$(shasum -a 256 ./pouch/kangaroo.webhapp | awk '{ print $1 }')
-            if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}" ]; then
-              echo "Error: sha256 of the downloaded .webhapp file does not match the sha256 specified in kangaroo.config.ts."
-              exit 1
-            fi
-          fi
-
-      - name: Fetch and validate webhapp if necessary (Windows)
-        if: matrix.platform == 'windows-2019'
-        shell: bash
-        run: |
-          if [ -n "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
-            curl -f -L --output ./pouch/kangaroo.webhapp ${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}
-            actual_hash=$(certutil -hashfile "./pouch/kangaroo.webhapp" SHA256 | findstr /v "certutil" | tr -d '[:space:]')
-            if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}" ]; then
-              echo "Error: sha256 of the downloaded .webhapp file does not match the sha256 specified in kangaroo.config.ts."
-              exit 1
-            fi
-          fi
 
       - name: Check that webhapp is available in pouch folder
         shell: bash
@@ -89,7 +60,6 @@ jobs:
             echo "Error: No .webhapp file found in ./pouch folder. Make sure to specify a URL to your webhapp in kangaroo.config.ts or commit the webhapp to git."
             exit 1
           fi
-
 
       - name: Setup for macOS code signing
         if: (matrix.platform == 'macos-13' || matrix.platform == 'macos-latest') && steps.kangarooConfig.outputs.MACOS_CODE_SIGNING == 'true'
