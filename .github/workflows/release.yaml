@@ -32,6 +32,10 @@ jobs:
         with:
           go-version: 'stable'
 
+      - name: Environment setup
+        run: |
+          yarn setup
+
       - name: Read kangaroo config
         shell: bash
         id: kangarooConfig
@@ -70,10 +74,6 @@ jobs:
           echo ${{ github.repository }}
           echo "overwriting names for release testing"
           node ./scripts/overwrite-with-test-name.js
-
-      - name: Environment setup
-        run: |
-          yarn setup
 
       - name: Setup for macOS code signing
         if: (matrix.platform == 'macos-13' || matrix.platform == 'macos-latest') && steps.kangarooConfig.outputs.MACOS_CODE_SIGNING == 'true'
