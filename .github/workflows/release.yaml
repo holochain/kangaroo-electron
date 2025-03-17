@@ -2,7 +2,7 @@ name: 'publish'
 on:
   push:
     branches:
-      - test-webhapp-ci-no-url
+      - test-webhapp-ci-wrong-sha256
 
 jobs:
   publish:
