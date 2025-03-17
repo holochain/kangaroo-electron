@@ -39,7 +39,7 @@ function downloadFile(url, targetPath, expectedSha256Hex, chmod = false) {
 if (kangarooConfig.webhapp && kangarooConfig.webhapp.url) {
   // If there is already a webhapp file in the puch folder throw an error.
   const webhappDir = path.join(process.cwd(), 'pouch');
-  const webhappDirContent = fs.readdirSync(path.join(process.cwd(), 'pouch'));
+  const webhappDirContent = fs.readdirSync(webhappDir);
   if (webhappDirContent.find((file) => file.endsWith('.webhapp'))) {
     throw new Error(
       'Error: There is already a .webhapp file in the pouch folder. Either remove the .webhapp from the pouch folder or remove the webhapp field from kangaroo.config.ts'
