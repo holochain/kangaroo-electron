@@ -86,6 +86,24 @@ export type KangarooConfig = {
    * productName and the breaking semver version of your app.
    */
   networkSeed?: string;
+  /**
+   * Webhapp to use in CI. If not specified, the webhapp is assumed to
+   * be in the ./pouch folder.
+   *
+   * The sha256 is required to prevent accidentally packaging
+   * a wrong webhapp. To compute the sha256 hash of a file on Unix
+   * systems, you can run:
+   *
+   * shasum -a 256 [file]
+   *
+   * On Windows you can run:
+   *
+   * CertUtil -hashfile "[file]" SHA256
+   */
+  webhapp?: {
+    url: string;
+    sha256: string;
+  };
   devConfig?:
     | {
         happPath: string;
