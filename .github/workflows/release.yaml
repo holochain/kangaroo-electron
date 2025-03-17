@@ -63,7 +63,7 @@ jobs:
           if [ -n "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
             curl -f -L --output ./pouch/kangaroo.webhapp ${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}
             actual_hash=$(shasum -a 256 ./pouch/kangaroo.webhapp | awk '{ print $1 }')
-            if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}"]; then
+            if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}" ]; then
               echo "Error: sha256 of the downloaded .webhapp file does not match the sha256 specified in kangaroo.config.ts."
               exit 1
             fi
@@ -75,8 +75,8 @@ jobs:
         run: |
           if [ -n "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
             curl -f -L --output ./pouch/kangaroo.webhapp ${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}
-            actual_hash=$(certutil -hashfile "$file" SHA256 | findstr /v "certutil" | tr -d '[:space:]')
-            if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}"]; then
+            actual_hash=$(certutil -hashfile "./pouch/kangaroo.webhapp" SHA256 | findstr /v "certutil" | tr -d '[:space:]')
+            if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}" ]; then
               echo "Error: sha256 of the downloaded .webhapp file does not match the sha256 specified in kangaroo.config.ts."
               exit 1
             fi
