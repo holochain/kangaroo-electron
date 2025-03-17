@@ -55,8 +55,9 @@ jobs:
           echo "WEBHAPP_URL=$(node ./scripts/read-webhapp-url.js)" >> $GITHUB_OUTPUT
           echo "WEBHAPP_SHA256=$(node ./scripts/read-webhapp-sha256.js)" >> $GITHUB_OUTPUT
 
-      # This step is only used for testing in the official kangaroo repo
-      - name: Fetch webhapp if necessary or check that it's available in the pouch folder
+
+      - name: Fetch and validate webhapp if necessary (Unix)
+        if: matrix.platform != 'windows-2019'
         shell: bash
         run: |
           if [ -n "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
@@ -66,14 +67,29 @@ jobs:
               echo "Error: sha256 of the downloaded .webhapp file does not match the sha256 specified in kangaroo.config.ts."
               exit 1
             fi
+          fi
 
-          else
-            if ! ls ./pouch/*.webhapp 1>/dev/null 2>&1; then
-              echo "Error: No .webhapp file in ./pouch folder and no webhapp URL specified in kangaroo.config.ts."
+      - name: Fetch and validate webhapp if necessary (Windows)
+        if: matrix.platform == 'windows-2019'
+        shell: bash
+        run: |
+          if [ -n "${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}" ]; then
+            curl -f -L --output ./pouch/kangaroo.webhapp ${{ steps.kangarooConfig.outputs.WEBHAPP_URL }}
+            actual_hash=$(certutil -hashfile "$file" SHA256 | findstr /v "certutil" | tr -d '[:space:]')
+            if [ "$actual_hash" != "${{ steps.kangarooConfig.outputs.WEBHAPP_SHA256 }}"]; then
+              echo "Error: sha256 of the downloaded .webhapp file does not match the sha256 specified in kangaroo.config.ts."
               exit 1
             fi
-
           fi
+
+      - name: Check that webhapp is available in pouch folder
+        shell: bash
+        run: |
+          if ! ls ./pouch/*.webhapp 1>/dev/null 2>&1; then
+            echo "Error: No .webhapp file found in ./pouch folder. Make sure to specify a URL to your webhapp in kangaroo.config.ts or commit the webhapp to git."
+            exit 1
+          fi
+
 
       - name: Setup for macOS code signing
         if: (matrix.platform == 'macos-13' || matrix.platform == 'macos-latest') && steps.kangarooConfig.outputs.MACOS_CODE_SIGNING == 'true'
