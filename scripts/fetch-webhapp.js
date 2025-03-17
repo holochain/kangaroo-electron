@@ -37,7 +37,7 @@ function downloadFile(url, targetPath, expectedSha256Hex, chmod = false) {
 }
 
 if (kangarooConfig.webhapp && kangarooConfig.webhapp.url) {
-  // If there is already a webhapp file in the puch folder throw an error.
+  // If there is already a webhapp file in the pouch folder throw an error.
   const webhappDir = path.join(process.cwd(), 'pouch');
   const webhappDirContent = fs.readdirSync(webhappDir);
   if (webhappDirContent.find((file) => file.endsWith('.webhapp'))) {
