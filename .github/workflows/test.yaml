@@ -5,6 +5,12 @@ on:
       - "main"
 
 jobs:
+  test:
+    runs-on: "ubuntu-latest"
+    seps:
+      - name: test
+        run: echo "You may implement your tests here"
+
   ci_pass:
     if: ${{ always() }}
     runs-on: "ubuntu-latest"
