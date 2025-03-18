@@ -17,5 +17,7 @@ jobs:
     steps:
       - name: check status
         uses: re-actors/alls-green@release/v1
+        needs:
+          - test
         with:
           jobs: ${{ toJSON(needs) }}
