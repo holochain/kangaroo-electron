@@ -29,7 +29,7 @@ export function setupLogs(
   holochainLogsToTerminal: boolean
 ) {
   const logFilePath = path.join(
-    kangarooFs.appLogsDir,
+    kangarooFs.profileLogsDir,
     `${KANGAROO_CONFIG.productName.replace(' ', '_')}.log`
   );
   if (fs.existsSync(logFilePath)) {
