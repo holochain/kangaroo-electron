@@ -1,7 +1,6 @@
-import { Menu, app, dialog, shell } from 'electron';
+import { Menu, app } from 'electron';
 import { KangarooFileSystem } from './filesystem';
 import { isMac, KANGAROO_CONFIG } from './const';
-import AdmZip from 'adm-zip';
 
 // extending from electron's default menu: https://github.com/electron/electron/blob/398dde9dfbdfcfd7757ead9a30785c01de9f0808/lib/browser/default-menu.ts#L12
 export const kangarooMenu = (kangarooFs: KangarooFileSystem) => {
@@ -17,7 +16,8 @@ export const kangarooMenu = (kangarooFs: KangarooFileSystem) => {
       },
       {
         label: 'Export Logs',
-        async click() {await kangarooFs.exportLogs();
+        async click() {
+          await kangarooFs.exportLogs();
         },
       },
     ],
