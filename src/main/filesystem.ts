@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import { app, dialog, session, shell } from 'electron';
 import AdmZip from 'adm-zip';
 import { platform } from '@electron-toolkit/utils';
+import { KANGAROO_CONFIG } from './const';
 
 export type Profile = string;
 
@@ -107,7 +108,7 @@ export class KangarooFileSystem {
       const exportToPathResponse = await dialog.showSaveDialog({
         title: 'Export Logs',
         buttonLabel: 'Export',
-        defaultPath: `Moss_${app.getVersion()}_logs_${Date.now()}.zip`,
+        defaultPath: `${KANGAROO_CONFIG.productName}_${app.getVersion()}_logs_${Date.now()}.zip`,
       });
       if (exportToPathResponse.filePath) {
         zip.writeZip(exportToPathResponse.filePath);
@@ -123,12 +124,28 @@ export class KangarooFileSystem {
     if (platform.isWindows) {
       try {
         await session.defaultSession.clearCache();
+      } catch (e) {
+        console.warn('Failed to clear cache: ', e);
+      }
+      try {
         await session.defaultSession.clearStorageData();
+      } catch (e) {
+        console.warn('Failed to clear storage data: ', e);
+      }
+      try {
         await session.defaultSession.clearAuthCache();
+      } catch (e) {
+        console.warn('Failed to clear auth cache: ', e);
+      }
+      try {
         await session.defaultSession.clearCodeCaches({});
+      } catch (e) {
+        console.warn('Failed to clear code cache: ', e);
+      }
+      try {
         await session.defaultSession.clearHostResolverCache();
       } catch (e) {
-        console.warn('Failed to clear cache or parts of it: ', e);
+        console.warn('Failed to clear host resolver cache: ', e);
       }
     }
     deleteRecursively(this.profileDataDir);

@@ -255,7 +255,7 @@ app.whenReady().then(async () => {
       if (HOLOCHAIN_MANAGER) HOLOCHAIN_MANAGER.processHandle.kill();
       // Remove all data
       await KANGAROO_FILESYSTEM.factoryReset();
-      // restart Moss
+      // restart App
       const options: Electron.RelaunchOptions = {
         args: process.argv,
       };
