@@ -235,6 +235,40 @@ app.whenReady().then(async () => {
       MAIN_WINDOW.on('close', mainWindowCloseHandler);
     }
   });
+  ipcMain.handle('open-logs', async () => KANGAROO_FILESYSTEM.openLogs());
+  ipcMain.handle('export-logs', async () => KANGAROO_FILESYSTEM.exportLogs());
+  ipcMain.handle('factory-reset', async () => {
+    const userDecision = await dialog.showMessageBox({
+      title: 'Factory Reset',
+      type: 'warning',
+      buttons: ['Cancel', 'Confirm'],
+      defaultId: 0,
+      cancelId: 0,
+      message: `Are you sure you want to fully reset ${KANGAROO_CONFIG.productName}? This will delete all your ${KANGAROO_CONFIG.productName} related data.`,
+    });
+    if (userDecision.response === 1) {
+      // Close all windows
+      if (MAIN_WINDOW) MAIN_WINDOW.close();
+      if (SPLASH_SCREEN_WINDOW) SPLASH_SCREEN_WINDOW.close();
+      // Kill holochain and lair
+      if (LAIR_HANDLE) LAIR_HANDLE.kill();
+      if (HOLOCHAIN_MANAGER) HOLOCHAIN_MANAGER.processHandle.kill();
+      // Remove all data
+      await KANGAROO_FILESYSTEM.factoryReset();
+      // restart Moss
+      const options: Electron.RelaunchOptions = {
+        args: process.argv,
+      };
+      // https://github.com/electron-userland/electron-builder/issues/1727#issuecomment-769896927
+      if (process.env.APPIMAGE) {
+        console.log('process.execPath: ', process.execPath);
+        options.args!.unshift('--appimage-extract-and-run');
+        options.execPath = process.env.APPIMAGE;
+      }
+      app.relaunch(options);
+      app.quit();
+    }
+  }),
   // ------------------------------------------------------------------------------------
 
   SPLASH_SCREEN_WINDOW = createSplashWindow(splashScreenType);

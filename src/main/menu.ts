@@ -12,31 +12,12 @@ export const kangarooMenu = (kangarooFs: KangarooFileSystem) => {
       {
         label: 'Open Logs',
         async click() {
-          try {
-            await shell.openPath(kangarooFs.appLogsDir);
-          } catch (e) {
-            dialog.showErrorBox('Failed to open logs folder', (e as any).toString());
-          }
+          await kangarooFs.openLogs();
         },
       },
       {
         label: 'Export Logs',
-        async click() {
-          try {
-            const zip = new AdmZip();
-            zip.addLocalFolder(kangarooFs.appLogsDir);
-            const exportToPathResponse = await dialog.showSaveDialog({
-              title: 'Export Logs',
-              buttonLabel: 'Export',
-              defaultPath: `${KANGAROO_CONFIG.productName}_${app.getVersion()}_logs_${new Date().toISOString()}.zip`,
-            });
-            if (exportToPathResponse.filePath) {
-              zip.writeZip(exportToPathResponse.filePath);
-              shell.showItemInFolder(exportToPathResponse.filePath);
-            }
-          } catch (e) {
-            dialog.showErrorBox('Failed to export logs', (e as any).toString());
-          }
+        async click() {await kangarooFs.exportLogs();
         },
       },
     ],
