@@ -170,23 +170,19 @@ export function breakingVersion(version: string): string {
 }
 
 /**
- * Deletes a folder recursively and if a file or folder fails with an EPERM error,
- * it deletes all other folders
+ * Deletes a folder recursively and if a folder fails with an EPERM error,
+ * it tries instead to recursively delete the individual files and subfolders
+ * it contains
  * @param root
  */
 export function deleteRecursively(root: string) {
   try {
-    console.log('Attempting to remove file or folder: ', root);
     fs.rmSync(root, { recursive: true });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
-    if (e.toString && e.toString().includes('EPERM')) {
-      console.log('Got EPERM error for file or folder: ', root);
-      if (fs.statSync(root).isDirectory()) {
-        console.log('Removing files and subfolders.');
-        const filesAndSubFolders = fs.readdirSync(root);
-        filesAndSubFolders.forEach((file) => deleteRecursively(path.join(root, file)));
-      }
+    if (e.toString && e.toString().includes('EPERM') && fs.statSync(root).isDirectory()) {
+      const filesAndSubFolders = fs.readdirSync(root);
+      filesAndSubFolders.forEach((file) => deleteRecursively(path.join(root, file)));
     }
   }
 }
