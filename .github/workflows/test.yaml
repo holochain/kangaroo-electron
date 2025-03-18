@@ -7,7 +7,7 @@ on:
 jobs:
   test:
     runs-on: "ubuntu-latest"
-    seps:
+    steps:
       - name: test
         run: echo "You may implement your tests here"
 
