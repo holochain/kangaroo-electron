@@ -4,10 +4,12 @@ on:
     branches:
       - "main"
 
-steps:
+jobs:
   ci_pass:
     if: ${{ always() }}
     runs-on: "ubuntu-latest"
     steps:
       - name: check status
         uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
