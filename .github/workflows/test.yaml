@@ -1,0 +1,13 @@
+on:
+  pull_request:
+  push:
+    branches:
+      - "main"
+
+steps:
+  ci_pass:
+    if: ${{ always() }}
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: check status
+        uses: re-actors/alls-green@release/v1
