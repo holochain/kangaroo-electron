@@ -122,31 +122,13 @@ export class KangarooFileSystem {
   async factoryReset(keepLogs = false) {
     if (keepLogs) throw new Error('Keeping logs across factory reset is currently not supported.');
     if (platform.isWindows) {
-      try {
-        await session.defaultSession.clearCache();
-      } catch (e) {
-        console.warn('Failed to clear cache: ', e);
-      }
-      try {
-        await session.defaultSession.clearStorageData();
-      } catch (e) {
-        console.warn('Failed to clear storage data: ', e);
-      }
-      try {
-        await session.defaultSession.clearAuthCache();
-      } catch (e) {
-        console.warn('Failed to clear auth cache: ', e);
-      }
-      try {
-        await session.defaultSession.clearCodeCaches({});
-      } catch (e) {
-        console.warn('Failed to clear code cache: ', e);
-      }
-      try {
-        await session.defaultSession.clearHostResolverCache();
-      } catch (e) {
-        console.warn('Failed to clear host resolver cache: ', e);
-      }
+      // Windows needs special treatment, because it tends to keep files "in use" that we'd
+      // want to delete and then rejects deletion. And since factory reset needs to be
+      // triggered by the app, we can apparently not let loose of all files without exiting
+      // the app but then we have no process left to trigger the deletion from. It's a
+      // chicken-egg problem and only a problem on Windows, so we also delete browser
+      // data here via the electron API instead of just removing the containing folder.
+      await clearDefaultSessionCache();
     }
     deleteRecursively(this.profileDataDir);
     deleteRecursively(this.profileLogsDir);
@@ -206,5 +188,33 @@ export function deleteRecursively(root: string) {
         filesAndSubFolders.forEach((file) => deleteRecursively(path.join(root, file)));
       }
     }
+  }
+}
+
+async function clearDefaultSessionCache() {
+  try {
+    await session.defaultSession.clearCache();
+  } catch (e) {
+    console.warn('Failed to clear cache: ', e);
+  }
+  try {
+    await session.defaultSession.clearStorageData();
+  } catch (e) {
+    console.warn('Failed to clear storage data: ', e);
+  }
+  try {
+    await session.defaultSession.clearAuthCache();
+  } catch (e) {
+    console.warn('Failed to clear auth cache: ', e);
+  }
+  try {
+    await session.defaultSession.clearCodeCaches({});
+  } catch (e) {
+    console.warn('Failed to clear code cache: ', e);
+  }
+  try {
+    await session.defaultSession.clearHostResolverCache();
+  } catch (e) {
+    console.warn('Failed to clear host resolver cache: ', e);
   }
 }
