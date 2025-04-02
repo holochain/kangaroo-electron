@@ -10,20 +10,24 @@ import { KANGAROO_CONFIG } from './const';
 export type Profile = string;
 
 export class KangarooFileSystem {
-  public profileDataDir: string;
-  public profileConfigDir: string;
-  public profileLogsDir: string;
+  public readonly profileDataDir: string;
+  public readonly profileConfigDir: string;
+  public readonly profileLogsDir: string;
 
-  public conductorDir: string;
-  public keystoreDir: string;
+  public readonly conductorDir: string;
+  public readonly keystoreDir: string;
 
-  constructor(profileDataDir: string, profileConfigDir: string, profileLogsDir: string) {
+  public readonly profile: string;
+
+  constructor(profileDataDir: string, profileConfigDir: string, profileLogsDir: string, profile: string) {
     this.profileDataDir = profileDataDir;
     this.profileConfigDir = profileConfigDir;
     this.profileLogsDir = profileLogsDir;
 
     this.conductorDir = path.join(profileDataDir, 'conductor');
     this.keystoreDir = path.join(profileDataDir, 'keystore');
+
+    this.profile = profile;
 
     createDirIfNotExists(this.conductorDir);
     createDirIfNotExists(this.keystoreDir);
@@ -66,7 +70,7 @@ export class KangarooFileSystem {
     console.log('logsDir:', logsDir);
     console.log('configDir: ', configDir);
 
-    const kangarooFs = new KangarooFileSystem(dataDir, configDir, logsDir);
+    const kangarooFs = new KangarooFileSystem(dataDir, configDir, logsDir, profile);
 
     return kangarooFs;
   }

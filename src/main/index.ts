@@ -244,7 +244,7 @@ app.whenReady().then(async () => {
       buttons: ['Cancel', 'Confirm'],
       defaultId: 0,
       cancelId: 0,
-      message: `Are you sure you want to fully reset ${KANGAROO_CONFIG.productName}? This will delete all your ${KANGAROO_CONFIG.productName} related data.`,
+      message: `Are you sure you want to factory reset ${KANGAROO_CONFIG.productName}? This will delete all ${KANGAROO_CONFIG.productName} data related to the current profile (${KANGAROO_FILESYSTEM.profile}). This cannot be undone.`,
     });
     if (userDecision.response === 1) {
       // Close all windows
