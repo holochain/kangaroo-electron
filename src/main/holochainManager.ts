@@ -170,8 +170,11 @@ export class HolochainManager {
     const appInfo = await this.adminWebsocket.installApp({
       agent_key: pubKey,
       installed_app_id: HAPP_APP_ID,
-      path: HAPP_PATH,
       network_seed: networkSeed,
+      source: {
+        type: "path",
+        value: HAPP_PATH,
+      }
     });
     if (appInfo.status !== 'awaiting_memproofs') {
       try {
