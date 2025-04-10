@@ -11,7 +11,34 @@ body {
   margin: 0;
   padding: 0;
   /* to match the main window */
-  background-color: #f7f5f3;
+  font-family: 'gilroyextrabold', Helvetica, sans-serif;
+  /* background: linear-gradient(90deg, #0edad3, #4622e3); */
+}
+
+.flex {
+  display: flex;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.hidden {
+  display: none;
 }
 
 .splash-wrapper {
@@ -20,11 +47,6 @@ body {
 }
 
 .splash-image-wrapper {
-  background-color: #fff;
-  /* background-image: url('img/iuliu-illes-MkMvM2T0gVE-unsplash.jpg'); */
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   width: 320px;
   height: 450px;
   padding: 30px;
@@ -86,4 +108,33 @@ body {
   position: absolute;
   bottom: 3px;
   left: 5px;
+}
+
+.pw-input {
+  height: 30px;
+  width: 200px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  height: 26px;
+  min-width: 80px;
+  cursor: pointer;
+}
+
+.warning {
+  color: rgb(193, 0, 0);
+  font-size: 14px;
+  min-height: 16px;
+}
+
+.red {
+  color: rgb(193, 0, 0);
+}
+
+.previous-step-btn {
+  position: fixed;
+  top: 6px;
+  left: 6px;
 }

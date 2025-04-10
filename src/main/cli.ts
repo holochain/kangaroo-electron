@@ -4,12 +4,12 @@ import { app } from 'electron';
 
 export interface CliOpts {
   profile?: string;
-  networkSeed?: string | undefined;
-  holochainPath?: string | undefined;
-  lairPath?: string | undefined;
-  holochainRustLog?: string | undefined;
-  holochainWasmLog?: string | undefined;
-  lairRustLog?: string | undefined;
+  networkSeed?: string;
+  holochainPath?: string;
+  lairPath?: string;
+  holochainRustLog?: string;
+  holochainWasmLog?: string;
+  lairRustLog?: string;
   bootstrapUrl?: string;
   signalingUrl?: string;
   iceUrls?: string;
@@ -19,11 +19,11 @@ export interface CliOpts {
 export interface RunOptions {
   profile: string | undefined;
   networkSeed: string;
-  bootstrapUrl: string | undefined;
-  signalingUrl: string | undefined;
+  bootstrapUrl: URL | undefined;
+  signalingUrl: URL | undefined;
   iceUrls: string[] | undefined;
-  customHolochainBinary: string | undefined;
-  customLairBinary: string | undefined;
+  holochainPath: string | undefined;
+  lairPath: string | undefined;
   holochainRustLog: string | undefined;
   holochainWasmLog: string | undefined;
   lairRustLog: string | undefined;
@@ -35,7 +35,7 @@ export function validateArgs(args: CliOpts): RunOptions {
   const allowedProfilePattern = /^[0-9a-zA-Z-]+$/;
   if (args.profile && !allowedProfilePattern.test(args.profile)) {
     throw new Error(
-      `The --profile argument may only contain digits (0-9), letters (a-z,A-Z) and dashes (-) but got '${args.profile}'`,
+      `The --profile argument may only contain digits (0-9), letters (a-z,A-Z) and dashes (-) but got '${args.profile}'`
     );
   }
   if (args.networkSeed && typeof args.networkSeed !== 'string') {
@@ -47,8 +47,8 @@ export function validateArgs(args: CliOpts): RunOptions {
   if (args.signalingUrl && typeof args.signalingUrl !== 'string') {
     throw new Error('The --signaling-url argument must be of type string.');
   }
-  console.log("ICE URLS arg: ", args.iceUrls);
-  console.log("ICE URLS arg type: ", typeof args.iceUrls);
+  console.log('ICE URLS arg: ', args.iceUrls);
+  console.log('ICE URLS arg type: ', typeof args.iceUrls);
   if (args.iceUrls && typeof args.iceUrls !== 'string') {
     throw new Error('The --ice-urls argument must be of type string.');
   }
@@ -70,18 +70,19 @@ export function validateArgs(args: CliOpts): RunOptions {
 
   const profile = args.profile ? args.profile : undefined;
   // If provided take the one provided, otherwise check whether it's applet dev mode
-  const networkSeed = args.networkSeed
-    ? args.networkSeed
-    : defaultAppNetworkSeed();
+  const networkSeed = args.networkSeed ? args.networkSeed : defaultAppNetworkSeed();
+
+  const bootstrapUrl = args.bootstrapUrl ? new URL(args.bootstrapUrl) : undefined;
+  const signalingUrl = args.signalingUrl ? new URL(args.signalingUrl) : undefined;
 
   return {
     profile,
     networkSeed,
-    bootstrapUrl: args.bootstrapUrl,
-    signalingUrl: args.signalingUrl,
+    bootstrapUrl,
+    signalingUrl,
     iceUrls: args.iceUrls ? args.iceUrls.split(',') : undefined,
-    customHolochainBinary: args.holochainPath ? args.holochainPath : undefined,
-    customLairBinary: args.lairPath ? args.lairPath : undefined,
+    holochainPath: args.holochainPath ? args.holochainPath : undefined,
+    lairPath: args.lairPath ? args.lairPath : undefined,
     holochainRustLog: args.holochainRustLog ? args.holochainRustLog : undefined,
     holochainWasmLog: args.holochainWasmLog ? args.holochainWasmLog : undefined,
     lairRustLog: args.lairRustLog ? args.lairRustLog : undefined,
@@ -90,9 +91,9 @@ export function validateArgs(args: CliOpts): RunOptions {
 }
 
 function defaultAppNetworkSeed() {
-  let networkSeed = `${KANGAROO_CONFIG.productName}-${breakingAppVersion(app)}`;
+  let networkSeed = `${KANGAROO_CONFIG.productName}-${breakingAppVersion()}`;
   if (!app.isPackaged) {
-    networkSeed += "-dev";
+    networkSeed += '-dev';
   }
   return networkSeed;
 }

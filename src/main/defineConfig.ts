@@ -1,4 +1,4 @@
-import { KangarooConfig } from "./types";
+import { KangarooConfig } from './types';
 
 export function defineConfig(config: KangarooConfig) {
   return config;

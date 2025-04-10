@@ -1,37 +1,40 @@
-import { defineConfig } from "./src/main/defineConfig";
+import { defineConfig } from './src/main/defineConfig';
 
 export default defineConfig({
-  appId: "org.holochain.kangaroo-electron",
-  productName: "Holochain Kangaroo Electron",
+  appId: 'org.holochain.kangaroo-electron',
+  productName: 'Holochain Kangaroo Electron',
   version: "0.2.0",
   macOSCodeSigning: false,
   windowsEVCodeSigning: false,
   fallbackToIndexHtml: true,
+  autoUpdates: true,
+  systray: true,
+  passwordMode: 'password-optional',
+  webhapp: {
+    url: 'https://github.com/holochain/ziptest/releases/download/ziptest-v0.2.0/ziptest.webhapp',
+    sha256: 'ef3537739bf0b14a9e8cd7858c3e10a576fdfede3a71f0f5e42de67f7ae66f19',
+  },
   bins: {
     holochain: {
-      version: "0.4.0-rc.2",
+      version: '0.5.0-rc.1',
       sha256: {
-        "x86_64-unknown-linux-gnu":
-          "7110f9b0c9c2b4bbc974543df1b633299c7fa8d3d16f3cde4dc894ac64c0670f",
-        "x86_64-pc-windows-msvc.exe":
-          "959fca4b575c6791196fcd1fb9c6c7a92359191dbd60e95b7800c6e79bb21687",
-        "x86_64-apple-darwin":
-          "a62d1b6413f2791ec4df87338d794a7ba29a0890f1a2ceb1ed9eeddb0efc94a7",
-        "aarch64-apple-darwin":
-          "f25bee4cb2615b1970a8ef89c82dcfb867682a3502962343d4842571aafb9bc3",
+        'x86_64-unknown-linux-gnu':
+          'ec988f05566f41e61b65b1cde20f99a1805dd09c02cd538820793b00149abc33',
+        'x86_64-pc-windows-msvc.exe':
+          '86835bc32413b71eae79a2fffe2d619255266459fb7ac9eea7826196a07eb982',
+        'x86_64-apple-darwin': '23fc7cca30f50d2e4845246c28131485e63ce866ea445201041525204311bb8b',
+        'aarch64-apple-darwin': '022fabefe5862c4415b15085ca48e34b13c71f93b66a49f0d9bf177489a5289b',
       },
     },
     lair: {
-      version: "0.5.3",
+      version: '0.6.1',
       sha256: {
-        "x86_64-unknown-linux-gnu":
-          "96a28b9b37c73ef46d8b5c56b9d799d558fd2fe77b41c577e2bcb37685a46396",
-        "x86_64-pc-windows-msvc.exe":
-          "68b6453a19921072aac04dae52a4e94e725e7482005d2f54f907aec680e078de",
-        "x86_64-apple-darwin":
-          "a53bfb8e501431870b99243cbac24f6103d67f8be094930f174829bb249f34c4",
-        "aarch64-apple-darwin":
-          "6b15d977408847ac977c2e060c7aab84a69e6e90c79390098dd40a6b75256e50",
+        'x86_64-unknown-linux-gnu':
+          'c5d5d912af41f17def1c9d1027abd8eb6ce6f088871f4347ed38e124a93023cc',
+        'x86_64-pc-windows-msvc.exe':
+          'e11a0658c2d5a3c00409ea447241b3f1f3a215d70fa396b8a3ed633226f0a11f',
+        'x86_64-apple-darwin': 'fed0e9c3fc32589031229fb177ef3b3324e0096e742802898976812174bdd12d',
+        'aarch64-apple-darwin': 'dd36c33e495b8046501f0824fbc08f069973cab5ee210275ab9de3af932d79e8',
       },
     },
   },
