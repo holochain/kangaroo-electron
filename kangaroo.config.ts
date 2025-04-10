@@ -3,13 +3,17 @@ import { defineConfig } from './src/main/defineConfig';
 export default defineConfig({
   appId: 'org.holochain.kangaroo-electron',
   productName: 'Holochain Kangaroo Electron',
-  version: '0.1.0',
+  version: "0.2.0",
   macOSCodeSigning: false,
   windowsEVCodeSigning: false,
   fallbackToIndexHtml: true,
   autoUpdates: true,
   systray: true,
   passwordMode: 'password-optional',
+  webhapp: {
+    url: 'https://github.com/holochain/ziptest/releases/download/ziptest-v0.2.0/ziptest.webhapp',
+    sha256: 'ef3537739bf0b14a9e8cd7858c3e10a576fdfede3a71f0f5e42de67f7ae66f19',
+  },
   bins: {
     holochain: {
       version: '0.5.0-rc.1',
