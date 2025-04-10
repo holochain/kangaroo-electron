@@ -11,7 +11,8 @@ This repository let's you easily convert your Holochain app into a standalone, e
 Depending on which Holochain minor version you want to use you should use the corresponding branch of this repository.
 
 
-- Holochain 0.4.x (stable): [main](https://github.com/holochain/kangaroo-electron/tree/main)
+- Holochain 0.4.x (stable): [main-0.4](https://github.com/holochain/kangaroo-electron/tree/main-0.4)
+- Holochain 0.5.x: [main](https://github.com/holochain/kangaroo-electron/tree/main)
 - Holochain 0.3.x: [main-0.3](https://github.com/holochain/kangaroo-electron/tree/main-0.3)
 
 # Instructions
