@@ -12,14 +12,14 @@ export default defineConfig({
   passwordMode: 'password-optional',
   bins: {
     holochain: {
-      version: '0.5.0-rc.0',
+      version: '0.5.0-rc.1',
       sha256: {
         'x86_64-unknown-linux-gnu':
-          'ebed39a335c0bac3680ff6fbca278ae96bf32208e4a5b48dbc33aedbcde4707f',
+          'ec988f05566f41e61b65b1cde20f99a1805dd09c02cd538820793b00149abc33',
         'x86_64-pc-windows-msvc.exe':
-          'afe9f55866cc6f77250cdff8b8eb5f92858a1912e445dd28604eb4255962006b',
-        'x86_64-apple-darwin': '445f17d52a1896ee2575ddd4467a51ba4304fc6e943eeb1f5bb1434af91256ce',
-        'aarch64-apple-darwin': 'c46ed1bb30e1efd5a6b5a5b34cbe27db7e375b2e1ef1e15b650e80c6b90c9991',
+          '86835bc32413b71eae79a2fffe2d619255266459fb7ac9eea7826196a07eb982',
+        'x86_64-apple-darwin': '23fc7cca30f50d2e4845246c28131485e63ce866ea445201041525204311bb8b',
+        'aarch64-apple-darwin': '022fabefe5862c4415b15085ca48e34b13c71f93b66a49f0d9bf177489a5289b',
       },
     },
     lair: {
