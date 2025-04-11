@@ -11,8 +11,8 @@ export default defineConfig({
   systray: true,
   passwordMode: 'password-optional',
   webhapp: {
-    url: 'https://github.com/holochain/ziptest/releases/download/ziptest-v0.2.0/ziptest.webhapp',
-    sha256: '522e4624c6d3a6ff46f539c961030915a515e7b82d2c0b879e342f27a7973113',
+    url: 'https://github.com/holochain/ziptest/releases/download/ziptest-v0.2.1/ziptest.webhapp',
+    sha256: '447332e383074d6a36328f158160679dba7dcf1e6096ce635f3ace7ec35493b3',
   },
   bins: {
     holochain: {
