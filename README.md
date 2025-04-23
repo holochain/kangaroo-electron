@@ -45,7 +45,7 @@ yarn dev
 
 > [!WARNING]
 > The default bootstrap, signaling and ICE servers (used for connection establishment among peers)
-> in kangaroo.config.ts have no availability guarantees whatsoever and are meant for testing
+> in `kangaroo.config.ts` have no availability guarantees whatsoever and are meant for testing
 > purposes only.
 >
 > If you want to deploy your app to end-users, make sure to run your own
