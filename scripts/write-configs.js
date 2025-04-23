@@ -56,6 +56,24 @@ newtork partition among users of your app.
 `);
 }
 
+if (
+  kangarooConfig.iceUrls.includes('stun:stun-0.main.infra.holo.host:443') ||
+  kangarooConfig.iceUrls.includes('stun:stun-1.main.infra.holo.host:443')
+) {
+  console.log(`
+
+         ⚠️   WARNING  ⚠️
+
+The iceUrls field in kangaroo.config.ts contains testing ICE server URLs.
+These servers have no availability guarantees whatsoever and are meant
+for testing purposes only.
+
+If you want to deploy your app to end-users, make sure to run your own
+instances of ICE servers or use ones that have guaranteed availability
+for the lifetime of your apps network(s).
+`);
+}
+
 // Store config to json file
 fs.writeFileSync(
   path.join('resources', 'kangaroo.config.json'),
