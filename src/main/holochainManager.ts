@@ -6,9 +6,7 @@ import { HolochainVersion, KangarooEmitter } from './eventEmitter';
 import split from 'split';
 import { AdminWebsocket, AppAuthenticationToken, AppInfo } from '@holochain/client';
 import { KangarooFileSystem } from './filesystem';
-import { HAPP_APP_ID, HAPP_PATH } from './const';
-
-import { defaultConductorConfig } from '@lightningrodlabs/we-rust-utils';
+import { CONDUCTOR_CONFIG_TEMPLATE, HAPP_APP_ID, HAPP_PATH, KANGAROO_CONFIG } from './const';
 import { app } from 'electron';
 
 export type AdminPort = number;
@@ -64,17 +62,23 @@ export class HolochainManager {
       ? parseInt(process.env.ADMIN_PORT, 10)
       : await getPort();
 
-    const conductorConfig = defaultConductorConfig(
-      adminPort,
-      rootDir,
-      lairUrl,
-      bootstrapUrl,
-      signalingUrl,
-      'kangaroo',
-      false,
-      iceUrls,
-      undefined
-    );
+    const conductorConfig = CONDUCTOR_CONFIG_TEMPLATE;
+
+    conductorConfig.data_root_path = rootDir;
+    conductorConfig.keytore.connection_url = lairUrl;
+    conductorConfig.admin_interfaces = {
+      driver: { type: 'websocket', port: adminPort, allowed_origins: 'kangaroo' },
+    };
+
+    // network parameters
+    conductorConfig.network.bootstrap_url = bootstrapUrl
+      ? bootstrapUrl
+      : KANGAROO_CONFIG.bootstrapUrl;
+    conductorConfig.network.signal_url = signalingUrl ? signalingUrl : KANGAROO_CONFIG.signalingUrl;
+    const iceConfig = iceUrls
+      ? iceUrls.map((url) => ({ urls: url }))
+      : KANGAROO_CONFIG.iceUrls.map((url) => ({ urls: url }));
+    conductorConfig.network.webrtc_config = { iceServers: iceConfig };
 
     console.log('Writing conductor-config.yaml...');
 
@@ -172,9 +176,9 @@ export class HolochainManager {
       installed_app_id: HAPP_APP_ID,
       network_seed: networkSeed,
       source: {
-        type: "path",
+        type: 'path',
         value: HAPP_PATH,
-      }
+      },
     });
     if (appInfo.status !== 'awaiting_memproofs') {
       try {

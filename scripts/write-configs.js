@@ -27,6 +27,12 @@ fs.writeFileSync(
   'utf-8'
 );
 
+// Copy conductor config template to resources folder
+fs.copyFileSync(
+  path.join(process.cwd(), 'templates', 'conductor-config.yaml'),
+  path.join('resources', 'conductor-config.yaml')
+);
+
 // Overwrite package.json values
 const packageJsonString = fs.readFileSync('package.json', 'utf-8');
 const packageJSON = JSON.parse(packageJsonString);

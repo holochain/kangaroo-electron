@@ -1,6 +1,8 @@
+/* eslint-disable import/no-named-as-default-member */
 import { app } from 'electron';
 import path from 'path';
 import fs from 'fs';
+import yaml from 'js-yaml';
 import { KangarooConfig } from './types';
 
 const RESOURCES_DIRECTORY = app.isPackaged
@@ -12,6 +14,11 @@ const kangarooConfigString = fs.readFileSync(
   'utf-8'
 );
 export const KANGAROO_CONFIG: KangarooConfig = JSON.parse(kangarooConfigString);
+const conductorConfigTemplateString = fs.readFileSync(
+  path.join(RESOURCES_DIRECTORY, 'conductor-config.yaml'),
+  'utf-8'
+);
+export const CONDUCTOR_CONFIG_TEMPLATE = yaml.load(conductorConfigTemplateString);
 
 export const DEFAULT_BOOTSTRAP_SERVER = 'https://dev-test-bootstrap2.holochain.org';
 export const DEFAULT_SIGNALING_SERVER = 'wss://dev-test-bootstrap2.holochain.org';
