@@ -1,6 +1,8 @@
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import getPort from 'get-port';
 import fs from 'fs';
+import yaml from 'js-yaml';
 import * as childProcess from 'child_process';
 import { HolochainVersion, KangarooEmitter } from './eventEmitter';
 import split from 'split';
@@ -65,10 +67,10 @@ export class HolochainManager {
     const conductorConfig = CONDUCTOR_CONFIG_TEMPLATE;
 
     conductorConfig.data_root_path = rootDir;
-    conductorConfig.keytore.connection_url = lairUrl;
-    conductorConfig.admin_interfaces = {
+    conductorConfig.keystore.connection_url = lairUrl;
+    conductorConfig.admin_interfaces = [{
       driver: { type: 'websocket', port: adminPort, allowed_origins: 'kangaroo' },
-    };
+    }];
 
     // network parameters
     conductorConfig.network.bootstrap_url = bootstrapUrl
@@ -82,7 +84,7 @@ export class HolochainManager {
 
     console.log('Writing conductor-config.yaml...');
 
-    fs.writeFileSync(configPath, conductorConfig);
+    fs.writeFileSync(configPath, yaml.dump(conductorConfig));
 
     const conductorHandle = childProcess.spawn(binary, ['-c', configPath, '-p'], {
       env: {
