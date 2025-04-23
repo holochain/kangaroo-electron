@@ -6,15 +6,20 @@ const tsNode = require('ts-node');
 
 tsNode.register();
 
+const PLACEHOLDER_APP_ID = 'org.holochain.kangaroo-electron';
+const PLACEHOLDER_PRODUCT_NAME = 'Holochain Kangaroo Electron';
+
 const kangarooConfig = require(path.join(process.cwd(), 'kangaroo.config.ts')).default;
 
 if (!process.env.KANGAROO_DEV) {
-  // CHECK THAT NO DEFAULT VALUES ANYMORE
-  if (kangarooConfig.appId === 'org.holochain.kangaroo-electron')
+  // Check that no default placeholder values are being used for appId and productName, otherwise
+  // devs might accidentally deploy different apps under the default appId/productName instead
+  // of their own chosen appId/productName
+  if (kangarooConfig.appId === PLACEHOLDER_APP_ID)
     throw new Error(
       "The appId field in 'kangaroo.config.ts' is still using the default value. Change it to the appId of your app."
     );
-  if (kangarooConfig.productName === 'Holochain Kangaroo Electron')
+  if (kangarooConfig.productName === PLACEHOLDER_PRODUCT_NAME)
     throw new Error(
       "The productName field in 'kangaroo.config.ts' is still using the default value. Change it to the productName of your app."
     );
