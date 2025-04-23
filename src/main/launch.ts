@@ -7,6 +7,7 @@ import { RunOptions } from './cli';
 import { initializeLairKeystore, launchLairKeystore } from './lairKeystore';
 import {
   DEFAULT_BOOTSTRAP_SERVER,
+  DEFAULT_ICE_URLS,
   DEFAULT_SIGNALING_SERVER,
   HAPP_APP_ID,
   HOLOCHAIN_BINARY,
@@ -84,7 +85,9 @@ export async function launch(
     lairUrl,
     runOptions.bootstrapUrl ? runOptions.bootstrapUrl.toString() : DEFAULT_BOOTSTRAP_SERVER,
     runOptions.signalingUrl ? runOptions.signalingUrl.toString() : DEFAULT_SIGNALING_SERVER,
-    runOptions.iceUrls ? runOptions.iceUrls : undefined
+    runOptions.iceUrls ? runOptions.iceUrls : DEFAULT_ICE_URLS,
+    runOptions.holochainRustLog,
+    runOptions.holochainWasmLog
   );
 
   // Install happ if necessary
