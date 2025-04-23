@@ -52,7 +52,7 @@ yarn dev
 > instances of these servers or use servers that have guaranteed availability for the lifetime
 > of your apps network(s).
 >
-> **Changing these URLs *after* deployment of your app can result in a newtork partition**.
+> **Changing these URLs *after* deployment of your app can result in a network partition**.
 
 
 ### Build locally
