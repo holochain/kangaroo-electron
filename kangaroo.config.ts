@@ -11,7 +11,7 @@ export default defineConfig({
   systray: true,
   passwordMode: 'password-optional',
   bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
-  signalingUrl: 'wss://dev-test-bootstrap2.holochain.org/',
+  signalUrl: 'wss://dev-test-bootstrap2.holochain.org/',
   iceUrls: ['stun:stun-0.main.infra.holo.host:443', 'stun:stun-1.main.infra.holo.host:443'],
   bins: {
     holochain: {

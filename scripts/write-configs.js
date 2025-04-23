@@ -43,12 +43,12 @@ among users of your app.
   `);
 }
 
-if (kangarooConfig.signalingUrl === 'wss://dev-test-bootstrap2.holochain.org/') {
+if (kangarooConfig.signalUrl === 'wss://dev-test-bootstrap2.holochain.org/') {
   console.log(`
 
          ⚠️   WARNING  ⚠️
 
-The signalingUrl in kangaroo.config.ts is still set to the testing signaling server URL.
+The signalUrl in kangaroo.config.ts is still set to the testing signaling server URL.
 This server has no availability guarantees whatsoever and is meant for testing purposes only.
 
 If you want to deploy your app to end-users, make sure to run your own

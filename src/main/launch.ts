@@ -84,7 +84,7 @@ export async function launch(
     kangarooFs.conductorConfigPath,
     lairUrl,
     runOptions.bootstrapUrl ? runOptions.bootstrapUrl.toString() : DEFAULT_BOOTSTRAP_SERVER,
-    runOptions.signalingUrl ? runOptions.signalingUrl.toString() : DEFAULT_SIGNALING_SERVER,
+    runOptions.signalUrl ? runOptions.signalUrl.toString() : DEFAULT_SIGNALING_SERVER,
     runOptions.iceUrls ? runOptions.iceUrls : DEFAULT_ICE_URLS,
     runOptions.holochainRustLog,
     runOptions.holochainWasmLog

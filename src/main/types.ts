@@ -75,7 +75,7 @@ export type KangarooConfig = {
   /**
    * URL of the signaling server to use
    */
-  signalingUrl: string,
+  signalUrl: string,
   /**
    * ICE Urls for the WebRTC configuration
    */

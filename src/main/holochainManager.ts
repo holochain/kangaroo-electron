@@ -55,7 +55,7 @@ export class HolochainManager {
     configPath: string,
     lairUrl: string,
     bootstrapUrl: string,
-    signalingUrl: string,
+    signalUrl: string,
     iceUrls?: string[],
     rustLog?: string,
     wasmLog?: string
@@ -76,7 +76,7 @@ export class HolochainManager {
     conductorConfig.network.bootstrap_url = bootstrapUrl
       ? bootstrapUrl
       : KANGAROO_CONFIG.bootstrapUrl;
-    conductorConfig.network.signal_url = signalingUrl ? signalingUrl : KANGAROO_CONFIG.signalingUrl;
+    conductorConfig.network.signal_url = signalUrl ? signalUrl : KANGAROO_CONFIG.signalUrl;
     const iceConfig = iceUrls
       ? iceUrls.map((url) => ({ urls: url }))
       : KANGAROO_CONFIG.iceUrls.map((url) => ({ urls: url }));

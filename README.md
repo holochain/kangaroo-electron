@@ -171,7 +171,7 @@ Options:
   --holochain-wasm-log <string>  WASM_LOG value to pass to the holochain binary
   --lair-rust-log <string>       RUST_LOG value to pass to the lair keystore binary
   -b, --bootstrap-url <url>      URL of the bootstrap server to use (not persisted across restarts).
-  -s, --signaling-url <url>      URL of the signaling server to use (not persisted across restarts).
+  -s, --signal-url <url>      URL of the signaling server to use (not persisted across restarts).
   --ice-urls <string>            Comma separated string of ICE server URLs to use. Is ignored if an external holochain binary is being used
                                  (not persisted across restarts).
   --print-holochain-logs         Print holochain logs directly to the terminal (they will be still written to the logfile as well)
