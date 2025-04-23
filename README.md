@@ -44,7 +44,7 @@ yarn dev
 ## Build the Distributable
 
 > [!WARNING]
-> The default bootsrap, signaling and ICE servers (used for connection establishment among peers)
+> The default bootstrap, signaling and ICE servers (used for connection establishment among peers)
 > in kangaroo.config.ts have no availability guarantees whatsoever and are meant for testing
 > purposes only.
 >
