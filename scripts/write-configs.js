@@ -37,7 +37,7 @@ If you want to deploy your app to end-users, make sure to run your own
 instance of a bootstrap server or use a server that has guaranteed availability
 for the lifetime of your apps network(s).
 
-Changing the bootstrap URL after deployment of your app can result in a newtork partition
+Changing the bootstrap URL after deployment of your app can result in a network partition
 among users of your app.
 
   `);
