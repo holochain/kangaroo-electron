@@ -20,6 +20,42 @@ if (!process.env.KANGAROO_DEV) {
     );
 }
 
+if (kangarooConfig.bootstrapUrl === 'https://dev-test-bootstrap2.holochain.org/') {
+  console.log(`
+
+         ⚠️   WARNING  ⚠️
+
+The bootstrapUrl field in kangaroo.config.ts is still set to the testing bootstrap server URL.
+This server has no availability guarantees whatsoever and is meant for testing purposes only.
+
+If you want to deploy your app to end-users, make sure to run your own
+instance of a bootstrap server or use a server that has guaranteed availability
+for the lifetime of your apps network(s).
+
+Changing the bootstrap URL after deployment of your app can result in a newtork partition
+among users of your app.
+
+  `);
+}
+
+if (kangarooConfig.signalingUrl === 'wss://dev-test-bootstrap2.holochain.org/') {
+  console.log(`
+
+         ⚠️   WARNING  ⚠️
+
+The signalingUrl in kangaroo.config.ts is still set to the testing signaling server URL.
+This server has no availability guarantees whatsoever and is meant for testing purposes only.
+
+If you want to deploy your app to end-users, make sure to run your own
+instance of a signaling server or use a server that has guaranteed availability
+for the lifetime of your apps network(s).
+
+Changing the signaling server URL after deployment of your app can result in a
+newtork partition among users of your app.
+
+`);
+}
+
 // Store config to json file
 fs.writeFileSync(
   path.join('resources', 'kangaroo.config.json'),

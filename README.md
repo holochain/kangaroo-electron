@@ -43,6 +43,15 @@ yarn dev
 
 ## Build the Distributable
 
+> [!WARNING]
+> The default bootsrap and signaling server (used for connection establishment among peers)
+> in kangaroo.config.ts have no availability guarantees whatsoever and are meant for testing
+> purposes only. If you want to deploy your app to end-users, make sure to run your own
+> instances of these servers or use servers that have guaranteed availability for the lifetime
+> of your apps network(s).
+> **Changing these URLs *after* deployment of your app can result in a newtork partition**.
+
+
 ### Build locally
 
 To build the app locally for your platform, run the build command for your respecive platform:
