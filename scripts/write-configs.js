@@ -56,7 +56,7 @@ instance of a signaling server or use a server that has guaranteed availability
 for the lifetime of your apps network(s).
 
 Changing the signaling server URL after deployment of your app can result in a
-newtork partition among users of your app.
+network partition among users of your app.
 
 `);
 }
@@ -74,7 +74,7 @@ These servers have no availability guarantees whatsoever and are meant
 for testing purposes only.
 
 If you want to deploy your app to end-users, make sure to run your own
-instances of ICE servers or use ones that have guaranteed availability
+instances of ICE servers or use public ones that have guaranteed availability
 for the lifetime of your apps network(s).
 `);
 }
