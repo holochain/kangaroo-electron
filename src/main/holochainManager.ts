@@ -64,13 +64,24 @@ export class HolochainManager {
       ? parseInt(process.env.ADMIN_PORT, 10)
       : await getPort();
 
-    const conductorConfig = CONDUCTOR_CONFIG_TEMPLATE;
+    let conductorConfig;
+
+    try {
+      conductorConfig = yaml.load(fs.readFileSync(configPath));
+    } catch (e) {
+      console.warn(
+        'Failed to read existing conductor-config.yaml file. Overwriting it with a default one.'
+      );
+      conductorConfig = CONDUCTOR_CONFIG_TEMPLATE;
+    }
 
     conductorConfig.data_root_path = rootDir;
     conductorConfig.keystore.connection_url = lairUrl;
-    conductorConfig.admin_interfaces = [{
-      driver: { type: 'websocket', port: adminPort, allowed_origins: 'kangaroo' },
-    }];
+    conductorConfig.admin_interfaces = [
+      {
+        driver: { type: 'websocket', port: adminPort, allowed_origins: 'kangaroo' },
+      },
+    ];
 
     // network parameters
     conductorConfig.network.bootstrap_url = bootstrapUrl
