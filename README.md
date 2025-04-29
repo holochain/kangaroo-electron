@@ -22,13 +22,13 @@ Depending on which Holochain minor version you want to use you should use the co
 1. Either use this repository as a template (by clicking on the green "Use this template" button) or fork it.
    Using it as a template allows you to start with a clean git history and the contributors of this repository won't show up as contributors to your new repository. **Forking has the advantage of being able to relatively easily pull in updates from this parent repository at a later point in time.** If you fork it, it may be smart to work off a different branch than the main branch in your forked repository in order to be able to keep the main branch in sync with this parent repository and selectively merge into your working branch as needed.
 
-2. In your local copy of the repository, run
+2. In the `kangaroo.config.ts` file, replace the `appId` and `productName` fields with names appropriate for your own app.
+
+3. In your local copy of the repository, run
 
 ```
 yarn setup
 ```
-
-3. In the `kangaroo.config.ts` file, replace the `appId` and `productName` fields with names appropriate for your own app.
 
 4. Choose a version number in the `version` field of `kangaroo.config.ts`. And **Read** the section [Versioning](#Versioning) below to understand the implications.
 

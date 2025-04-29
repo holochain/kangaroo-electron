@@ -79,6 +79,8 @@ for the lifetime of your apps network(s).
 `);
 }
 
+fs.mkdirSync('resources', { recursive: true });
+
 // Store config to json file
 fs.writeFileSync(
   path.join('resources', 'kangaroo.config.json'),
