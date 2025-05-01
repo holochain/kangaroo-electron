@@ -21,7 +21,7 @@ if (!process.env.KANGAROO_DEV) {
     );
   if (kangarooConfig.productName === PLACEHOLDER_PRODUCT_NAME)
     throw new Error(
-      "The productName field in 'kangaroo.config.ts' is still using the default value. Change it to the productName of your app."
+      "The productName field in 'kangaroo.config.ts' is still using the placeholder value. Change it to the productName of your app."
     );
 }
 
