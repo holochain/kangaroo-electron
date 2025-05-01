@@ -50,7 +50,7 @@ yarn dev
 >
 > If you want to deploy your app to end-users, make sure to run your own
 > instances of these servers or use servers that have guaranteed availability for the lifetime
-> of your apps network(s).
+> of your app's network(s).
 >
 > **Changing these URLs *after* deployment of your app can result in a network partition**.
 
