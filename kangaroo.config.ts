@@ -14,6 +14,9 @@ export default defineConfig({
     url: 'https://github.com/holochain/ziptest/releases/download/ziptest-v0.2.1/ziptest.webhapp',
     sha256: '447332e383074d6a36328f158160679dba7dcf1e6096ce635f3ace7ec35493b3',
   },
+  bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
+  signalUrl: 'wss://dev-test-bootstrap2.holochain.org/',
+  iceUrls: ['stun:stun-0.main.infra.holo.host:443', 'stun:stun-1.main.infra.holo.host:443'],
   bins: {
     holochain: {
       version: '0.5.2-rc.1',

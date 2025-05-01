@@ -22,13 +22,13 @@ Depending on which Holochain minor version you want to use you should use the co
 1. Either use this repository as a template (by clicking on the green "Use this template" button) or fork it.
    Using it as a template allows you to start with a clean git history and the contributors of this repository won't show up as contributors to your new repository. **Forking has the advantage of being able to relatively easily pull in updates from this parent repository at a later point in time.** If you fork it, it may be smart to work off a different branch than the main branch in your forked repository in order to be able to keep the main branch in sync with this parent repository and selectively merge into your working branch as needed.
 
-2. In your local copy of the repository, run
+2. In the `kangaroo.config.ts` file, replace the `appId` and `productName` fields with names appropriate for your own app.
+
+3. In your local copy of the repository, run
 
 ```
 yarn setup
 ```
-
-3. In the `kangaroo.config.ts` file, replace the `appId` and `productName` fields with names appropriate for your own app.
 
 4. Choose a version number in the `version` field of `kangaroo.config.ts`. And **Read** the section [Versioning](#Versioning) below to understand the implications.
 
@@ -42,6 +42,18 @@ yarn dev
 ```
 
 ## Build the Distributable
+
+> [!WARNING]
+> The default bootstrap, signaling and ICE servers (used for connection establishment among peers)
+> in `kangaroo.config.ts` have no availability guarantees whatsoever and are meant for testing
+> purposes only.
+>
+> If you want to deploy your app to end-users, make sure to run your own
+> instances of these servers or use servers that have guaranteed availability for the lifetime
+> of your app's network(s).
+>
+> **Changing these URLs *after* deployment of your app can result in a network partition**.
+
 
 ### Build locally
 
@@ -159,7 +171,7 @@ Options:
   --holochain-wasm-log <string>  WASM_LOG value to pass to the holochain binary
   --lair-rust-log <string>       RUST_LOG value to pass to the lair keystore binary
   -b, --bootstrap-url <url>      URL of the bootstrap server to use (not persisted across restarts).
-  -s, --signaling-url <url>      URL of the signaling server to use (not persisted across restarts).
+  -s, --signal-url <url>      URL of the signaling server to use (not persisted across restarts).
   --ice-urls <string>            Comma separated string of ICE server URLs to use. Is ignored if an external holochain binary is being used
                                  (not persisted across restarts).
   --print-holochain-logs         Print holochain logs directly to the terminal (they will be still written to the logfile as well)

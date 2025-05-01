@@ -69,7 +69,7 @@ kangarooCli
     'URL of the bootstrap server to use (not persisted across restarts).'
   )
   .option(
-    '-s, --signaling-url <url>',
+    '-s, --signal-url <url>',
     'URL of the signaling server to use (not persisted across restarts).'
   )
   .option(
