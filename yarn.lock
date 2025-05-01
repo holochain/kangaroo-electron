@@ -959,36 +959,6 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@lightningrodlabs/we-rust-utils-darwin-arm64@0.500.0-rc.0":
-  version "0.500.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@lightningrodlabs/we-rust-utils-darwin-arm64/-/we-rust-utils-darwin-arm64-0.500.0-rc.0.tgz#9395011dbd1230d9b0464cdd8901d59364e6a11b"
-  integrity sha512-TkthTTnwjY8fASuFlJReGzuGXd90lZU1KWqdUgw0qQgEEAvNJnt3nlXM6wRNHb+gK5AEmNjA/BPvUJhouYiO6g==
-
-"@lightningrodlabs/we-rust-utils-darwin-x64@0.500.0-rc.0":
-  version "0.500.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@lightningrodlabs/we-rust-utils-darwin-x64/-/we-rust-utils-darwin-x64-0.500.0-rc.0.tgz#3820b36b290acc21e5d78403e2e7a2df5a075eae"
-  integrity sha512-BEIsLdJPuU3v625i3O2PWgX2zgdLs8jiTkpchj07uRra7KWn4+1iRKoPYJv9uE5fRKmSuVhD/3Okda8o9WVymQ==
-
-"@lightningrodlabs/we-rust-utils-linux-x64-gnu@0.500.0-rc.0":
-  version "0.500.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@lightningrodlabs/we-rust-utils-linux-x64-gnu/-/we-rust-utils-linux-x64-gnu-0.500.0-rc.0.tgz#475c7776be3c023eb6f089f2dfc6571d3f19844f"
-  integrity sha512-3bBnUdcqqItQqtZ8IwDMV7ND5Fp2NjLdSjf9KjBe+axB2tcpO8FH34dMeNHor/dR95Xb+dc4VFI7dctMNV6pOw==
-
-"@lightningrodlabs/we-rust-utils-win32-x64-msvc@0.500.0-rc.0":
-  version "0.500.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@lightningrodlabs/we-rust-utils-win32-x64-msvc/-/we-rust-utils-win32-x64-msvc-0.500.0-rc.0.tgz#bdc0f54e0009212cba0dff8e29a774844c14c2f4"
-  integrity sha512-IjVtqGxo1P4gytv8i6HNLWvcRscYiQB5cWjvSuUuEM06M4C/EOsFsL5TjRtJdAdff8EMMzrkz9laMEJlE4VGHg==
-
-"@lightningrodlabs/we-rust-utils@0.500.0-rc.0":
-  version "0.500.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@lightningrodlabs/we-rust-utils/-/we-rust-utils-0.500.0-rc.0.tgz#46cbb5aa2f4da6b0b40bc5517229174ac8d35598"
-  integrity sha512-i4KvwZSyKGyOPlX38TOqBlg59BGUi5oD6gnrYZTtqimikSnWdABj665UZxszUu714G4eku6g2o0ltWcRRtkM4Q==
-  optionalDependencies:
-    "@lightningrodlabs/we-rust-utils-darwin-arm64" "0.500.0-rc.0"
-    "@lightningrodlabs/we-rust-utils-darwin-x64" "0.500.0-rc.0"
-    "@lightningrodlabs/we-rust-utils-linux-x64-gnu" "0.500.0-rc.0"
-    "@lightningrodlabs/we-rust-utils-win32-x64-msvc" "0.500.0-rc.0"
-
 "@malept/cross-spawn-promise@^1.1.0":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@malept/cross-spawn-promise/-/cross-spawn-promise-1.1.1.tgz#504af200af6b98e198bce768bc1730c6936ae01d"

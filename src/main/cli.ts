@@ -11,7 +11,7 @@ export interface CliOpts {
   holochainWasmLog?: string;
   lairRustLog?: string;
   bootstrapUrl?: string;
-  signalingUrl?: string;
+  signalUrl?: string;
   iceUrls?: string;
   printHolochainLogs?: boolean;
 }
@@ -20,7 +20,7 @@ export interface RunOptions {
   profile: string | undefined;
   networkSeed: string;
   bootstrapUrl: URL | undefined;
-  signalingUrl: URL | undefined;
+  signalUrl: URL | undefined;
   iceUrls: string[] | undefined;
   holochainPath: string | undefined;
   lairPath: string | undefined;
@@ -44,8 +44,8 @@ export function validateArgs(args: CliOpts): RunOptions {
   if (args.bootstrapUrl && typeof args.bootstrapUrl !== 'string') {
     throw new Error('The --bootstrap-url argument must be of type string.');
   }
-  if (args.signalingUrl && typeof args.signalingUrl !== 'string') {
-    throw new Error('The --signaling-url argument must be of type string.');
+  if (args.signalUrl && typeof args.signalUrl !== 'string') {
+    throw new Error('The --signal-url argument must be of type string.');
   }
   console.log('ICE URLS arg: ', args.iceUrls);
   console.log('ICE URLS arg type: ', typeof args.iceUrls);
@@ -73,13 +73,13 @@ export function validateArgs(args: CliOpts): RunOptions {
   const networkSeed = args.networkSeed ? args.networkSeed : defaultAppNetworkSeed();
 
   const bootstrapUrl = args.bootstrapUrl ? new URL(args.bootstrapUrl) : undefined;
-  const signalingUrl = args.signalingUrl ? new URL(args.signalingUrl) : undefined;
+  const signalUrl = args.signalUrl ? new URL(args.signalUrl) : undefined;
 
   return {
     profile,
     networkSeed,
     bootstrapUrl,
-    signalingUrl,
+    signalUrl,
     iceUrls: args.iceUrls ? args.iceUrls.split(',') : undefined,
     holochainPath: args.holochainPath ? args.holochainPath : undefined,
     lairPath: args.lairPath ? args.lairPath : undefined,

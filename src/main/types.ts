@@ -68,18 +68,18 @@ export type KangarooConfig = {
    * upon closing its window and can be re-opened via its icon in the systray.
    */
   systray: boolean;
-  // /**
-  //  * Whether or not the app should have the user set up a password.
-  //  */
-  // usePassword: boolean,
-  // /**
-  //  * URL of the bootstrap server to use.
-  //  */
-  // bootstrapUrl?: string,
-  // /**
-  //  * URL of the signaling server to use
-  //  */
-  // signalingUrl?: string,
+  /**
+   * URL of the bootstrap server to use.
+   */
+  bootstrapUrl: string,
+  /**
+   * URL of the signaling server to use
+   */
+  signalUrl: string,
+  /**
+   * ICE Urls for the WebRTC configuration
+   */
+  iceUrls: string[],
   /**
    * The network seed to use when installing the happ. If not set, the
    * network seed will automatically be generated and be based on the
