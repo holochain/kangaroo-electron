@@ -89,8 +89,8 @@ export class HolochainManager {
       : KANGAROO_CONFIG.bootstrapUrl;
     conductorConfig.network.signal_url = signalUrl ? signalUrl : KANGAROO_CONFIG.signalUrl;
     const iceConfig = iceUrls
-      ? iceUrls.map((url) => ({ urls: url }))
-      : KANGAROO_CONFIG.iceUrls.map((url) => ({ urls: url }));
+      ? iceUrls.map((url) => ({ urls: [url] }))
+      : KANGAROO_CONFIG.iceUrls.map((url) => ({ urls: [url] }));
     conductorConfig.network.webrtc_config = { iceServers: iceConfig };
 
     console.log('Writing conductor-config.yaml...');
