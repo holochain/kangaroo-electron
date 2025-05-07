@@ -16,17 +16,17 @@ export default defineConfig({
   },
   bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
   signalUrl: 'wss://dev-test-bootstrap2.holochain.org/',
-  iceUrls: ['stun:stun-0.main.infra.holo.host:443', 'stun:stun-1.main.infra.holo.host:443'],
+  iceUrls: ['stun://stun.l.google.com:19302'],
   bins: {
     holochain: {
-      version: '0.5.2-rc.1',
+      version: '0.5.2-rc.2',
       sha256: {
         'x86_64-unknown-linux-gnu':
-          '11b4a9b71f789ff172dc3c31f80d905d8f40f31d15e572314f7ef05491f45024',
+          'e4a3999265e5809efdeb55a5cf72bd9b99b9438176fce48bda31dd39965a5a39',
         'x86_64-pc-windows-msvc.exe':
-          '48ce20b56d33db42805a35878e320ae5606352d7ca0efb4aea0ce96474122bae',
-        'x86_64-apple-darwin': '9d59fff4b0ddd4d52313fee418260047d76c868a2d3a0de467aaadf5a649dd5a',
-        'aarch64-apple-darwin': 'd153428bedc8494af019ba2852a9f5b4c5d9c23ca04a7d5bceb907c5a68baa7a',
+          '419ef356f51a05bb2ddc2284132961d1b1c384ef7650ee4a440ea132e5cc69c9',
+        'x86_64-apple-darwin': '5116fc4b6c397af381525d7b541587a425b611d802691a5dc8062e675dc36cb0',
+        'aarch64-apple-darwin': 'f98011c87683283536bdd662d10ceb074738a6e3ee4f705521d0bc2ac67f54cd',
       },
     },
     lair: {
