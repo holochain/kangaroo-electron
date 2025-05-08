@@ -20,13 +20,6 @@ const conductorConfigTemplateString = fs.readFileSync(
 );
 export const CONDUCTOR_CONFIG_TEMPLATE = yaml.load(conductorConfigTemplateString);
 
-export const DEFAULT_BOOTSTRAP_SERVER = 'https://dev-test-bootstrap2.holochain.org';
-export const DEFAULT_SIGNALING_SERVER = 'wss://dev-test-bootstrap2.holochain.org';
-export const DEFAULT_ICE_URLS = [
-  'stun:stun-0.main.infra.holo.host:443',
-  'stun:stun-1.main.infra.holo.host:443',
-];
-
 const binariesAppendix = KANGAROO_CONFIG.appId.slice(0, 10).replace(' ', '-');
 
 const BINARIES_DIRECTORY = path.join(RESOURCES_DIRECTORY, 'bins');
