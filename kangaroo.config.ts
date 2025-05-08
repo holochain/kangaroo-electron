@@ -12,7 +12,7 @@ export default defineConfig({
   passwordMode: 'password-optional',
   bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
   signalUrl: 'wss://dev-test-bootstrap2.holochain.org/',
-  iceUrls: ['stun:stun-0.main.infra.holo.host:443', 'stun:stun-1.main.infra.holo.host:443'],
+  iceUrls: ['stun://stun.l.google.com:19302,stun.cloudflare.com:3478'],
   bins: {
     holochain: {
       version: '0.5.0-rc.1',
