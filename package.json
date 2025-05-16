@@ -1,6 +1,6 @@
 {
   "name": "org.lightningrodlabs.acorn",
-  "version": "11.1.2",
+  "version": "11.2.0",
   "license": "CAL-1.0",
   "main": "./out/main/index.js",
   "scripts": {
