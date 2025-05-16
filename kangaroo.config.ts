@@ -3,7 +3,7 @@ import { defineConfig } from './src/main/defineConfig';
 export default defineConfig({
   appId: 'org.lightningrodlabs.acorn',
   productName: 'Acorn',
-  version: '11.1.2',
+  version: '11.2.0',
   macOSCodeSigning: true,
   windowsEVCodeSigning: true,
   fallbackToIndexHtml: true,
