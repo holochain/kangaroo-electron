@@ -9,12 +9,13 @@ import {
   protocol,
   Tray,
   Notification,
-  Event
+  Event,
 } from 'electron';
 import childProcess from 'child_process';
-import { ZomeCallNapi, ZomeCallSigner, ZomeCallUnsignedNapi } from '@holochain/hc-spin-rust-utils';
+import { ZomeCallSigner } from '@holochain/hc-spin-rust-utils';
 import contextMenu from 'electron-context-menu';
 import { encode } from '@msgpack/msgpack';
+import { sha512 } from 'js-sha512';
 import {
   CallZomeRequest,
   CallZomeRequestSigned,
@@ -68,7 +69,7 @@ kangarooCli
     'URL of the bootstrap server to use (not persisted across restarts).'
   )
   .option(
-    '-s, --signaling-url <url>',
+    '-s, --signal-url <url>',
     'URL of the signaling server to use (not persisted across restarts).'
   )
   .option(
@@ -119,39 +120,40 @@ protocol.registerSchemesAsPrivileged([
   },
 ]);
 
-const handleSignZomeCall = async (_e: IpcMainInvokeEvent, request: CallZomeRequest) => {
+const handleSignZomeCall = async (
+  _e: IpcMainInvokeEvent,
+  request: CallZomeRequest
+): Promise<CallZomeRequestSigned> => {
   if (!ZOME_CALL_SIGNER) throw new Error('Zome call signer undefined.');
-  // console.log("Got zome call request: ", request);
-  const zomeCallUnsignedNapi: ZomeCallUnsignedNapi = {
-    provenance: Array.from(request.provenance),
-    cellId: [Array.from(request.cell_id[0]), Array.from(request.cell_id[1])],
-    zomeName: request.zome_name,
-    fnName: request.fn_name,
-    payload: Array.from(encode(request.payload)),
-    nonce: Array.from(await randomNonce()),
-    expiresAt: getNonceExpiration(),
+  if (!request.provenance)
+    return Promise.reject(
+      'Call zome request has provenance field not set. This should be set by the js-client.'
+    );
+
+  const zomeCallToSign: CallZomeRequest = {
+    cell_id: request.cell_id,
+    zome_name: request.zome_name,
+    fn_name: request.fn_name,
+    payload: encode(request.payload),
+    provenance: request.provenance,
+    nonce: await randomNonce(),
+    expires_at: getNonceExpiration(),
   };
 
-  const zomeCallSignedNapi: ZomeCallNapi = await ZOME_CALL_SIGNER.signZomeCall(
-    zomeCallUnsignedNapi
+  const zomeCallBytes = encode(zomeCallToSign);
+  const bytesHash = sha512.array(zomeCallBytes);
+
+  const signature: number[] = await ZOME_CALL_SIGNER.signZomeCall(
+    bytesHash,
+    Array.from(request.provenance)
   );
 
-  const zomeCallSigned: CallZomeRequestSigned = {
-    provenance: Uint8Array.from(zomeCallSignedNapi.provenance),
-    cap_secret: null,
-    cell_id: [
-      Uint8Array.from(zomeCallSignedNapi.cellId[0]),
-      Uint8Array.from(zomeCallSignedNapi.cellId[1]),
-    ],
-    zome_name: zomeCallSignedNapi.zomeName,
-    fn_name: zomeCallSignedNapi.fnName,
-    payload: Uint8Array.from(zomeCallSignedNapi.payload),
-    signature: Uint8Array.from(zomeCallSignedNapi.signature),
-    expires_at: zomeCallSignedNapi.expiresAt,
-    nonce: Uint8Array.from(zomeCallSignedNapi.nonce),
+  const signedZomeCall: CallZomeRequestSigned = {
+    bytes: zomeCallBytes,
+    signature: Uint8Array.from(signature),
   };
 
-  return zomeCallSigned;
+  return signedZomeCall;
 };
 
 let ZOME_CALL_SIGNER: ZomeCallSigner | undefined;
@@ -235,9 +237,43 @@ app.whenReady().then(async () => {
       MAIN_WINDOW.on('close', mainWindowCloseHandler);
     }
   });
-  // ------------------------------------------------------------------------------------
+  ipcMain.handle('open-logs', async () => KANGAROO_FILESYSTEM.openLogs());
+  ipcMain.handle('export-logs', async () => KANGAROO_FILESYSTEM.exportLogs());
+  ipcMain.handle('factory-reset', async () => {
+    const userDecision = await dialog.showMessageBox({
+      title: 'Factory Reset',
+      type: 'warning',
+      buttons: ['Cancel', 'Confirm'],
+      defaultId: 0,
+      cancelId: 0,
+      message: `Are you sure you want to factory reset ${KANGAROO_CONFIG.productName}? This will delete all ${KANGAROO_CONFIG.productName} data related to the current profile (${KANGAROO_FILESYSTEM.profile}). This cannot be undone.`,
+    });
+    if (userDecision.response === 1) {
+      // Close all windows
+      if (MAIN_WINDOW) MAIN_WINDOW.close();
+      if (SPLASH_SCREEN_WINDOW) SPLASH_SCREEN_WINDOW.close();
+      // Kill holochain and lair
+      if (LAIR_HANDLE) LAIR_HANDLE.kill();
+      if (HOLOCHAIN_MANAGER) HOLOCHAIN_MANAGER.processHandle.kill();
+      // Remove all data
+      await KANGAROO_FILESYSTEM.factoryReset();
+      // restart App
+      const options: Electron.RelaunchOptions = {
+        args: process.argv,
+      };
+      // https://github.com/electron-userland/electron-builder/issues/1727#issuecomment-769896927
+      if (process.env.APPIMAGE) {
+        console.log('process.execPath: ', process.execPath);
+        options.args!.unshift('--appimage-extract-and-run');
+        options.execPath = process.env.APPIMAGE;
+      }
+      app.relaunch(options);
+      app.quit();
+    }
+  }),
+    // ------------------------------------------------------------------------------------
 
-  SPLASH_SCREEN_WINDOW = createSplashWindow(splashScreenType);
+    (SPLASH_SCREEN_WINDOW = createSplashWindow(splashScreenType));
   SPLASH_SCREEN_WINDOW.on('closed', () => {
     // We need to drop the variable here to be able to distinguish
     // in other places whether the splah screen window is still open
@@ -256,7 +292,7 @@ app.whenReady().then(async () => {
         click() {
           if (SPLASH_SCREEN_WINDOW) {
             SPLASH_SCREEN_WINDOW.show();
-          } else if(MAIN_WINDOW) {
+          } else if (MAIN_WINDOW) {
             MAIN_WINDOW.show();
           }
         },
@@ -417,5 +453,5 @@ const mainWindowCloseHandler = (e: Event) => {
       })
       .show();
   }
-  console.log("Is main window still defined?", MAIN_WINDOW);
+  console.log('Is main window still defined?', MAIN_WINDOW);
 };

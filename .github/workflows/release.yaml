@@ -43,33 +43,25 @@ jobs:
         run: |
           yarn setup
 
-      - name: Retrieve version
+      - name: Read kangaroo config
+        shell: bash
+        id: kangarooConfig
         run: |
-          echo "Retrieved App version: $(node -p -e "require('./package.json').version")"
           echo "APP_VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
-        id: version
-        shell: bash
-
-      - name: Retrieve appId
-        run: |
           echo "APP_ID=$(node ./scripts/read-app-id.js)" >> $GITHUB_OUTPUT
-        id: appId
-        shell: bash
-
-      - name: Retrieve whether Windows code signing should be attempted
-        run: |
-          echo "WINDOWS_CODE_SIGNING=$(node ./scripts/read-windows-code-signing.js)" >> $GITHUB_OUTPUT
-        id: shouldWindowsCodeSign
-        shell: bash
-
-      - name: Retrieve whether macOS code signing should be attempted
-        run: |
           echo "MACOS_CODE_SIGNING=$(node ./scripts/read-macos-code-signing.js)" >> $GITHUB_OUTPUT
-        id: shouldMacOSCodeSign
+          echo "WINDOWS_CODE_SIGNING=$(node ./scripts/read-windows-code-signing.js)" >> $GITHUB_OUTPUT
+
+      - name: Check that webhapp is available in pouch folder
         shell: bash
+        run: |
+          if ! ls ./pouch/*.webhapp 1>/dev/null 2>&1; then
+            echo "Error: No .webhapp file found in ./pouch folder. Make sure to specify a URL to your webhapp in kangaroo.config.ts or commit the webhapp to git."
+            exit 1
+          fi
 
       - name: Setup for macOS code signing
-        if: (matrix.platform == 'macos-13' || matrix.platform == 'macos-latest') && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'true'
+        if: (matrix.platform == 'macos-13' || matrix.platform == 'macos-latest') && steps.kangarooConfig.outputs.MACOS_CODE_SIGNING == 'true'
         uses: matthme/import-codesign-certs@5565bb656f60c98c8fc515f3444dd8db73545dc2
         with:
           p12-file-base64: ${{ secrets.HBE_APPLE_CERTIFICATE_BASE64 }}
@@ -78,7 +70,7 @@ jobs:
       # macOS WITHOUT code signing
       #---------------------------------------------------------------------------------------
       - name: build and upload the app WITHOUT code signing (macOS x86)
-        if: matrix.platform == 'macos-13' && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'false'
+        if: matrix.platform == 'macos-13' && steps.kangarooConfig.outputs.MACOS_CODE_SIGNING == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: false
@@ -87,7 +79,7 @@ jobs:
           ls dist
 
       - name: build and upload the app WITHOUT code signing (macOS arm64)
-        if: matrix.platform == 'macos-latest' && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'false'
+        if: matrix.platform == 'macos-latest' && steps.kangarooConfig.outputs.MACOS_CODE_SIGNING == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: false
@@ -99,7 +91,7 @@ jobs:
       #---------------------------------------------------------------------------------------
       # Note this issue regarding the if condition: https://github.com/actions/runner/issues/1173
       - name: build and upload the app WITH code signing (macOS x86)
-        if: matrix.platform == 'macos-13' && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'true'
+        if: matrix.platform == 'macos-13' && steps.kangarooConfig.outputs.MACOS_CODE_SIGNING == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_DEV_IDENTITY: ${{ secrets.APPLE_DEV_IDENTITY }}
@@ -112,7 +104,7 @@ jobs:
           ls dist
 
       - name: build and upload the app WITH code signing (macOS arm64)
-        if: matrix.platform == 'macos-latest' && steps.shouldMacOSCodeSign.outputs.MACOS_CODE_SIGNING == 'true'
+        if: matrix.platform == 'macos-latest' && steps.kangarooConfig.outputs.MACOS_CODE_SIGNING == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_DEV_IDENTITY: ${{ secrets.APPLE_DEV_IDENTITY }}
@@ -136,8 +128,8 @@ jobs:
 
           # Modify the postinst script of the .deb file
           node ./scripts/extend-deb-postinst.mjs
-          gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "latest-linux.yml" --clobber
-          gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "dist/${{ steps.appId.outputs.APP_ID }}_${{ steps.version.outputs.APP_VERSION }}_amd64.deb" --clobber
+          gh release upload "v${{ steps.kangarooConfig.outputs.APP_VERSION }}" "latest-linux.yml" --clobber
+          gh release upload "v${{ steps.kangarooConfig.outputs.APP_VERSION }}" "dist/${{ steps.kangarooConfig.outputs.APP_ID }}_${{ steps.kangarooConfig.outputs.APP_VERSION }}_amd64.deb" --clobber
 
       # Windows
       #---------------------------------------------------------------------------------------
@@ -159,15 +151,15 @@ jobs:
             # Sign the .exe file
             dotnet tool install --global --version 4.0.1 AzureSignTool
             echo "sha512 before code signing"
-            CertUtil -hashfile "dist/${{ steps.appId.outputs.APP_ID }}-${{ steps.version.outputs.APP_VERSION }}-setup.exe" SHA512
-            AzureSignTool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" -kvi "${{ secrets.AZURE_CLIENT_ID }}" -kvt "${{ secrets.AZURE_TENANT_ID }}" -kvs "${{ secrets.AZURE_CLIENT_SECRET }}" -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v "dist/${{ steps.appId.outputs.APP_ID }}-${{ steps.version.outputs.APP_VERSION }}-setup.exe"
+            CertUtil -hashfile "dist/${{ steps.kangarooConfig.outputs.APP_ID }}-${{ steps.kangarooConfig.outputs.APP_VERSION }}-setup.exe" SHA512
+            AzureSignTool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" -kvi "${{ secrets.AZURE_CLIENT_ID }}" -kvt "${{ secrets.AZURE_TENANT_ID }}" -kvs "${{ secrets.AZURE_CLIENT_SECRET }}" -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v "dist/${{ steps.kangarooConfig.outputs.APP_ID }}-${{ steps.kangarooConfig.outputs.APP_VERSION }}-setup.exe"
             echo "sha512 after code signing"
-            CertUtil -hashfile "dist/${{ steps.appId.outputs.APP_ID }}-${{ steps.version.outputs.APP_VERSION }}-setup.exe" SHA512
+            CertUtil -hashfile "dist/${{ steps.kangarooConfig.outputs.APP_ID }}-${{ steps.kangarooConfig.outputs.APP_VERSION }}-setup.exe" SHA512
 
             # Overwrite the latest.yml one with one containing the sha512 of the code signed .exe file
             node ./scripts/latest-yaml.js
-            gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "latest.yml" --clobber
-            gh release upload "v${{ steps.version.outputs.APP_VERSION }}" "dist/${{ steps.appId.outputs.APP_ID }}-${{ steps.version.outputs.APP_VERSION }}-setup.exe" --clobber
+            gh release upload "v${{ steps.kangarooConfig.outputs.APP_VERSION }}" "latest.yml" --clobber
+            gh release upload "v${{ steps.kangarooConfig.outputs.APP_VERSION }}" "dist/${{ steps.kangarooConfig.outputs.APP_ID }}-${{ steps.kangarooConfig.outputs.APP_VERSION }}-setup.exe" --clobber
 
           fi
 

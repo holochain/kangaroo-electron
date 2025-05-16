@@ -6,9 +6,11 @@ import { PasswordType } from '../main/types';
 contextBridge.exposeInMainWorld('electronAPI', {
   onProgressUpdate: (callback) => ipcRenderer.on('loading-progress-update', callback),
   onNameAndVersion: (callback) => ipcRenderer.on('name-and-version', callback),
+  factoryReset: () => ipcRenderer.invoke('factory-reset'),
+  openLogs: () => ipcRenderer.invoke('open-logs'),
+  exportLogs: () => ipcRenderer.invoke('export-logs'),
   getProfile: () => ipcRenderer.invoke('get-profile'),
   getNameAndVersion: () => ipcRenderer.invoke('get-name-and-version'),
-  lairSetupRequired: () => ipcRenderer.invoke('lair-setup-required'),
   launch: (passwordInput: PasswordType) => ipcRenderer.invoke('launch', passwordInput),
   exit: () => ipcRenderer.invoke('exit'),
 });

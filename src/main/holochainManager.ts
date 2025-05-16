@@ -1,14 +1,14 @@
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import getPort from 'get-port';
 import fs from 'fs';
+import yaml from 'js-yaml';
 import * as childProcess from 'child_process';
 import { HolochainVersion, KangarooEmitter } from './eventEmitter';
 import split from 'split';
 import { AdminWebsocket, AppAuthenticationToken, AppInfo } from '@holochain/client';
 import { KangarooFileSystem } from './filesystem';
-import { HAPP_APP_ID, HAPP_PATH } from './const';
-
-import { defaultConductorConfig } from '@lightningrodlabs/we-rust-utils';
+import { CONDUCTOR_CONFIG_TEMPLATE, HAPP_APP_ID, HAPP_PATH, KANGAROO_CONFIG } from './const';
 import { app } from 'electron';
 
 export type AdminPort = number;
@@ -55,7 +55,7 @@ export class HolochainManager {
     configPath: string,
     lairUrl: string,
     bootstrapUrl: string,
-    signalingUrl: string,
+    signalUrl: string,
     iceUrls?: string[],
     rustLog?: string,
     wasmLog?: string
@@ -64,21 +64,38 @@ export class HolochainManager {
       ? parseInt(process.env.ADMIN_PORT, 10)
       : await getPort();
 
-    const conductorConfig = defaultConductorConfig(
-      adminPort,
-      rootDir,
-      lairUrl,
-      bootstrapUrl,
-      signalingUrl,
-      'kangaroo',
-      false,
-      iceUrls,
-      undefined
-    );
+    let conductorConfig;
+
+    try {
+      conductorConfig = yaml.load(fs.readFileSync(configPath));
+    } catch (e) {
+      console.warn(
+        'Failed to read existing conductor-config.yaml file. Overwriting it with a default one.'
+      );
+      conductorConfig = CONDUCTOR_CONFIG_TEMPLATE;
+    }
+
+    conductorConfig.data_root_path = rootDir;
+    conductorConfig.keystore.connection_url = lairUrl;
+    conductorConfig.admin_interfaces = [
+      {
+        driver: { type: 'websocket', port: adminPort, allowed_origins: 'kangaroo' },
+      },
+    ];
+
+    // network parameters
+    conductorConfig.network.bootstrap_url = bootstrapUrl
+      ? bootstrapUrl
+      : KANGAROO_CONFIG.bootstrapUrl;
+    conductorConfig.network.signal_url = signalUrl ? signalUrl : KANGAROO_CONFIG.signalUrl;
+    const iceConfig = iceUrls
+      ? iceUrls.map((url) => ({ urls: [url] }))
+      : KANGAROO_CONFIG.iceUrls.map((url) => ({ urls: [url] }));
+    conductorConfig.network.webrtc_config = { iceServers: iceConfig };
 
     console.log('Writing conductor-config.yaml...');
 
-    fs.writeFileSync(configPath, conductorConfig);
+    fs.writeFileSync(configPath, yaml.dump(conductorConfig));
 
     const conductorHandle = childProcess.spawn(binary, ['-c', configPath, '-p'], {
       env: {
@@ -170,8 +187,11 @@ export class HolochainManager {
     const appInfo = await this.adminWebsocket.installApp({
       agent_key: pubKey,
       installed_app_id: HAPP_APP_ID,
-      path: HAPP_PATH,
       network_seed: networkSeed,
+      source: {
+        type: 'path',
+        value: HAPP_PATH,
+      },
     });
     if (appInfo.status !== 'awaiting_memproofs') {
       try {

@@ -68,24 +68,42 @@ export type KangarooConfig = {
    * upon closing its window and can be re-opened via its icon in the systray.
    */
   systray: boolean;
-  // /**
-  //  * Whether or not the app should have the user set up a password.
-  //  */
-  // usePassword: boolean,
-  // /**
-  //  * URL of the bootstrap server to use.
-  //  */
-  // bootstrapUrl?: string,
-  // /**
-  //  * URL of the signaling server to use
-  //  */
-  // signalingUrl?: string,
+  /**
+   * URL of the bootstrap server to use.
+   */
+  bootstrapUrl: string,
+  /**
+   * URL of the signaling server to use
+   */
+  signalUrl: string,
+  /**
+   * ICE Urls for the WebRTC configuration
+   */
+  iceUrls: string[],
   /**
    * The network seed to use when installing the happ. If not set, the
    * network seed will automatically be generated and be based on the
    * productName and the breaking semver version of your app.
    */
   networkSeed?: string;
+  /**
+   * Webhapp to use in CI. If not specified, the webhapp is assumed to
+   * be in the ./pouch folder.
+   *
+   * The sha256 is required to prevent accidentally packaging
+   * a wrong webhapp. To compute the sha256 hash of a file on Unix
+   * systems, you can run:
+   *
+   * shasum -a 256 [file]
+   *
+   * On Windows you can run:
+   *
+   * CertUtil -hashfile "[file]" SHA256
+   */
+  webhapp?: {
+    url: string;
+    sha256: string;
+  };
   devConfig?:
     | {
         happPath: string;
