@@ -17,20 +17,12 @@ jobs:
       contents: write
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
-
-      - name: install Rust
-        uses: dtolnay/rust-toolchain@1.75.0
-
-      - name: install Go stable
-        uses: actions/setup-go@v4
-        with:
-          go-version: 'stable'
+          node-version: 22
 
       # This step is only used for testing in the official kangaroo repo
       - name: Overwrite Names for release testing
