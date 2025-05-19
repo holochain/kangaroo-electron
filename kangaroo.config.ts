@@ -11,7 +11,7 @@ export default defineConfig({
   systray: true,
   webhapp: {
     url: "https://github.com/holochain/dino-adventure/releases/download/v0.1.0/dino-adventure-v0.1.0.webhapp",
-    sha256: "97ef1ac937a6c9990599ed296332a1b136b9f3594ffe39a1a468f6d4548fff75",
+    sha256: "c1e03ff5ef71c397d4228123aa75ceb2fb30d7feea7720130853248cbcc397e7",
   },
   passwordMode: 'no-password',
   bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
