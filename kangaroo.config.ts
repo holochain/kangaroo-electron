@@ -1,15 +1,15 @@
 import { defineConfig } from './src/main/defineConfig';
 
 export default defineConfig({
-  appId: 'org.holochain.kangaroo-electron',
-  productName: 'Holochain Kangaroo Electron',
+  appId: 'org.holochain.dino-adventure',
+  productName: 'Dino Adventure',
   version: '0.1.0',
   macOSCodeSigning: false,
   windowsEVCodeSigning: false,
   fallbackToIndexHtml: true,
   autoUpdates: true,
   systray: true,
-  passwordMode: 'password-optional',
+  passwordMode: 'no-password',
   bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
   signalUrl: 'wss://dev-test-bootstrap2.holochain.org/',
   iceUrls: ['stun:stun.l.google.com:19302','stun:stun.cloudflare.com:3478'],
