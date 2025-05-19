@@ -9,6 +9,10 @@ export default defineConfig({
   fallbackToIndexHtml: true,
   autoUpdates: true,
   systray: true,
+  webhapp: {
+    url: "https://github.com/holochain/dino-adventure/releases/download/v0.1.0/dino-adventure-v0.1.0.webhapp",
+    sha256: "97ef1ac937a6c9990599ed296332a1b136b9f3594ffe39a1a468f6d4548fff75",
+  },
   passwordMode: 'no-password',
   bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
   signalUrl: 'wss://dev-test-bootstrap2.holochain.org/',
