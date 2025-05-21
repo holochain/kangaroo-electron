@@ -136,6 +136,10 @@ To use code signing on macOS for your release in CI you will have to
 
 3. Uncomment the line `afterSign: scripts/notarize.js` in `./templates/electron-builder-template.yml`.
 
+> [!WARNING]
+> **Unsigned applications are put under quarantine on macOS 15 (Sequoia).** The option in the Privacy & Security panel of the System Settings to allow them has been removed. To unset the quarantine attribute of an unsigned app,
+the command `xattr -r -d com.apple.quarantine /path/to/app` can be executed from a Terminal. The app can then be run.
+
 ### Windows
 
 If you want to code sign your app with an EV certificate, you can follow [this guide](https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/) to get your EV certificate hosted on Azure Key Vault and then
