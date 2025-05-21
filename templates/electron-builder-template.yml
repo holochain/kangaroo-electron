@@ -8,7 +8,7 @@ files:
   - kangaroo.config.ts
 asarUnpack:
   - resources/**
-afterSign: scripts/notarize.mjs
+afterSign: scripts/notarize.js
 win:
   executableName: ____PLACEHOLDER____
 nsis:
