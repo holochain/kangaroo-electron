@@ -3,9 +3,9 @@ import { defineConfig } from './src/main/defineConfig';
 export default defineConfig({
   appId: 'org.holochain.dino-adventure',
   productName: 'Dino Adventure',
-  version: '0.1.0',
-  macOSCodeSigning: false,
-  windowsEVCodeSigning: false,
+  version: '0.1.1',
+  macOSCodeSigning: true,
+  windowsEVCodeSigning: true,
   fallbackToIndexHtml: true,
   autoUpdates: true,
   systray: true,
