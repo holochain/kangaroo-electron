@@ -8,7 +8,7 @@ files:
   - kangaroo.config.ts
 asarUnpack:
   - resources/**
-# afterSign: scripts/notarize.js
+afterSign: scripts/notarize.js
 win:
   executableName: ____PLACEHOLDER____
 nsis:
@@ -24,7 +24,7 @@ mac:
   # - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
   # - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
   # - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
-  notarize: true
+  notarize: false
 dmg:
   artifactName: ${name}-${version}-${arch}.${ext}
 linux:
