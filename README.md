@@ -134,6 +134,8 @@ To use code signing on macOS for your release in CI you will have to
 - `APPLE_CERTIFICATE`
 - `APPLE_CERTIFICATE_PASSWORD`
 
+3. Uncomment the line `afterSign: scripts/notarize.js` in `./templates/electron-builder-template.yml`.
+
 > [!WARNING]
 > **Unsigned applications are put under quarantine on macOS 15 (Sequoia).** The option in the Privacy & Security panel of the System Settings to allow them has been removed. To unset the quarantine attribute of an unsigned app,
 the command `xattr -r -d com.apple.quarantine /path/to/app` can be executed from a Terminal. The app can then be run.
