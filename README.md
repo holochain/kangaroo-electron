@@ -33,7 +33,7 @@ yarn setup
 4. Choose a version number in the `version` field of `kangaroo.config.ts`. And **Read** the section [Versioning](#Versioning) below to understand the implications.
 
 5. Paste the `.webhapp` file of your holochain app into the `pouch` folder.
-   **Note**: The kangaroo expects a 1024x1024 pixel `icon.png` at the root level of your webhapp's UI assets.
+   **Note**: The kangaroo expects an `icon.png` of at least 256x256 pixel at the root level of your webhapp's UI assets.
 
 6. To test it, run
 
@@ -133,6 +133,12 @@ To use code signing on macOS for your release in CI you will have to
 - `APPLE_TEAM_ID`
 - `APPLE_CERTIFICATE`
 - `APPLE_CERTIFICATE_PASSWORD`
+
+3. Uncomment the line `afterSign: scripts/notarize.js` in `./templates/electron-builder-template.yml`.
+
+> [!WARNING]
+> **Unsigned applications are put under quarantine on macOS 15 (Sequoia).** The option in the Privacy & Security panel of the System Settings to allow them has been removed. To unset the quarantine attribute of an unsigned app,
+the command `xattr -r -d com.apple.quarantine /path/to/app` can be executed from a Terminal. The app can then be run.
 
 ### Windows
 
