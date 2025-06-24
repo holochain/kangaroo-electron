@@ -3,16 +3,20 @@ import { defineConfig } from './src/main/defineConfig';
 export default defineConfig({
   appId: 'org.lightningrodlabs.acorn',
   productName: 'Acorn',
-  version: '11.2.1',
+  version: '11.3.0',
   macOSCodeSigning: true,
   windowsEVCodeSigning: true,
   fallbackToIndexHtml: true,
   autoUpdates: true,
   systray: true,
+  webhapp: {
+    url: 'https://github.com/lightningrodlabs/acorn/releases/download/v11.3.0-alpha/acorn.webhapp',
+    sha256: "e9adbdfa9e1a9d41212ffd42ea3ee377c54fecfd87d16058c777edd5f1aeb377"
+  },
   passwordMode: 'password-optional',
   bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
   signalUrl: 'wss://dev-test-bootstrap2.holochain.org/',
-  iceUrls: ['stun:stun.l.google.com:19302', 'stun:stun.cloudflare.com:3478'],
+  iceUrls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'],
   bins: {
     holochain: {
       version: '0.5.2',

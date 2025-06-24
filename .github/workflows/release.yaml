@@ -24,13 +24,6 @@ jobs:
         with:
           node-version: 22
 
-      # This step is only used for testing in the official kangaroo repo
-      - name: fetch acorn-desktop.webhapp from github repo
-        run: |
-          echo ${{ github.repository }}
-          echo "fetch acorn-desktop.webhapp from github repo"
-          curl -f -L --output ./pouch/acorn-desktop.webhapp https://github.com/lightningrodlabs/acorn/releases/download/v11.2.1-alpha/acorn-desktop.webhapp
-
       - name: Environment setup
         run: |
           yarn setup
