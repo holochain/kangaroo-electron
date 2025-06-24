@@ -1,7 +1,7 @@
 import { KANGAROO_CONFIG } from './const';
 import { breakingAppVersion } from './filesystem';
 import { app } from 'electron';
-
+import { v4 as uuidv4 } from 'uuid';
 export interface CliOpts {
   profile?: string;
   networkSeed?: string;
@@ -69,8 +69,12 @@ export function validateArgs(args: CliOpts): RunOptions {
   }
 
   const profile = args.profile ? args.profile : undefined;
-  // If provided take the one provided, otherwise check whether it's applet dev mode
-  const networkSeed = args.networkSeed ? args.networkSeed : defaultAppNetworkSeed();
+  // If provided take the one provided, otherwise generate a random network seed.
+  // We take a random network seed here because we don't want to create a global
+  // DHT and it's not yet possible possible in holochain to not provision CloneOnly
+  // cells. So we want that everyone installing acorn lands in their own random
+  // DHT with the initially provisioned cell.
+  const networkSeed = args.networkSeed ? args.networkSeed : uuidv4();
 
   const bootstrapUrl = args.bootstrapUrl ? new URL(args.bootstrapUrl) : undefined;
   const signalUrl = args.signalUrl ? new URL(args.signalUrl) : undefined;
