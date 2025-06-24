@@ -15,6 +15,7 @@ import {
 import { createHappWindow } from './windows';
 import { ZomeCallSigner } from '@holochain/hc-spin-rust-utils';
 import { HolochainManager } from './holochainManager';
+import { v4 } from 'uuid';
 
 export async function launch(
   kangarooFs: KangarooFileSystem,
@@ -88,7 +89,8 @@ export async function launch(
   );
 
   // Install happ if necessary
-  await holochainManager.installHappIfNecessary(runOptions.networkSeed);
+  const randomNetworkSeed = v4();
+  await holochainManager.installHappIfNecessary(randomNetworkSeed);
 
   console.log('Happ installed.');
 

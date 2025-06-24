@@ -39,6 +39,7 @@
     "semver": "^7.6.2",
     "split": "1.0.1",
     "utf-8-validate": "^6.0.3",
+    "uuid": "^11.1.0",
     "winston": "3.11.0"
   },
   "devDependencies": {
