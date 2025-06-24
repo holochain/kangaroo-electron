@@ -150,6 +150,15 @@ export function breakingAppVersion(): string {
   return breakingVersion(version);
 }
 
+/**
+ * IMPORTANT: For Acorn specifically we consider minor versions as breaking
+ * versions. This allows us to depict version changes (minor) that allow
+ * for forward-migration while still using dedicated databases locations
+ * for different minor versions.
+ *
+ * @param version version string
+ * @returns
+ */
 export function breakingVersion(version: string): string {
   if (!semver.valid(version)) {
     throw new Error('App has an invalid version number.');
@@ -169,7 +178,9 @@ export function breakingVersion(version: string): string {
           return `0.${semver.minor(version)}.x`;
       }
     default:
-      return `${semver.major(version)}.x.x`;
+      // This is line below has been changed for Acorn and deviates
+      // from the upstream kangaroo
+      return `${semver.major(version)}.${semver.minor(version)}.x`;
   }
 }
 
