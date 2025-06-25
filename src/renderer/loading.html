@@ -10,8 +10,11 @@
           <img src="/img/splash-image-valeriia-miller.jpg" />
       </div>
       <div class="splash-content-wrapper">
-        <div>
-          <div id="productName" class="splash-product-name"></div>
+        <div class="column items-center">
+          <div class="row items-center">
+            <img src="./img/acorn-logo.svg" style="width: 24px; margin-right: 6px" />
+            <div id="productName" class="splash-product-name">acorn</div>
+          </div>
           <div id="version" class="splash-version"></div>
         </div>
         <div class="splash-loading-message" id="activity">Setting up Holochain...</div>
@@ -32,7 +35,6 @@
     <script>
       window.electronAPI.onNameAndVersion((event, msg) => {
         console.log('got name and version: ', msg);
-        document.getElementById('productName').innerHTML = msg.productName;
         document.getElementById('version').innerHTML = `version ${msg.version}`;
       });
       window.electronAPI.onProgressUpdate((event, msg) => {
