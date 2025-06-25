@@ -20,7 +20,7 @@ const conductorConfigTemplateString = fs.readFileSync(
 );
 export const CONDUCTOR_CONFIG_TEMPLATE = yaml.load(conductorConfigTemplateString);
 
-const binariesAppendix = KANGAROO_CONFIG.appId.slice(0, 10).replace(' ', '-');
+const binariesAppendix = `acorn-${KANGAROO_CONFIG.version}`;
 
 const BINARIES_DIRECTORY = path.join(RESOURCES_DIRECTORY, 'bins');
 
