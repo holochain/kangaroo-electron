@@ -65,11 +65,10 @@ body {
 
 .splash-content-wrapper {
   align-items: center;
-  margin-top: 30px;
+  margin-top: 20px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   padding: 30px 40px;
 }
 
@@ -103,9 +102,9 @@ body {
 
 .splash-license {
   font-family: 'PlusJakartaSans-bold', Helvetica, sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   color: #898989;
-  position: absolute;
+  position: fixed;
   bottom: 3px;
   left: 5px;
 }
@@ -135,6 +134,125 @@ button {
 
 .previous-step-btn {
   position: fixed;
-  top: 6px;
-  left: 6px;
+  top: 2px;
+  left: 2px;
+}
+
+.acorn-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 0.875rem;
+  font-family: 'PlusJakartaSans-extrabold';
+  color: #222222;
+  background-color: #ffffff;
+  box-shadow: 0rem 0rem 0.75rem #c7beb472;
+  min-width: 4rem;
+  padding: 1rem;
+  border: none;
+  box-sizing: border-box;
+  border-radius: 0.625rem;
+  cursor: pointer;
+  transition: 0.2s all ease;
+  -webkit-font-smoothing: antialiased;
+  margin: 1rem;
+  text-decoration: none;
+}
+
+.acorn-btn:hover {
+    box-shadow: 0rem 0rem 1.25rem #c7beb4bd;
+}
+
+.acorn-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+    color: #757171;
+}
+
+.acorn-btn:disabled:hover {
+  box-shadow: 0rem 0rem 0.75rem #c7beb472;
+}
+
+
+/* Fonts */
+
+/* Plus Jakarta Sans */
+
+@font-face {
+  font-family: 'PlusJakartaSans-regular';
+  src: url('fonts/plus-jakarta-sans/PlusJakartaSans-Regular.woff2')
+      format('woff2'),
+    url('fonts/plus-jakarta-sans/PlusJakartaSans-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  word-spacing: 0.05em;
+}
+
+@font-face {
+  font-family: 'PlusJakartaSans-medium';
+  src: url('fonts/plus-jakarta-sans/PlusJakartaSans-Medium.woff2')
+      format('woff2'),
+    url('fonts/plus-jakarta-sans/PlusJakartaSans-Medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  word-spacing: 0.05em;
+}
+
+@font-face {
+  font-family: 'PlusJakartaSans-semibold';
+  src: url('fonts/plus-jakarta-sans/PlusJakartaSans-SemiBold.woff2')
+      format('woff2'),
+    url('fonts/plus-jakarta-sans/PlusJakartaSans-SemiBold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  word-spacing: 0.05em;
+}
+
+@font-face {
+  font-family: 'PlusJakartaSans-bold';
+  src: url('fonts/plus-jakarta-sans/PlusJakartaSans-Bold.woff2') format('woff2'),
+    url('fonts/plus-jakarta-sans/PlusJakartaSans-Bold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  word-spacing: 0.05em;
+}
+
+@font-face {
+  font-family: 'PlusJakartaSans-extrabold';
+  src: url('fonts/plus-jakarta-sans/PlusJakartaSans-ExtraBold.woff2')
+      format('woff2'),
+    url('fonts/plus-jakarta-sans/PlusJakartaSans-ExtraBold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  word-spacing: 0.05em;
+}
+
+/* Gilroy Font */
+
+@font-face {
+  font-family: 'gilroyextrabold';
+  src: url('fonts/gilroy/gilroy-extrabold-webfont.woff2') format('woff2'),
+    url('fonts/gilroy/gilroy-extrabold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'gilroylight';
+  src: url('fonts/gilroy/gilroy-light-webfont.woff2') format('woff2'),
+    url('fonts/gilroy/gilroy-light-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.primary-font-medium {
+  font-family: 'PlusJakartaSans-medium';
+}
+
+.primary-font-regular {
+  font-family: 'PlusJakartaSans-regular';
+}
+
+.primary-font-extrabold {
+  font-family: 'PlusJakartaSans-extrabold';
 }
