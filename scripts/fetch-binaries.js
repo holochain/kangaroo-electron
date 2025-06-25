@@ -35,7 +35,7 @@ switch (process.platform) {
     throw new Error(`Got unexpected OS platform: ${process.platform}`);
 }
 
-const binariesAppendix = kangarooConfig.appId.slice(0, 10).replace(' ', '-');
+const binariesAppendix = `acorn-${kangarooConfig.version}`;
 
 const holochainBinaryFilename = `holochain-v${
   kangarooConfig.bins.holochain.version
