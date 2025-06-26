@@ -85,14 +85,37 @@ kangarooCli.parse();
 
 const RUN_OPTIONS = validateArgs(kangarooCli.opts());
 
-// Read and validate the config file to check that the content does not contain
-// default values
-
-// Check whether lair is initialized or not and if not, decide based on the config
-// file whether or not to show the splashscreen or use a default password
-
 if (!app.isPackaged) {
   app.setName(KANGAROO_CONFIG.appId + '-dev');
+}
+
+// Handle logic around running multiple instances. Per profile only one instance
+// should be able to be started in principle.
+if (app.isPackaged) {
+  const isFirstInstance = app.requestSingleInstanceLock({ profile: RUN_OPTIONS.profile });
+
+  // Comparing profiles between different instances is non-trivial because there
+  // would need to be two-way communication for the second instance to know
+  // which profile the first instance is running under. For now, we therefore
+  // just assume that if people are running with a non-default profile they
+  // know what they're doing and hence we allow a second instance. Otherwise
+  // we quite if we're not the first instance.
+  if (!isFirstInstance && RUN_OPTIONS.profile === undefined) {
+    app.quit();
+  } else if (isFirstInstance) {
+    // If we're the first instance and a second instance is attempted to be
+    // opened with the same profile as ours, bring the window to front
+    app.on(
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore-next-line
+      'second-instance',
+      (_event, _argv, _cwd, msgFromSecondInstance: { profile?: string }) => {
+        if (msgFromSecondInstance.profile === RUN_OPTIONS.profile) {
+          MAIN_WINDOW?.show();
+        }
+      }
+    );
+  }
 }
 
 contextMenu({
