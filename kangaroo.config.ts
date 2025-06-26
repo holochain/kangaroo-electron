@@ -22,11 +22,11 @@ export default defineConfig({
       version: '0.5.3',
       sha256: {
         'x86_64-unknown-linux-gnu':
-          '9bc6b80e138bab64f3cfea83c0cf317725983a382b4818a90842d708ecd857c7',
+          '1165646324ad6ebd60fe8063a91ec4981dd1d7da64375603560fcc6b7ef511f7',
         'x86_64-pc-windows-msvc.exe':
-          '7ace57451dd503fea27be8d589b5a20593fe7b797ccd76695e5b1598ba9adce2',
-        'x86_64-apple-darwin': '49e4aa1345e80b329d44a05e391245d46ca29c8fe33a1639d0f81eea96ad7313',
-        'aarch64-apple-darwin': 'ff3983fa07e696dbae42b1b99ad7c502d4ee2eb557c0d8667b349e6c194d39ac',
+          '143791e1c59dd718c5b60face20792a85b752ac3bba0e58b57469690c4be6a19',
+        'x86_64-apple-darwin': '540ef02bcfce6c91379e07df03d51afedc73a1f13df74e0cb9da6be58e147878',
+        'aarch64-apple-darwin': 'a42edb4e8580456c95f8c91ab0699d2b5fd1f73a5df0bdb9e4f20a102de0e988',
       },
     },
     lair: {
