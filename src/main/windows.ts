@@ -49,7 +49,7 @@ export const createHappWindow = async (
       if (!relativeFilePath.endsWith('index.html') && !fallbackToIndexHtml) {
         return net.fetch(url.pathToFileURL(absoluteFilePath).toString());
       } else {
-        const indexHtmlResponse = await net.fetch(url.pathToFileURL(absoluteFilePath).toString());
+        const indexHtmlResponse = await net.fetch(url.pathToFileURL(path.join(uiSource.path, 'index.html')).toString());
         const content = await indexHtmlResponse.text();
         let modifiedContent = content.replace(
           '<head>',
