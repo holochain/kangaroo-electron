@@ -212,6 +212,12 @@ export const createSplashWindow = (type: SplashScreenType): BrowserWindow => {
     }
   }
 
+  let icon: NativeImage | undefined;
+
+  if (fs.existsSync(ICON_PATH)) {
+    icon = nativeImage.createFromPath(ICON_PATH);
+  }
+
   const splashWindow = new BrowserWindow({
     height: 450,
     width: 800,
@@ -219,6 +225,7 @@ export const createSplashWindow = (type: SplashScreenType): BrowserWindow => {
     resizable: false,
     frame: false,
     show: false,
+    icon,
     backgroundColor: '#fbf9f7',
     webPreferences: {
       preload: path.join(__dirname, '../preload/splashscreen.js'),
