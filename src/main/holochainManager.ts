@@ -193,7 +193,7 @@ export class HolochainManager {
         value: HAPP_PATH,
       },
     });
-    if (appInfo.status !== 'awaiting_memproofs') {
+    if (appInfo.status.type !== 'awaiting_memproofs') {
       try {
         await this.adminWebsocket.enableApp({
           installed_app_id: appInfo.installed_app_id,
