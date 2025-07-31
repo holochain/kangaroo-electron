@@ -4,7 +4,8 @@ Put your Holochain App in this Kangaroo's electron pouch and let it run.
 
 This repository let's you easily convert your Holochain app into a standalone, electron-based cross-platform Desktop app.
 
-**Note:** Support for non-breaking updates to happ coordinator zomes is currently not built into the kangaroo.
+> [!WARNING]
+> Support for non-breaking updates to happ coordinator zomes is currently not built into the kangaroo. It is expected that there is only ever one single version of a happ for any semver compatible range of versions of a kangaroo packaged app (see also [Versioning](#versioning))
 
 # Holochain Versions
 
@@ -106,7 +107,7 @@ By default, the kangaroo is set up to check github releases for semver compatibl
 
 ## Versioning
 
-To allow for subsequent incompatible releases of your app (for example due to switching to a new Holochain version or introducing a breaking change in the integrity zomes of your .happ) without having to change the app's name or identifier, the kangaroo is set up to use semver to support incompatible versions of your app running fully independently from each other and store their data in dedicated locations on disk.
+To allow for subsequent incompatible releases of your app (for example due to switching to a new Holochain version) without having to change the app's name or identifier, the kangaroo is set up to use semver to support incompatible versions of your app running fully independently from each other and store their data in dedicated locations on disk.
 
 Examples:
 
