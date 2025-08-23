@@ -3,7 +3,7 @@ import { defineConfig } from './src/main/defineConfig';
 export default defineConfig({
   appId: 'org.lightningrodlabs.acorn',
   productName: 'Acorn',
-  version: '11.3.2',
+  version: '11.3.3',
   macOSCodeSigning: true,
   windowsEVCodeSigning: true,
   fallbackToIndexHtml: true,
@@ -19,14 +19,16 @@ export default defineConfig({
   iceUrls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'],
   bins: {
     holochain: {
-      version: '0.5.3',
+      version: '0.5.5',
       sha256: {
         'x86_64-unknown-linux-gnu':
-          '1165646324ad6ebd60fe8063a91ec4981dd1d7da64375603560fcc6b7ef511f7',
+          '8c1e0c6e72fb5dde157973ee280ee494bbbad1926820829339dc67b84bc86b6e',
+        'aarch64-unknown-linux-gnu':
+          '0780ad5db60f7948da041e09c4e9679977a60659b585017f42ee47b8f341143a',
         'x86_64-pc-windows-msvc.exe':
-          '143791e1c59dd718c5b60face20792a85b752ac3bba0e58b57469690c4be6a19',
-        'x86_64-apple-darwin': '540ef02bcfce6c91379e07df03d51afedc73a1f13df74e0cb9da6be58e147878',
-        'aarch64-apple-darwin': 'a42edb4e8580456c95f8c91ab0699d2b5fd1f73a5df0bdb9e4f20a102de0e988',
+          'cb62f336c1be9fbf8c4a823b4e6b0248903f8e07c881497c8590e923142bbdaf',
+        'x86_64-apple-darwin': '430bc76fa9561461cf038f9ce4939171712ba02ce6eefc4a0aa43ac3496e498c',
+        'aarch64-apple-darwin': 'c7535f3ce81cb6a72397d5942da6bb4a16d9eb9afc78af7ce0b861ca237d51f7',
       },
     },
     lair: {
@@ -34,6 +36,8 @@ export default defineConfig({
       sha256: {
         'x86_64-unknown-linux-gnu':
           '3c9ea3dbfc0853743dad3874856fdcfe391dca1769a6a81fc91b7578c73e92a7',
+        'aarch64-unknown-linux-gnu':
+          '2718e7242e3c78ae41afd0fa21bd82dfcfcbfaa72cb421a5067078140fce5142',
         'x86_64-pc-windows-msvc.exe':
           '6392ce85e985483d43fa01709bfd518f8f67aed8ddfa5950591b4ed51d226b8e',
         'x86_64-apple-darwin': '746403e5d1655ecf14d95bccaeef11ad1abfc923e428c2f3d87c683edb6fdcdc',

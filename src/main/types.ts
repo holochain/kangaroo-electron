@@ -128,6 +128,7 @@ type VersionAndSha256 = {
   sha256: {
     'x86_64-unknown-linux-gnu': string;
     'x86_64-pc-windows-msvc.exe': string;
+    'aarch64-unknown-linux-gnu': string;
     'x86_64-apple-darwin': string;
     'aarch64-apple-darwin': string;
   };
