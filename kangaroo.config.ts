@@ -15,25 +15,25 @@ export default defineConfig({
   iceUrls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'],
   bins: {
     holochain: {
-      version: '0.5.5',
+      version: '0.6.0-dev.25',
       sha256: {
         'x86_64-unknown-linux-gnu':
-          '8c1e0c6e72fb5dde157973ee280ee494bbbad1926820829339dc67b84bc86b6e',
+          '6512c3aca487fd41d1ceb6b3b0f5bca8311121b0298589e222c9d7aa70807353',
         'x86_64-pc-windows-msvc.exe':
-          'cb62f336c1be9fbf8c4a823b4e6b0248903f8e07c881497c8590e923142bbdaf',
-        'x86_64-apple-darwin': '430bc76fa9561461cf038f9ce4939171712ba02ce6eefc4a0aa43ac3496e498c',
-        'aarch64-apple-darwin': 'c7535f3ce81cb6a72397d5942da6bb4a16d9eb9afc78af7ce0b861ca237d51f7',
+          'aec13b516cf8bcb1834ee34a71fcfd5014d8bec26c58830292f29442f8af3ab7',
+        'x86_64-apple-darwin': 'a57ead2e9c9d269b9053bf1394e913266b1659907b109edcc7166f85d3c7114f',
+        'aarch64-apple-darwin': 'ec0bea8cc26899b477c5b4cd11ddea49b18654fc536323294bc7a49c57f372ba',
       },
     },
     lair: {
-      version: '0.6.2',
+      version: '0.6.3',
       sha256: {
         'x86_64-unknown-linux-gnu':
-          '3c9ea3dbfc0853743dad3874856fdcfe391dca1769a6a81fc91b7578c73e92a7',
+          '56beb19ca4abf39c8e2b90401a9ade10e5c395f6b95cd1853aac05643dce5a11',
         'x86_64-pc-windows-msvc.exe':
-          '6392ce85e985483d43fa01709bfd518f8f67aed8ddfa5950591b4ed51d226b8e',
-        'x86_64-apple-darwin': '746403e5d1655ecf14d95bccaeef11ad1abfc923e428c2f3d87c683edb6fdcdc',
-        'aarch64-apple-darwin': '05c7270749bb1a5cf61b0eb344a7d7a562da34090d5ea81b4c5b6cf040dd32e8',
+          '504e7e3d1afc4426990a4aee190f1137bb474ccb072f7049c23f43fc01c07009',
+        'x86_64-apple-darwin': 'd7521a0299ea425700091b78e02672b05ad4c97c2ca82643ea9ba2349b0e1e69',
+        'aarch64-apple-darwin': 'cb26b8065f52f7e3ff2d24a09100f60f61a3214e25e170ac2ef607dd040800d7',
       },
     },
   },

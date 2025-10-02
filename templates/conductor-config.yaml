@@ -1,23 +1,18 @@
 ---
 tracing_override: ~
 data_root_path: "###DEFINED_AT_RUNTIME###"
-device_seed_lair_tag: ~
-danger_generate_throwaway_device_seed: false
 keystore:
   type: lair_server
   connection_url: "###DEFINED_AT_RUNTIME###"
-dpki:
-  dna_path: ~
-  network_seed: ""
-  allow_throwaway_random_dpki_agent_key: false
-  no_dpki: true
 admin_interfaces:
   - driver:
       type: websocket
       port: "###DEFINED_AT_RUNTIME###"
+      danger_bind_addr: ~
       allowed_origins: "###DEFINED_AT_RUNTIME###"
 network:
   type: NetworkConfig
+  base64_auth_material: ~
   bootstrap_url: "###DEFINED_IN_KANGAROO_CONFIG###"
   signal_url: "###DEFINED_IN_KANGAROO_CONFIG###"
   webrtc_config:
@@ -25,7 +20,9 @@ network:
       - urls:
           - "###DEFINED_IN_KANGAROO_CONFIG###"
   target_arc_factor: 1
+  report: none
   advanced: ~
+request_timeout_s: 60
 db_sync_strategy: Resilient
 tuning_params: ~
 tracing_scope: ~
