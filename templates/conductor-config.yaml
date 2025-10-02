@@ -8,11 +8,11 @@ admin_interfaces:
   - driver:
       type: websocket
       port: "###DEFINED_AT_RUNTIME###"
-      danger_bind_addr:: ~
+      danger_bind_addr: ~
       allowed_origins: "###DEFINED_AT_RUNTIME###"
 network:
   type: NetworkConfig
-  base64_auth_material:: ~
+  base64_auth_material: ~
   bootstrap_url: "###DEFINED_IN_KANGAROO_CONFIG###"
   signal_url: "###DEFINED_IN_KANGAROO_CONFIG###"
   webrtc_config:
