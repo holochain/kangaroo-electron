@@ -15,14 +15,14 @@ export default defineConfig({
   iceUrls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'],
   bins: {
     holochain: {
-      version: '0.6.0-rc.0',
+      version: '0.6.0-rc.1',
       sha256: {
         'x86_64-unknown-linux-gnu':
-          'a0aca0bb811cae2dd0a4ba49ae50efc87557bb105dadd90765ef0b8664482a7f',
+          '91a200205768754fa8841f3f71ba637c3e228e1b6a415eeb254ee8c43b75fae5',
         'x86_64-pc-windows-msvc.exe':
-          '42d7febb2c332cdb9a562cd790be53667d15979a1f08405d02bb9c863222f493',
-        'x86_64-apple-darwin': '6ff66bcd18dcfc1392653e8e9d71f3a376e1adb2cd36c5fa8066e804b7fb4551',
-        'aarch64-apple-darwin': '8f56ff9ff61a384512662e13ef5531d2402cd9af25a97c9e2294612e5737ddd3',
+          'af0c2c7391c7547d6fa6203278419755e933ec83c41fb4d112a40b65cf7b6c44',
+        'x86_64-apple-darwin': 'b954e8f969677897055647ab5df0e4da9a7044a4648f71959874a16cd9cd4329',
+        'aarch64-apple-darwin': '68b199575b55e528dae5fd5073273f0b6b23b0d454121eee0809f2a501afe3d1',
       },
     },
     lair: {
