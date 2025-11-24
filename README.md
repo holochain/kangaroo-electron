@@ -64,7 +64,8 @@ To build the app locally for your platform, run the build command for your respe
 yarn build:linux
 
 # or
-yarn build:mac
+yarn build:mac-arm64 # for Apple Silicon Macs
+yarn build:mac-x64   # for Intel Macs
 
 # or
 yarn build:windows
