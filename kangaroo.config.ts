@@ -14,26 +14,30 @@ export default defineConfig({
   signalUrl: 'wss://dev-test-bootstrap2.holochain.org/',
   iceUrls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'],
   bins: {
+    holochainVersion: '0.6.0',
+    holochainFeature: "go-pion",
     holochain: {
-      version: '0.6.0',
       sha256: {
         'x86_64-unknown-linux-gnu':
-          'ba767ac0f65ab426d01e1c4131c63c33030e41a2b8c3da7e4bdcb5d30fa2284a',
+          '8ae1282b93bcba7eaee1343831895dd3b8628d4fd8ebc5fad74def3e073e6055',
+        'aarch64-unknown-linux-gnu':
+          '9e5e8d81625201f7146d42e628b563e6db4be1b866dc06e053266cb971e4c952',
         'x86_64-pc-windows-msvc.exe':
-          '0ada079819a7ae8ea915c8319c104319a16634f0d4710a9a939d4e4109a87251',
-        'x86_64-apple-darwin': '552529ca506db2f13eb6528f628df38f1f3fac6e0e552ee75ef846a66ca16bd2',
-        'aarch64-apple-darwin': '139536e14638c7506aa6cb0816c7b5d170e71655f5590a3f458bf7bce9497515',
+          '9f838ab57b277e895b949cfec5c8a88c36d5936cce2e902706f92133d8029e77',
+        'x86_64-apple-darwin': 'd927ae095e5dbc683ae47cca336a220529f7b705d77d456cb7e4a3f2fec56adc',
+        'aarch64-apple-darwin': '0fcb1b7080496368438576b59a360a68bfa5c077ec8c83d6b5fd3d12b63b9e21',
       },
     },
     lair: {
-      version: '0.6.3',
       sha256: {
         'x86_64-unknown-linux-gnu':
-          '56beb19ca4abf39c8e2b90401a9ade10e5c395f6b95cd1853aac05643dce5a11',
+          '19bde044278161948958c8b32d9bc0744550eccd6d29260da0045fc8c0480ccd',
+        'aarch64-unknown-linux-gnu':
+          '2f4d084bb4904be8669bceb63516e5db201deee97294ba01c94ab62ba9ee8c02',
         'x86_64-pc-windows-msvc.exe':
-          '504e7e3d1afc4426990a4aee190f1137bb474ccb072f7049c23f43fc01c07009',
-        'x86_64-apple-darwin': 'd7521a0299ea425700091b78e02672b05ad4c97c2ca82643ea9ba2349b0e1e69',
-        'aarch64-apple-darwin': 'cb26b8065f52f7e3ff2d24a09100f60f61a3214e25e170ac2ef607dd040800d7',
+          'b7b29197e028f807924c1f31cd6a332af63fd3c21d8fd563ba3c0a16f7197499',
+        'x86_64-apple-darwin': '030ae46320780b53db5a8047df534da4fd1e5d8900e7864b965b1243b2dfcb40',
+        'aarch64-apple-darwin': '4ae31f48ea92c7b6f472c2f57535f5c427918bf1876ab75b89673e0b242aaa1c',
       },
     },
   },
