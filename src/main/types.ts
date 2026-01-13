@@ -71,15 +71,15 @@ export type KangarooConfig = {
   /**
    * URL of the bootstrap server to use.
    */
-  bootstrapUrl: string,
+  bootstrapUrl: string;
   /**
    * URL of the signaling server to use
    */
-  signalUrl: string,
+  signalUrl: string;
   /**
    * ICE Urls for the WebRTC configuration
    */
-  iceUrls: string[],
+  iceUrls: string[];
   /**
    * The network seed to use when installing the happ. If not set, the
    * network seed will automatically be generated and be based on the
@@ -118,15 +118,17 @@ export type KangarooConfig = {
     email?: string;
   };
   bins: {
-    holochain: VersionAndSha256;
-    lair: VersionAndSha256;
+    holochainVersion: string;
+    holochainFeature?: "go-pion" | "go-pion-unstable" | "iroh";
+    holochain: Sha256Hashes;
+    lair: Sha256Hashes;
   };
 };
 
-type VersionAndSha256 = {
-  version: string;
+type Sha256Hashes = {
   sha256: {
     'x86_64-unknown-linux-gnu': string;
+    'aarch64-unknown-linux-gnu': string;
     'x86_64-pc-windows-msvc.exe': string;
     'x86_64-apple-darwin': string;
     'aarch64-apple-darwin': string;
