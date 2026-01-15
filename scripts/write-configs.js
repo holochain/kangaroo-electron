@@ -61,6 +61,24 @@ network partition among users of your app.
 `);
 }
 
+if (kangarooConfig.relayUrl === 'https://dev-test-bootstrap2-iroh-relay.holochain.org./') {
+  console.log(`
+
+         ⚠️   WARNING  ⚠️
+
+The relayUrl in kangaroo.config.ts is still set to the testing relay server URL.
+This server has no availability guarantees whatsoever and is meant for testing purposes only.
+
+If you want to deploy your app to end-users, make sure to run your own
+instance of a relay server or use a server that has guaranteed availability
+for the lifetime of your apps network(s).
+
+Changing the relay server URL after deployment of your app can result in a
+network partition among users of your app.
+
+`);
+}
+
 if (
   kangarooConfig.iceUrls.includes('stun:stun-0.main.infra.holo.host:443') ||
   kangarooConfig.iceUrls.includes('stun:stun-1.main.infra.holo.host:443')
