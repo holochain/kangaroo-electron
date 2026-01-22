@@ -26,14 +26,14 @@ const BINARIES_DIRECTORY = path.join(RESOURCES_DIRECTORY, 'bins');
 
 export const HOLOCHAIN_BINARY = path.join(
   BINARIES_DIRECTORY,
-  `holochain-v${KANGAROO_CONFIG.bins.holochain.version}-${binariesAppendix}${
+  `holochain-v${KANGAROO_CONFIG.bins.holochainVersion}-${binariesAppendix}${
     process.platform === 'win32' ? '.exe' : ''
   }`
 );
 
 export const LAIR_BINARY = path.join(
   BINARIES_DIRECTORY,
-  `lair-keystore-v${KANGAROO_CONFIG.bins.lair.version}-${binariesAppendix}${
+  `lair-keystore-${binariesAppendix}${
     process.platform === 'win32' ? '.exe' : ''
   }`
 );
