@@ -76,7 +76,7 @@ export async function launch(
     kangarooFs,
     runOptions.holochainPath ? runOptions.holochainPath : HOLOCHAIN_BINARY,
     password,
-    KANGAROO_CONFIG.bins.holochain.version,
+    KANGAROO_CONFIG.bins.holochainVersion,
     kangarooFs.conductorDir,
     kangarooFs.conductorConfigPath,
     lairUrl,
