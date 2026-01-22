@@ -25,7 +25,7 @@
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "@holochain/client": "^0.20.0",
-    "@holochain/hc-spin-rust-utils": "0.600.0",
+    "@holochain/hc-spin-rust-utils": "0.601.1-rc.0",
     "@matthme/electron-updater": "6.3.0-alpha.1",
     "@msgpack/msgpack": "^2.8.0",
     "adm-zip": "0.5.14",

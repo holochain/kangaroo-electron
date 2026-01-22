@@ -15,6 +15,7 @@ network:
   base64_auth_material: ~
   bootstrap_url: "###DEFINED_IN_KANGAROO_CONFIG###"
   signal_url: "###DEFINED_IN_KANGAROO_CONFIG###"
+  relay_url: "###DEFINED_IN_KANGAROO_CONFIG###"
   webrtc_config:
     iceServers:
       - urls:

@@ -73,6 +73,10 @@ kangarooCli
     'URL of the signaling server to use (not persisted across restarts).'
   )
   .option(
+    '-r, --relay-url <url>',
+    'URL of the iroh relay server to use (not persisted across restarts).'
+  )
+  .option(
     '--ice-urls <string>',
     'Comma separated string of ICE server URLs to use. Is ignored if an external holochain binary is being used (not persisted across restarts).'
   )

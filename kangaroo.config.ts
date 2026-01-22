@@ -12,32 +12,32 @@ export default defineConfig({
   passwordMode: 'password-optional',
   bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
   signalUrl: 'wss://dev-test-bootstrap2.holochain.org/',
+  relayUrl: "https://use1-1.relay.n0.iroh-canary.iroh.link./",
   iceUrls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'],
   bins: {
-    holochainVersion: '0.6.0',
-    holochainFeature: "go-pion",
+    holochainVersion: '0.6.1-rc.0',
     holochain: {
       sha256: {
         'x86_64-unknown-linux-gnu':
-          '8ae1282b93bcba7eaee1343831895dd3b8628d4fd8ebc5fad74def3e073e6055',
+          '1aa9dc82b298c99d1a7fddfbd1a9aa2511040217026f4ad975939a0e00d38f93',
         'aarch64-unknown-linux-gnu':
-          '9e5e8d81625201f7146d42e628b563e6db4be1b866dc06e053266cb971e4c952',
+          '4429ce2b42b05fc6c31ac1f1631de2af30b26f53aa422da35852d4e6e14878aa',
         'x86_64-pc-windows-msvc.exe':
-          '9f838ab57b277e895b949cfec5c8a88c36d5936cce2e902706f92133d8029e77',
-        'x86_64-apple-darwin': 'd927ae095e5dbc683ae47cca336a220529f7b705d77d456cb7e4a3f2fec56adc',
-        'aarch64-apple-darwin': '0fcb1b7080496368438576b59a360a68bfa5c077ec8c83d6b5fd3d12b63b9e21',
+          '47b839405c3dc7b7d669a53cb919bcdd5aa5833de48d09ea68b8920132f073f6',
+        'x86_64-apple-darwin': '97c678bbe8068b936484a8a0a0c374c37a0198316565fbbbc7558187e8c5a1d5',
+        'aarch64-apple-darwin': '79401c5f58c35e18e62785731986f6b55d6fa6647d389c92ac4f80b3f01f29d6',
       },
     },
     lair: {
       sha256: {
         'x86_64-unknown-linux-gnu':
-          '19bde044278161948958c8b32d9bc0744550eccd6d29260da0045fc8c0480ccd',
+          '134292a46ff3302a6a36db74db4288451796f0861adabcd9e42b60fcc33bbd3d',
         'aarch64-unknown-linux-gnu':
-          '2f4d084bb4904be8669bceb63516e5db201deee97294ba01c94ab62ba9ee8c02',
+          '726a5e5634420c573e0bbaf2e05a96a3cae92d97518aad14a71ae8ffa29f9c33',
         'x86_64-pc-windows-msvc.exe':
-          'b7b29197e028f807924c1f31cd6a332af63fd3c21d8fd563ba3c0a16f7197499',
-        'x86_64-apple-darwin': '030ae46320780b53db5a8047df534da4fd1e5d8900e7864b965b1243b2dfcb40',
-        'aarch64-apple-darwin': '4ae31f48ea92c7b6f472c2f57535f5c427918bf1876ab75b89673e0b242aaa1c',
+          'f9b67704d0dfd1017fc9098f2fcad1fca92cb576f97acfb7eb104d68f8691e4f',
+        'x86_64-apple-darwin': 'b232448f345c9508c26ede5e0cb9ddd0de0116d4eab77b974414b2271897c1b3',
+        'aarch64-apple-darwin': 'd67f0aded092bb221547fe64af87a520c0c087b49e3774d5fe50a04255473de1',
       },
     },
   },
