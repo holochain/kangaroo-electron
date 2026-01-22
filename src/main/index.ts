@@ -47,38 +47,38 @@ kangarooCli
   .version(KANGAROO_CONFIG.version)
   .option(
     '-p, --profile <string>',
-    `Runs ${KANGAROO_CONFIG.productName} with a custom profile with its own dedicated data store.`
+    `Runs ${KANGAROO_CONFIG.productName} with a custom profile with its own dedicated data store.`,
   )
   .option(
     '-n, --network-seed <string>',
-    'If this is the first time running kangaroo with the given profile, this installs the happ with the provided network seed.'
+    'If this is the first time running kangaroo with the given profile, this installs the happ with the provided network seed.',
   )
   .option(
     '--holochain-path <path>',
-    `Runs ${KANGAROO_CONFIG.productName} with the holochain binary at the provided path. Use with caution since this may potentially corrupt your databases if the binary you use is not compatible with existing databases.`
+    `Runs ${KANGAROO_CONFIG.productName} with the holochain binary at the provided path. Use with caution since this may potentially corrupt your databases if the binary you use is not compatible with existing databases.`,
   )
   .option(
     '--lair-path <path>',
-    `Runs the ${KANGAROO_CONFIG.productName} with the lair binary at the provided path. Use with caution since this may potentially corrupt your databases if the binary you use is not compatible with existing databases.`
+    `Runs the ${KANGAROO_CONFIG.productName} with the lair binary at the provided path. Use with caution since this may potentially corrupt your databases if the binary you use is not compatible with existing databases.`,
   )
   .option('--holochain-rust-log <string>', 'RUST_LOG value to pass to the holochain binary')
   .option('--holochain-wasm-log <string>', 'WASM_LOG value to pass to the holochain binary')
   .option('--lair-rust-log <string>', 'RUST_LOG value to pass to the lair keystore binary')
   .option(
     '-b, --bootstrap-url <url>',
-    'URL of the bootstrap server to use (not persisted across restarts).'
+    'URL of the bootstrap server to use (not persisted across restarts).',
   )
   .option(
     '-s, --signal-url <url>',
-    'URL of the signaling server to use (not persisted across restarts).'
+    'URL of the signaling server to use (not persisted across restarts).',
   )
   .option(
     '--ice-urls <string>',
-    'Comma separated string of ICE server URLs to use. Is ignored if an external holochain binary is being used (not persisted across restarts).'
+    'Comma separated string of ICE server URLs to use. Is ignored if an external holochain binary is being used (not persisted across restarts).',
   )
   .option(
     '--print-holochain-logs',
-    'Print holochain logs directly to the terminal (they will be still written to the logfile as well)'
+    'Print holochain logs directly to the terminal (they will be still written to the logfile as well)',
   );
 
 kangarooCli.parse();
@@ -122,12 +122,12 @@ protocol.registerSchemesAsPrivileged([
 
 const handleSignZomeCall = async (
   _e: IpcMainInvokeEvent,
-  request: CallZomeRequest
+  request: CallZomeRequest,
 ): Promise<CallZomeRequestSigned> => {
   if (!ZOME_CALL_SIGNER) throw new Error('Zome call signer undefined.');
   if (!request.provenance)
     return Promise.reject(
-      'Call zome request has provenance field not set. This should be set by the js-client.'
+      'Call zome request has provenance field not set. This should be set by the js-client.',
     );
 
   const zomeCallToSign: CallZomeRequest = {
@@ -145,7 +145,7 @@ const handleSignZomeCall = async (
 
   const signature: number[] = await ZOME_CALL_SIGNER.signZomeCall(
     bytesHash,
-    Array.from(request.provenance)
+    Array.from(request.provenance),
   );
 
   const signedZomeCall: CallZomeRequestSigned = {
@@ -197,7 +197,7 @@ app.whenReady().then(async () => {
     throw new Error(
       `Unexpected setup state.\nKeystore initialized: ${KANGAROO_FILESYSTEM.keystoreInitialized()}.\nPassword mode: ${
         KANGAROO_CONFIG.passwordMode
-      }\nRandom pw exists: ${KANGAROO_FILESYSTEM.randomPasswordExists()}`
+      }\nRandom pw exists: ${KANGAROO_FILESYSTEM.randomPasswordExists()}`,
     );
   }
 
@@ -225,7 +225,7 @@ app.whenReady().then(async () => {
       KANGAROO_EMITTER,
       SPLASH_SCREEN_WINDOW,
       passwordInput,
-      RUN_OPTIONS
+      RUN_OPTIONS,
     );
 
     LAIR_HANDLE = lairHandle;
@@ -239,7 +239,7 @@ app.whenReady().then(async () => {
   });
   ipcMain.handle('open-logs', async () => KANGAROO_FILESYSTEM.openLogs());
   ipcMain.handle('export-logs', async () => KANGAROO_FILESYSTEM.exportLogs());
-  ipcMain.handle('factory-reset', async () => {
+  (ipcMain.handle('factory-reset', async () => {
     const userDecision = await dialog.showMessageBox({
       title: 'Factory Reset',
       type: 'warning',
@@ -273,7 +273,7 @@ app.whenReady().then(async () => {
   }),
     // ------------------------------------------------------------------------------------
 
-    (SPLASH_SCREEN_WINDOW = createSplashWindow(splashScreenType));
+    (SPLASH_SCREEN_WINDOW = createSplashWindow(splashScreenType)));
   SPLASH_SCREEN_WINDOW.on('closed', () => {
     // We need to drop the variable here to be able to distinguish
     // in other places whether the splah screen window is still open
@@ -336,6 +336,13 @@ app.whenReady().then(async () => {
     let updateCheckResult: UpdateCheckResult | null | undefined;
 
     try {
+      // Note that the official electron-updater in the checkForUpdates() step by default only
+      // fetches the latest release on github, regardless of whether it is semver compatible.
+      // As a consequence, app versions belonging to an older semver line would stop receiving updates
+      // here since we deliberately reject semver incompatible updates below (see the "Versioning" section
+      // in the README). Therefore, we're using a fork of electron-builder (at the time of writing
+      // https://github.com/holochain/electron-builder/) such that checkForUpdates() still gives
+      // us latest semver compatible release, even if that release is not the highest version overall.
       updateCheckResult = await autoUpdater.checkForUpdates();
     } catch (e) {
       console.warn('Failed to check for updates: ', e);
@@ -343,7 +350,7 @@ app.whenReady().then(async () => {
 
     console.log('updateCheckResult: ', updateCheckResult);
 
-    // We only install semver compatible updates
+    // Double-check that the release we got (if any) is semver compatible, as we only install semver compatible updates.
     const appVersion = app.getVersion();
     if (
       updateCheckResult &&
@@ -377,7 +384,7 @@ app.whenReady().then(async () => {
       KANGAROO_EMITTER,
       SPLASH_SCREEN_WINDOW,
       { type: 'random' },
-      RUN_OPTIONS
+      RUN_OPTIONS,
     );
 
     LAIR_HANDLE = lairHandle;
