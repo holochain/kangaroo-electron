@@ -26,7 +26,7 @@ jobs:
 
       # This step is only used for testing in the official kangaroo repo
       - name: Overwrite Names for release testing
-        if: ${{ github.repository }} == 'holochain-apps/kangaroo-electron'
+        if: ${{ github.repository == 'holochain-apps/kangaroo-electron' }}
         run: |
           echo ${{ github.repository }}
           echo "overwriting names for release testing"
