@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 22
+          cache: 'yarn'
 
       # This step is only used for testing in the official kangaroo repo
       - name: Overwrite Names for release testing
