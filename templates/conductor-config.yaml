@@ -11,8 +11,9 @@ admin_interfaces:
       danger_bind_addr: ~
       allowed_origins: "###DEFINED_AT_RUNTIME###"
 network:
-  type: NetworkConfig
-  base64_auth_material: ~
+  request_timeout_s: 60
+  base64_auth_material_bootstrap: ~
+  base64_auth_material_relay: ~
   bootstrap_url: "###DEFINED_IN_KANGAROO_CONFIG###"
   signal_url: "###DEFINED_IN_KANGAROO_CONFIG###"
   relay_url: "###DEFINED_IN_KANGAROO_CONFIG###"
