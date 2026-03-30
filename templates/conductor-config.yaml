@@ -24,7 +24,6 @@ network:
   target_arc_factor: 1
   report: none
   advanced: ~
-request_timeout_s: 60
 db_sync_strategy: Resilient
 tuning_params: ~
 tracing_scope: ~
