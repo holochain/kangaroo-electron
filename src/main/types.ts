@@ -73,6 +73,10 @@ export type KangarooConfig = {
    */
   bootstrapUrl: string;
   /**
+   * URL of the relay server to use
+   */
+  relayUrl: string;
+  /**
    * URL of the signaling server to use
    */
   signalUrl: string;
