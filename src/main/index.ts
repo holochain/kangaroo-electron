@@ -69,6 +69,10 @@ kangarooCli
     'URL of the bootstrap server to use (not persisted across restarts).',
   )
   .option(
+    '--relay-url <url>',
+    'URL of the relay server to use (not persisted across restarts).',
+  )
+  .option(
     '-s, --signal-url <url>',
     'URL of the signaling server to use (not persisted across restarts).',
   )

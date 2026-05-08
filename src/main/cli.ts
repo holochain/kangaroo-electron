@@ -11,6 +11,7 @@ export interface CliOpts {
   holochainWasmLog?: string;
   lairRustLog?: string;
   bootstrapUrl?: string;
+  relayUrl?: string;
   signalUrl?: string;
   iceUrls?: string;
   printHolochainLogs?: boolean;
@@ -20,6 +21,7 @@ export interface RunOptions {
   profile: string | undefined;
   networkSeed: string;
   bootstrapUrl: URL | undefined;
+  relayUrl: URL | undefined;
   signalUrl: URL | undefined;
   iceUrls: string[] | undefined;
   holochainPath: string | undefined;
@@ -43,6 +45,9 @@ export function validateArgs(args: CliOpts): RunOptions {
   }
   if (args.bootstrapUrl && typeof args.bootstrapUrl !== 'string') {
     throw new Error('The --bootstrap-url argument must be of type string.');
+  }
+  if (args.relayUrl && typeof args.relayUrl !== 'string') {
+    throw new Error('The --relay-url argument must be of type string.');
   }
   if (args.signalUrl && typeof args.signalUrl !== 'string') {
     throw new Error('The --signal-url argument must be of type string.');
@@ -73,12 +78,14 @@ export function validateArgs(args: CliOpts): RunOptions {
   const networkSeed = args.networkSeed ? args.networkSeed : defaultAppNetworkSeed();
 
   const bootstrapUrl = args.bootstrapUrl ? new URL(args.bootstrapUrl) : undefined;
+  const relayUrl = args.relayUrl ? new URL(args.relayUrl) : undefined;
   const signalUrl = args.signalUrl ? new URL(args.signalUrl) : undefined;
 
   return {
     profile,
     networkSeed,
     bootstrapUrl,
+    relayUrl,
     signalUrl,
     iceUrls: args.iceUrls ? args.iceUrls.split(',') : undefined,
     holochainPath: args.holochainPath ? args.holochainPath : undefined,
@@ -86,7 +93,7 @@ export function validateArgs(args: CliOpts): RunOptions {
     holochainRustLog: args.holochainRustLog ? args.holochainRustLog : undefined,
     holochainWasmLog: args.holochainWasmLog ? args.holochainWasmLog : undefined,
     lairRustLog: args.lairRustLog ? args.lairRustLog : undefined,
-    printHolochainLogs: args.printHolochainLogs ? true : false,
+    printHolochainLogs: !!args.printHolochainLogs,
   };
 }
 
