@@ -11,9 +11,11 @@ admin_interfaces:
       danger_bind_addr: ~
       allowed_origins: "###DEFINED_AT_RUNTIME###"
 network:
-  type: NetworkConfig
-  base64_auth_material: ~
+  request_timeout_s: 60
   bootstrap_url: "###DEFINED_IN_KANGAROO_CONFIG###"
+  base64_auth_material_bootstrap: ~
+  relay_url: "###DEFINED_IN_KANGAROO_CONFIG###"
+  base64_auth_material_relay: ~
   signal_url: "###DEFINED_IN_KANGAROO_CONFIG###"
   webrtc_config:
     iceServers:
@@ -22,7 +24,6 @@ network:
   target_arc_factor: 1
   report: none
   advanced: ~
-request_timeout_s: 60
 db_sync_strategy: Resilient
 tuning_params: ~
 tracing_scope: ~

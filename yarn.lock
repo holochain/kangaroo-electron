@@ -578,10 +578,10 @@
   resolved "https://registry.npmjs.org/@eslint/js/-/js-8.57.1.tgz"
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
-"@holochain/client@^0.21.0-dev.1":
-  version "0.21.0-dev.1"
-  resolved "https://registry.npmjs.org/@holochain/client/-/client-0.21.0-dev.1.tgz"
-  integrity sha512-CK6kQ5KG083CUJiG3UC9SPHhD+chjDwVU8XO4XPS0LV/1jmlgUbBEaMKbwZUa4OsIw7ePB+3S7j7vqe6kwPdxw==
+"@holochain/client@^0.21.0-dev.2":
+  version "0.21.0-dev.2"
+  resolved "https://registry.yarnpkg.com/@holochain/client/-/client-0.21.0-dev.2.tgz#6f3e08ab71e350f95b8696ab13ef30b3765a7e48"
+  integrity sha512-fAAO4OJw4UChsEjZOwWZfTLRb1IoL/4rwzJXNfHyYk0U8w3I0Dp/Jx0GLHZAgjbXsQ0VMPwcUS3sTMVVlH0NCQ==
   dependencies:
     "@bitgo/blake2b" "^3.2.4"
     "@msgpack/msgpack" "^3.1.2"
@@ -595,7 +595,7 @@
 
 "@holochain/hc-spin-rust-utils-darwin-arm64@0.700.0-dev.0":
   version "0.700.0-dev.0"
-  resolved "https://registry.npmjs.org/@holochain/hc-spin-rust-utils-darwin-arm64/-/hc-spin-rust-utils-darwin-arm64-0.700.0-dev.0.tgz"
+  resolved "https://registry.yarnpkg.com/@holochain/hc-spin-rust-utils-darwin-arm64/-/hc-spin-rust-utils-darwin-arm64-0.700.0-dev.0.tgz#2444b9dabb280cfe02ac6bb8df536f02205319c3"
   integrity sha512-Oyszp4d8V1NLS7UfAoNg66/x9+JHMpBf/+i+lK0+iHQBHa4eXVF2AO1VCGTr/LwN/wz5kgKjOh43N4C7EPgsiQ==
 
 "@holochain/hc-spin-rust-utils-darwin-x64@0.700.0-dev.0":
@@ -620,7 +620,7 @@
 
 "@holochain/hc-spin-rust-utils@0.700.0-dev.0":
   version "0.700.0-dev.0"
-  resolved "https://registry.npmjs.org/@holochain/hc-spin-rust-utils/-/hc-spin-rust-utils-0.700.0-dev.0.tgz"
+  resolved "https://registry.yarnpkg.com/@holochain/hc-spin-rust-utils/-/hc-spin-rust-utils-0.700.0-dev.0.tgz#2f62256658c01c838fd885a81865b0f5fc778ed3"
   integrity sha512-zh31p03+UFwD9uCBwnu/fnFw+e597TxhYXkuws1Qod5QuKlT0uIg29hd5GiTfzgrQk9umelgPr1wNJbzxmAVuQ==
   optionalDependencies:
     "@holochain/hc-spin-rust-utils-darwin-arm64" "0.700.0-dev.0"
@@ -1011,7 +1011,7 @@
 
 "@msgpack/msgpack@^3.1.2":
   version "3.1.3"
-  resolved "https://registry.npmjs.org/@msgpack/msgpack/-/msgpack-3.1.3.tgz"
+  resolved "https://registry.yarnpkg.com/@msgpack/msgpack/-/msgpack-3.1.3.tgz#c4bff2b9539faf0882f3ee03537a7e9a4b3a7864"
   integrity sha512-47XIizs9XZXvuJgoaJUIE2lFoID8ugvc0jzSHP+Ptfk8nTbnR8g788wv48N03Kx0UkAv559HWRQ3yzOgzlRNUA==
 
 "@nodelib/fs.scandir@2.1.5":
@@ -2521,7 +2521,7 @@ electron@^29.4.1:
 
 emittery@^1.2.0:
   version "1.2.0"
-  resolved "https://registry.npmjs.org/emittery/-/emittery-1.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/emittery/-/emittery-1.2.0.tgz#466edb32bada8d9b35f779c3ee8c514ac2df8dc0"
   integrity sha512-KxdRyyFcS85pH3dnU8Y5yFUm2YJdaHwcBZWrfG8o89ZY9a13/f9itbN+YG3ELbBo9Pg5zvIozstmuV8bX13q6g==
 
 emoji-regex@^8.0.0:
@@ -3708,7 +3708,7 @@ jpeg-js@^0.4.4:
 
 js-base64@^3.7.8:
   version "3.7.8"
-  resolved "https://registry.npmjs.org/js-base64/-/js-base64-3.7.8.tgz"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.7.8.tgz#af44496bc09fa178ed9c4adf67eb2b46f5c6d2a4"
   integrity sha512-hNngCeKxIUQiEUN3GPJOkz4wF/YvdUdbNL9hsBcMQTkKzboD7T/q3OYOuuPZLUE6dBxSGpwhk5mwuDud7JVAow==
 
 js-sha512@^0.9.0:
@@ -3818,14 +3818,14 @@ levn@^0.4.1:
 
 libsodium-wrappers@^0.8:
   version "0.8.0"
-  resolved "https://registry.npmjs.org/libsodium-wrappers/-/libsodium-wrappers-0.8.0.tgz"
+  resolved "https://registry.yarnpkg.com/libsodium-wrappers/-/libsodium-wrappers-0.8.0.tgz#4c5f3ce5afb73b3b7dba2d081a01cf33ec1a1403"
   integrity sha512-PVyXAtP1nmpQrDKAVnA8pir0f7bj7vmMGs7mb+0OCSJ+BOfLNBb5hPy2GHfrx6cQ+Co9fMliR5R0WRbVuMllNA==
   dependencies:
     libsodium "^0.8.0"
 
 libsodium@^0.8.0:
   version "0.8.0"
-  resolved "https://registry.npmjs.org/libsodium/-/libsodium-0.8.0.tgz"
+  resolved "https://registry.yarnpkg.com/libsodium/-/libsodium-0.8.0.tgz#4dcfea225d50a16a8a3ec8cd5936d08a695576ce"
   integrity sha512-GQ4Sg0/Z0Ui6ZvKeTd8bH7VAAqk1ZHZDAo/pcuSi0uPbIN6LYAAotR0GEYb8v+y4/tSsXZPr06D6hhqKd7tnoQ==
 
 lines-and-columns@^1.1.6:
@@ -5441,7 +5441,7 @@ wrappy@1:
 
 ws@^8.18.3:
   version "8.19.0"
-  resolved "https://registry.npmjs.org/ws/-/ws-8.19.0.tgz"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.19.0.tgz#ddc2bdfa5b9ad860204f5a72a4863a8895fd8c8b"
   integrity sha512-blAT2mjOEIi0ZzruJfIhb3nps74PRWTCz1IjglWEEpQl5XS/UNama6u2/rjFkDDouqr4L67ry+1aGIALViWjDg==
 
 xml-parse-from-string@^1.0.0:

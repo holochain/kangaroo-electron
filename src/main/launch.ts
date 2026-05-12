@@ -75,6 +75,7 @@ export async function launch(
     kangarooFs.conductorConfigPath,
     lairUrl,
     runOptions.bootstrapUrl ? runOptions.bootstrapUrl.toString() : KANGAROO_CONFIG.bootstrapUrl,
+    runOptions.relayUrl ? runOptions.relayUrl.toString() : KANGAROO_CONFIG.relayUrl,
     runOptions.signalUrl ? runOptions.signalUrl.toString() : KANGAROO_CONFIG.signalUrl,
     runOptions.relayUrl ? runOptions.relayUrl.toString() : KANGAROO_CONFIG.relayUrl,
     runOptions.iceUrls ? runOptions.iceUrls : KANGAROO_CONFIG.iceUrls,

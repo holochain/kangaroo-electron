@@ -33,7 +33,9 @@ export const HOLOCHAIN_BINARY = path.join(
 
 export const LAIR_BINARY = path.join(
   BINARIES_DIRECTORY,
-  `lair-keystore-${binariesAppendix}${process.platform === 'win32' ? '.exe' : ''}`
+  `lair-keystore-${binariesAppendix}${
+    process.platform === 'win32' ? '.exe' : ''
+  }`
 );
 
 export const HAPP_PATH = path.join(RESOURCES_DIRECTORY, 'kangaroo.happ');

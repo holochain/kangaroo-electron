@@ -73,13 +73,13 @@ export type KangarooConfig = {
    */
   bootstrapUrl: string;
   /**
-   * URL of the signaling server to use
-   */
-  signalUrl: string;
-  /**
    * URL of the relay server to use
    */
   relayUrl: string;
+  /**
+   * URL of the signaling server to use
+   */
+  signalUrl: string;
   /**
    * ICE Urls for the WebRTC configuration
    */
@@ -123,7 +123,7 @@ export type KangarooConfig = {
   };
   bins: {
     holochainVersion: string;
-    holochainFeature?: 'go-pion' | 'go-pion-unstable' | 'iroh';
+    holochainFeature?: "go-pion" | "go-pion-unstable" | "iroh";
     holochain: Sha256Hashes;
     lair: Sha256Hashes;
   };

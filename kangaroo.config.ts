@@ -13,36 +13,35 @@ export default defineConfig({
     url: 'https://github.com/holochain/dino-adventure/releases/download/v0.3.0-dev.0/dino-adventure-v0.3.0-dev.0.webhapp',
     sha256: 'c8fd61cad5b1fa2952678784694697014e315de788d986d2e118bbc0488f09ca',
   },
-  passwordMode: 'no-password',
-  bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
+  passwordMode: 'password-optional',
+  bootstrapUrl: 'https://dev-test-bootstrap2-iroh.holochain.org/',
+  relayUrl: 'https://dev-test-bootstrap2-iroh.holochain.org/',
   signalUrl: 'wss://dev-test-bootstrap2.holochain.org/',
-  relayUrl: 'https://dev-test-bootstrap2-iroh-relay.holochain.org./',
   iceUrls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'],
   bins: {
-    holochainVersion: '0.7.0-dev.6',
-    holochainFeature: 'go-pion',
+    holochainVersion: '0.7.0-dev.23',
     holochain: {
       sha256: {
         'x86_64-unknown-linux-gnu':
-          '55da5ab99c69bfad860e3e3c9f52cd348827828f59d86676569b953b081dd6d2',
-        'x86_64-pc-windows-msvc.exe':
-          'e05e84e1f366fa126c1bf2959227806d21db36e706edfa460ad9cfbeb8a38478',
-        'x86_64-apple-darwin': 'cfc7bc3d0cdcba26b4e2ecbc86a51f41abad056d0ff49fe49ff92157ec3c5e7d',
-        'aarch64-apple-darwin': '890c3c1ff71e117b8f3cc6c2259b2bed5875efbaf28042e0e4749f0159f32766',
+          '551591374ef46987873213d6c5e7471b85b0277a4087ded6fe37550841178348',
         'aarch64-unknown-linux-gnu':
-          '60b61b77d0b89855a51699f52239d2deae9e3c06041d16bfdec2ed42239f67f6',
+          'd958e00a1c13dec2042670f1864d9c2ddadd3081434b0d62d4af5972b9a14d3c',
+        'x86_64-pc-windows-msvc.exe':
+          '353baacef121fa36b1c6e6ebd22d999f3f5402e3314a4ab351f4752cf1dbb10b',
+        'x86_64-apple-darwin': '82f2f88fdff9113c5b3633a7f2d6bd13ea6a68ca830bc905614214785469f873',
+        'aarch64-apple-darwin': '2f64b4a0bba3675def5fbf5dfdaf85c4dd99a4ec85c526a44b074a625d05de32',
       },
     },
     lair: {
       sha256: {
         'x86_64-unknown-linux-gnu':
-          'abd747b505a89ff19350c9f2f311e8c084e9efc5af4597469e36d2cc6560eca1',
-        'x86_64-pc-windows-msvc.exe':
-          '7f273fcbd35e78d84d4bc5d23f1edd1ee3339b415b5cd69d328ada8ed02814be',
-        'x86_64-apple-darwin': '14281be29b9a7eb3ba9f19aa66c07f9370ad39baf344d161122463d3a1c9b1cb',
-        'aarch64-apple-darwin': '072c24de6e2fa8ae8f8fbda1cb3de0475f061913e8e388cfdd17a2d378069c7e',
+          'cc62d387f37ab784a843c673a60926a1727ec30f67d7878c7fa3b260a86635e3',
         'aarch64-unknown-linux-gnu':
-          '253a3575787223dfda147fac26047c979137886283f277f73456d8985797ed1f',
+          '3cc0b0a75b611bc0802a2450221781157cafc4a4dc409d9712b6e1e8eba5dcae',
+        'x86_64-pc-windows-msvc.exe':
+          'ee3e06819e36ad672e5a37e6eb4b114c4899bf9bce416c71720afc88add789f6',
+        'x86_64-apple-darwin': '3a62a36f0ebcfa4b8eb2faa79c6f0d30e6173d25126f3ae21b542935d10cf256',
+        'aarch64-apple-darwin': '19bf01a6cbf1341bd69dc5876921b948f9f05cee8364f8e6e0a56fac52acdd8e',
       },
     },
   },

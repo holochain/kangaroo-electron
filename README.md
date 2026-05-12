@@ -2,7 +2,7 @@
 
 Put your Holochain App in this Kangaroo's electron pouch and let it run.
 
-This repository let's you easily convert your Holochain app into a standalone, electron-based cross-platform Desktop app.
+This repository lets you easily convert your Holochain app into a standalone, electron-based cross-platform Desktop app.
 
 > [!WARNING]
 > Support for non-breaking updates to happ coordinator zomes is currently not built into the kangaroo. It is expected that there is only ever one single version of a happ for any semver compatible range of versions of a kangaroo packaged app (see also [Versioning](#versioning))
@@ -11,7 +11,8 @@ This repository let's you easily convert your Holochain app into a standalone, e
 
 Depending on which Holochain minor version you want to use you should use the corresponding branch of this repository.
 
-- Holochain 0.6.x (stable): [main-0.6](https://github.com/holochain/kangaroo-electron/tree/main)
+- Holochain 0.7.x (unstable): [current]
+- Holochain 0.6.x (stable): [main-0.6](https://github.com/holochain/kangaroo-electron/tree/main-0.6)
 - Holochain 0.5.x: [main-0.5](https://github.com/holochain/kangaroo-electron/tree/main-0.5)
 - Holochain 0.4.x: [main-0.4](https://github.com/holochain/kangaroo-electron/tree/main-0.4)
 - Holochain 0.3.x: [main-0.3](https://github.com/holochain/kangaroo-electron/tree/main-0.3)
