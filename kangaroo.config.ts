@@ -10,8 +10,8 @@ export default defineConfig({
   autoUpdates: true,
   systray: true,
   webhapp: {
-    url: 'https://github.com/holochain/dino-adventure/releases/download/v0.3.0-dev.0/dino-adventure-v0.3.0-dev.0.webhapp',
-    sha256: 'c8fd61cad5b1fa2952678784694697014e315de788d986d2e118bbc0488f09ca',
+    url: 'https://github.com/holochain/dino-adventure/releases/download/v0.3.0-dev.1/dino-adventure-v0.3.0-dev.1.webhapp',
+    sha256: 'e02ca9b555cb6be52f4036e5c67df9d487a59debfdd2a9f43e156af4d60c3f5d',
   },
   passwordMode: 'password-optional',
   bootstrapUrl: 'https://dev-test-bootstrap2-iroh.holochain.org/',
