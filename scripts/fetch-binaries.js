@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
 const path = require('path');
-const tsNode = require('ts-node');
 const downloadFile = require('./download');
 
-tsNode.register();
+require('tsx/cjs');
 
 const kangarooConfig = require(path.join(process.cwd(), 'kangaroo.config.ts')).default;
 

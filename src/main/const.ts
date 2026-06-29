@@ -1,4 +1,4 @@
-/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import-x/no-named-as-default-member */
 import { app } from 'electron';
 import path from 'path';
 import fs from 'fs';

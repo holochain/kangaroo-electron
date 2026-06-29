@@ -1,5 +1,4 @@
-/* eslint-disable import/no-named-as-default-member */
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable import-x/no-named-as-default-member */
 import getPort from 'get-port';
 import fs from 'fs';
 import yaml from 'js-yaml';

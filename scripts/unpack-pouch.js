@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const rustUtils = require('@holochain/hc-spin-rust-utils');
 const path = require('path');
 const fs = require('fs');

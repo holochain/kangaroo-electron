@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * This scripts creates a latest.yaml file from the setup.exe file. Used after code
  * signing of the original setup.exe file
