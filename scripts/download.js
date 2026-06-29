@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const childProcess = require('child_process');
 const crypto = require('crypto');
 const fs = require('fs');

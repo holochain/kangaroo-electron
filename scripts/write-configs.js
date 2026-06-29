@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const jsYaml = require('js-yaml');
 const fs = require('fs');
 const path = require('path');
-const tsNode = require('ts-node');
-
-tsNode.register();
+require('tsx/cjs');
 
 const PLACEHOLDER_APP_ID = 'org.holochain.kangaroo-electron';
 const PLACEHOLDER_PRODUCT_NAME = 'Holochain Kangaroo Electron';

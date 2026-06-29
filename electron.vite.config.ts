@@ -3,7 +3,13 @@ import { resolve } from 'path';
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin({ exclude: ['@holochain/client', 'get-port', 'nanoid'] })],
+    plugins: [
+      externalizeDepsPlugin({
+        // electron-context-menu v4 is ESM-only, so it must be bundled into the CJS main
+        // output rather than externalized.
+        exclude: ['@holochain/client', 'get-port', 'nanoid', 'electron-context-menu'],
+      }),
+    ],
   },
   preload: {
     build: {

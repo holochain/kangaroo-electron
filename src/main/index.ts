@@ -163,7 +163,6 @@ const handleSignZomeCall = async (
 let ZOME_CALL_SIGNER: ZomeCallSigner | undefined;
 let HOLOCHAIN_MANAGER: HolochainManager | undefined;
 let LAIR_HANDLE: childProcess.ChildProcessWithoutNullStreams | undefined;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let MAIN_WINDOW: BrowserWindow | undefined | null;
 let SPLASH_SCREEN_WINDOW: BrowserWindow | undefined;
 let IS_APP_QUITTING = false;

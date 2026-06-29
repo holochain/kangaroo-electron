@@ -22,7 +22,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: 'yarn'
 
       # This step is only used for testing in the official kangaroo repo
