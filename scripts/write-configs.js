@@ -22,7 +22,7 @@ if (!process.env.KANGAROO_DEV) {
     );
 }
 
-if (kangarooConfig.bootstrapUrl === 'https://dev-test-bootstrap2.holochain.org/') {
+if (kangarooConfig.bootstrapUrl === 'https://dev-test-bootstrap2-iroh.holochain.org/') {
   console.log(`
 
          ⚠️   WARNING  ⚠️
@@ -40,40 +40,22 @@ among users of your app.
   `);
 }
 
-if (kangarooConfig.signalUrl === 'wss://dev-test-bootstrap2.holochain.org/') {
+if (kangarooConfig.relayUrl === 'https://dev-test-bootstrap2-iroh.holochain.org/') {
   console.log(`
 
          ⚠️   WARNING  ⚠️
 
-The signalUrl in kangaroo.config.ts is still set to the testing signaling server URL.
+The relayUrl field in kangaroo.config.ts is still set to the testing relay server URL.
 This server has no availability guarantees whatsoever and is meant for testing purposes only.
 
 If you want to deploy your app to end-users, make sure to run your own
-instance of a signaling server or use a server that has guaranteed availability
+instance of a relay server or use a server that has guaranteed availability
 for the lifetime of your apps network(s).
 
-Changing the signaling server URL after deployment of your app can result in a
-network partition among users of your app.
+Changing the relay URL after deployment of your app can result in a network partition
+among users of your app.
 
-`);
-}
-
-if (
-  kangarooConfig.iceUrls.includes('stun:stun-0.main.infra.holo.host:443') ||
-  kangarooConfig.iceUrls.includes('stun:stun-1.main.infra.holo.host:443')
-) {
-  console.log(`
-
-         ⚠️   WARNING  ⚠️
-
-The iceUrls field in kangaroo.config.ts contains testing ICE server URLs.
-These servers have no availability guarantees whatsoever and are meant
-for testing purposes only.
-
-If you want to deploy your app to end-users, make sure to run your own
-instances of ICE servers or use public ones that have guaranteed availability
-for the lifetime of your apps network(s).
-`);
+  `);
 }
 
 fs.mkdirSync('resources', { recursive: true });

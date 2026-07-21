@@ -12,8 +12,6 @@ export interface CliOpts {
   lairRustLog?: string;
   bootstrapUrl?: string;
   relayUrl?: string;
-  signalUrl?: string;
-  iceUrls?: string;
   printHolochainLogs?: boolean;
 }
 
@@ -22,8 +20,6 @@ export interface RunOptions {
   networkSeed: string;
   bootstrapUrl: URL | undefined;
   relayUrl: URL | undefined;
-  signalUrl: URL | undefined;
-  iceUrls: string[] | undefined;
   holochainPath: string | undefined;
   lairPath: string | undefined;
   holochainRustLog: string | undefined;
@@ -49,14 +45,6 @@ export function validateArgs(args: CliOpts): RunOptions {
   if (args.relayUrl && typeof args.relayUrl !== 'string') {
     throw new Error('The --relay-url argument must be of type string.');
   }
-  if (args.signalUrl && typeof args.signalUrl !== 'string') {
-    throw new Error('The --signal-url argument must be of type string.');
-  }
-  console.log('ICE URLS arg: ', args.iceUrls);
-  console.log('ICE URLS arg type: ', typeof args.iceUrls);
-  if (args.iceUrls && typeof args.iceUrls !== 'string') {
-    throw new Error('The --ice-urls argument must be of type string.');
-  }
   if (args.holochainPath && typeof args.holochainPath !== 'string') {
     throw new Error('The --holochain-path argument must be of type string.');
   }
@@ -79,15 +67,12 @@ export function validateArgs(args: CliOpts): RunOptions {
 
   const bootstrapUrl = args.bootstrapUrl ? new URL(args.bootstrapUrl) : undefined;
   const relayUrl = args.relayUrl ? new URL(args.relayUrl) : undefined;
-  const signalUrl = args.signalUrl ? new URL(args.signalUrl) : undefined;
 
   return {
     profile,
     networkSeed,
     bootstrapUrl,
     relayUrl,
-    signalUrl,
-    iceUrls: args.iceUrls ? args.iceUrls.split(',') : undefined,
     holochainPath: args.holochainPath ? args.holochainPath : undefined,
     lairPath: args.lairPath ? args.lairPath : undefined,
     holochainRustLog: args.holochainRustLog ? args.holochainRustLog : undefined,

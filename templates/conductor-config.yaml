@@ -16,14 +16,9 @@ network:
   base64_auth_material_bootstrap: ~
   relay_url: "###DEFINED_IN_KANGAROO_CONFIG###"
   base64_auth_material_relay: ~
-  signal_url: "###DEFINED_IN_KANGAROO_CONFIG###"
-  webrtc_config:
-    iceServers:
-      - urls:
-          - "###DEFINED_IN_KANGAROO_CONFIG###"
   target_arc_factor: 1
   report: none
   advanced: ~
-db_sync_strategy: Resilient
+db_sync_level: Normal
 tuning_params: ~
 tracing_scope: ~
