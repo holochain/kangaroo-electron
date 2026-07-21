@@ -77,14 +77,6 @@ export type KangarooConfig = {
    */
   relayUrl: string;
   /**
-   * URL of the signaling server to use
-   */
-  signalUrl: string;
-  /**
-   * ICE Urls for the WebRTC configuration
-   */
-  iceUrls: string[];
-  /**
    * The network seed to use when installing the happ. If not set, the
    * network seed will automatically be generated and be based on the
    * productName and the breaking semver version of your app.
@@ -123,7 +115,7 @@ export type KangarooConfig = {
   };
   bins: {
     holochainVersion: string;
-    holochainFeature?: "go-pion" | "go-pion-unstable" | "iroh";
+    holochainFeature?: "unstable";
     holochain: Sha256Hashes;
     lair: Sha256Hashes;
   };

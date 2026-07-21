@@ -45,7 +45,6 @@ kangarooCli
   .name(KANGAROO_CONFIG.productName)
   .description(`Run ${KANGAROO_CONFIG.productName} via the command line`)
   .version(KANGAROO_CONFIG.version)
-  .allowUnknownOption(true)
   .option(
     '-p, --profile <string>',
     `Runs ${KANGAROO_CONFIG.productName} with a custom profile with its own dedicated data store.`,
@@ -86,7 +85,10 @@ kangarooCli
     'Print holochain logs directly to the terminal (they will be still written to the logfile as well)',
   );
 
-kangarooCli.parse();
+// electron-builder's AppImage launcher injects --no-sandbox as a fallback when it can't
+// verify unprivileged user namespaces are available; Chromium already consumes it natively,
+// so strip it here before Commander sees an option it doesn't own.
+kangarooCli.parse(process.argv.filter((arg) => arg !== '--no-sandbox'));
 
 const RUN_OPTIONS = validateArgs(kangarooCli.opts());
 
