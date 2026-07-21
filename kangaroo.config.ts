@@ -24,7 +24,7 @@ export default defineConfig({
           'f541f7b46332affabb1fdd53f9c9797586418782a021d293fb69f06fc0dacee3',
         'x86_64-pc-windows-msvc.exe':
           '82b87ecd87247db793b2971a5fc8a601def0a1d4827c74af9be893b978b794dc',
-        'x86_64-apple-darwin': 'fe82874dad77922d64427994f99e1eeb7ae47956bb7a61dc3c1a14795a0a2cd1',
+        'x86_64-apple-darwin': 'af2f64fb8711a3ebf86e288f47f26f3fb1ede08c6324bffff0341e4541e5ad1d',
         'aarch64-apple-darwin': 'd5454db7e2c3283cf753fc3d60f29e81103e1ccbc46ccdd5c4c734cfaeb3f935',
       },
     },
