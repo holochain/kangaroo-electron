@@ -45,6 +45,7 @@ kangarooCli
   .name(KANGAROO_CONFIG.productName)
   .description(`Run ${KANGAROO_CONFIG.productName} via the command line`)
   .version(KANGAROO_CONFIG.version)
+  .allowUnknownOption(true)
   .option(
     '-p, --profile <string>',
     `Runs ${KANGAROO_CONFIG.productName} with a custom profile with its own dedicated data store.`,
