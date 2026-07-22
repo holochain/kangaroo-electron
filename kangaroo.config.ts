@@ -10,8 +10,8 @@ export default defineConfig({
   autoUpdates: true,
   systray: true,
   passwordMode: 'password-optional',
-  bootstrapUrl: 'https://dev-test-bootstrap2-iroh.holochain.org/',
-  relayUrl: 'https://dev-test-bootstrap2-iroh.holochain.org/',
+  bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
+  relayUrl: 'https://dev-test-bootstrap2.holochain.org/',
   bins: {
     holochainVersion: '0.7.0-rc.1',
     holochain: {
