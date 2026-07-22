@@ -88,7 +88,16 @@ kangarooCli
 // electron-builder's AppImage launcher injects --no-sandbox as a fallback when it can't
 // verify unprivileged user namespaces are available; Chromium already consumes it natively,
 // so strip it here before Commander sees an option it doesn't own.
-kangarooCli.parse(process.argv.filter((arg) => arg !== '--no-sandbox'));
+//
+// Commander only auto-detects the Electron argv convention (packaged apps have no separate
+// script path arg, so only 1 leading element instead of node's 2) when parse() is called with
+// no arguments at all. Passing our filtered array opts us out of that detection, so we have to
+// tell it explicitly via `from: 'electron'` - otherwise it slices off 2 leading elements instead
+// of 1 and eats the first real CLI argument along with the executable path.
+kangarooCli.parse(
+  process.argv.filter((arg) => arg !== '--no-sandbox'),
+  { from: 'electron' },
+);
 
 const RUN_OPTIONS = validateArgs(kangarooCli.opts());
 
