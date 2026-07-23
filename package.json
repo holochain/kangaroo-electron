@@ -10,6 +10,7 @@
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "yarn typecheck:node && yarn typecheck:web",
     "fetch:binaries": "node ./scripts/fetch-binaries.js",
+    "update:binary-hashes": "node ./scripts/update-binary-hashes.mjs",
     "fetch:webhapp": "node ./scripts/fetch-webhapp.js",
     "pouch:unpack": "node ./scripts/unpack-pouch.js",
     "create:icons": "node ./scripts/create-icons.js",
@@ -24,8 +25,8 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
-    "@holochain/client": "^0.21.0-rc.0",
-    "@holochain/hc-spin-rust-utils": "0.700.0-rc.0",
+    "@holochain/client": "^0.21.0-rc.1",
+    "@holochain/hc-spin-rust-utils": "0.700.0-rc.1",
     "@matthme/electron-updater": "6.3.0-alpha.2",
     "@msgpack/msgpack": "^3.1.3",
     "adm-zip": "0.5.18",
