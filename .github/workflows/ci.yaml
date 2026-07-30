@@ -1,0 +1,74 @@
+name: 'checks'
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions: {}
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  consistency:
+    name: consistency
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Type check
+        run: yarn typecheck
+
+      - name: Check config against the Holochain release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: yarn check:config
+
+  binaries:
+    name: binaries
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - windows-2022
+          - macos-15-intel
+          - macos-latest
+          - ubuntu-22.04
+          - ubuntu-24.04-arm
+    runs-on: ${{ matrix.platform }}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Download binaries and verify checksums
+        run: yarn fetch:binaries

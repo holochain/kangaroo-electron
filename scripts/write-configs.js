@@ -2,6 +2,7 @@ const jsYaml = require('js-yaml');
 const fs = require('fs');
 const path = require('path');
 require('tsx/cjs');
+const { isTestServerUrl } = require('./lib/test-server');
 
 const PLACEHOLDER_APP_ID = 'org.holochain.kangaroo-electron';
 const PLACEHOLDER_PRODUCT_NAME = 'Holochain Kangaroo Electron';
@@ -22,7 +23,7 @@ if (!process.env.KANGAROO_DEV) {
     );
 }
 
-if (kangarooConfig.bootstrapUrl === 'https://dev-test-bootstrap2-iroh.holochain.org/') {
+if (isTestServerUrl(kangarooConfig.bootstrapUrl)) {
   console.log(`
 
          ⚠️   WARNING  ⚠️
@@ -40,7 +41,7 @@ among users of your app.
   `);
 }
 
-if (kangarooConfig.relayUrl === 'https://dev-test-bootstrap2-iroh.holochain.org/') {
+if (isTestServerUrl(kangarooConfig.relayUrl)) {
   console.log(`
 
          ⚠️   WARNING  ⚠️
