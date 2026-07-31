@@ -17,6 +17,20 @@ Depending on which Holochain minor version you want to use you should use the co
 - Holochain 0.4.x: [main-0.4](https://github.com/holochain/kangaroo-electron/tree/main-0.4)
 - Holochain 0.3.x: [main-0.3](https://github.com/holochain/kangaroo-electron/tree/main-0.3)
 
+If you change the `holochainVersion` field in `kangaroo.config.ts`, the npm dependencies that talk to the conductor (`@holochain/client` and `@holochain/hc-spin-rust-utils`) need to move to a matching version series as well. The `bins.compatibleDeps` field in `kangaroo.config.ts` records which npm dependency series goes with which Holochain series, and `yarn check:config` verifies that `package.json` agrees with it:
+
+```ts
+compatibleDeps: {
+  '0.7': {
+    '@holochain/client': '0.21',
+    '@holochain/hc-spin-rust-utils': '0.700',
+  },
+},
+```
+
+> [!NOTE]
+> Add an entry whenever you move to a new Holochain series. If there is no entry for the series you configured, `yarn check:config` prints a warning and skips the dependency verification instead of failing.
+
 # Instructions
 
 ## Setup and Testing Locally

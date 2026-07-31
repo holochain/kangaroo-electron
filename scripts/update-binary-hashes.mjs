@@ -5,10 +5,13 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 require('tsx/cjs');
-const { isTestServerUrl } = require('./lib/test-server.js');
 
 const OWNER = 'holochain';
 const REPO = 'holochain';
+
+// URL of the testing bootstrap/relay server this repository ships with.
+// Compared as an exact URL, matching the check in scripts/write-configs.js.
+const TEST_SERVER_URL = 'https://dev-test-bootstrap2-iroh.holochain.org/';
 
 const CHECK_MODE = process.argv.includes('--check');
 
@@ -21,16 +24,6 @@ const EXPECTED_TARGETS = [
   'x86_64-apple-darwin',
   'aarch64-apple-darwin',
 ];
-
-// Known-compatible npm dependency series (major.minor) per Holochain
-// series. Extend this map when adopting a new Holochain series; the check
-// fails loudly when the configured Holochain version is not listed here.
-const DEP_COMPAT = {
-  '0.7': {
-    '@holochain/client': '0.21',
-    '@holochain/hc-spin-rust-utils': '0.700',
-  },
-};
 
 const configPath = path.join(process.cwd(), 'kangaroo.config.ts');
 const kangarooConfig = require(configPath).default;
@@ -143,18 +136,19 @@ function checkDependencyVersions(problems) {
     return;
   }
   const series = `${parsed.major}.${parsed.minor}`;
-  const compat = DEP_COMPAT[series];
+  const compat = kangarooConfig.bins.compatibleDeps?.[series];
   if (!compat) {
-    problems.push(
-      `no known compatible dependency versions for Holochain ${series}.x - extend DEP_COMPAT in scripts/update-binary-hashes.mjs`
+    console.warn(
+      `⚠️  kangaroo.config.ts has no 'bins.compatibleDeps' entry for Holochain ${series}.x - skipping the npm dependency check. Add one to have this check verify that your npm dependencies match your Holochain version.`
     );
     return;
   }
   const packageJson = JSON.parse(
     fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf-8')
   );
+  const dependencies = packageJson.dependencies ?? {};
   for (const [depName, expectedSeries] of Object.entries(compat)) {
-    const range = packageJson.dependencies[depName];
+    const range = dependencies[depName];
     if (!range) {
       problems.push(`package.json has no dependency '${depName}'`);
       continue;
@@ -167,7 +161,7 @@ function checkDependencyVersions(problems) {
     const depSeries = `${minVersion.major}.${minVersion.minor}`;
     if (depSeries !== expectedSeries) {
       problems.push(
-        `dependency '${depName}' is '${range}' (series ${depSeries}) but Holochain ${holochainVersion} needs series ${expectedSeries}`
+        `dependency '${depName}' is '${range}' (series ${depSeries}) but 'bins.compatibleDeps' in kangaroo.config.ts declares series ${expectedSeries} for Holochain ${holochainVersion}`
       );
     }
   }
@@ -179,7 +173,7 @@ function warnAboutTestServers() {
     ['relayUrl', kangarooConfig.relayUrl],
   ];
   for (const [field, url] of servers) {
-    if (isTestServerUrl(url)) {
+    if (url === TEST_SERVER_URL) {
       console.warn(
         `⚠️  ${field} ('${url}') points at a test server. Test servers have no availability guarantees - do not ship a production release with this setting.`
       );

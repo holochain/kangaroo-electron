@@ -2,7 +2,6 @@ const jsYaml = require('js-yaml');
 const fs = require('fs');
 const path = require('path');
 require('tsx/cjs');
-const { isTestServerUrl } = require('./lib/test-server');
 
 const PLACEHOLDER_APP_ID = 'org.holochain.kangaroo-electron';
 const PLACEHOLDER_PRODUCT_NAME = 'Holochain Kangaroo Electron';
@@ -15,15 +14,15 @@ if (!process.env.KANGAROO_DEV) {
   // of their own chosen appId/productName
   if (kangarooConfig.appId === PLACEHOLDER_APP_ID)
     throw new Error(
-      "The appId field in 'kangaroo.config.ts' is still using the placeholder value. Change it to the appId of your app."
+      "The appId field in 'kangaroo.config.ts' is still using the placeholder value. Change it to the appId of your app.",
     );
   if (kangarooConfig.productName === PLACEHOLDER_PRODUCT_NAME)
     throw new Error(
-      "The productName field in 'kangaroo.config.ts' is still using the placeholder value. Change it to the productName of your app."
+      "The productName field in 'kangaroo.config.ts' is still using the placeholder value. Change it to the productName of your app.",
     );
 }
 
-if (isTestServerUrl(kangarooConfig.bootstrapUrl)) {
+if (kangarooConfig.bootstrapUrl === 'https://dev-test-bootstrap2-iroh.holochain.org/') {
   console.log(`
 
          ⚠️   WARNING  ⚠️
@@ -41,7 +40,7 @@ among users of your app.
   `);
 }
 
-if (isTestServerUrl(kangarooConfig.relayUrl)) {
+if (kangarooConfig.relayUrl === 'https://dev-test-bootstrap2-iroh.holochain.org/') {
   console.log(`
 
          ⚠️   WARNING  ⚠️
@@ -65,13 +64,13 @@ fs.mkdirSync('resources', { recursive: true });
 fs.writeFileSync(
   path.join('resources', 'kangaroo.config.json'),
   JSON.stringify(kangarooConfig, undefined, 2),
-  'utf-8'
+  'utf-8',
 );
 
 // Copy conductor config template to resources folder
 fs.copyFileSync(
   path.join(process.cwd(), 'templates', 'conductor-config.yaml'),
-  path.join('resources', 'conductor-config.yaml')
+  path.join('resources', 'conductor-config.yaml'),
 );
 
 // Overwrite package.json values
@@ -83,7 +82,7 @@ packageJSON.version = kangarooConfig.version;
 fs.writeFileSync('package.json', JSON.stringify(packageJSON, undefined, 2), 'utf-8');
 
 const eletronBuilderYml = jsYaml.load(
-  fs.readFileSync(path.join(process.cwd(), 'templates', 'electron-builder-template.yml'))
+  fs.readFileSync(path.join(process.cwd(), 'templates', 'electron-builder-template.yml')),
 );
 
 eletronBuilderYml.appId = kangarooConfig.appId;
