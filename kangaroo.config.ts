@@ -14,6 +14,12 @@ export default defineConfig({
   relayUrl: 'https://dev-test-bootstrap2.holochain.org/',
   bins: {
     holochainVersion: '0.7.0',
+    compatibleDeps: {
+      '0.7': {
+        '@holochain/client': '0.21',
+        '@holochain/hc-spin-rust-utils': '0.700',
+      },
+    },
     holochain: {
       sha256: {
         'x86_64-unknown-linux-gnu':

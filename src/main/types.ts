@@ -116,6 +116,31 @@ export type KangarooConfig = {
   bins: {
     holochainVersion: string;
     holochainFeature?: "unstable";
+    /**
+     * npm dependency versions that are known to work with a given Holochain
+     * series, used by `yarn check:config` to catch a `holochainVersion` bump
+     * that forgot to bump the corresponding npm dependencies.
+     *
+     * The outer key is a Holochain series in `major.minor` notation, the inner
+     * keys are npm package names and the inner values the `major.minor` series
+     * of that package which is compatible with that Holochain series.
+     *
+     * Whenever you move to a new Holochain series, add an entry for it. If
+     * there is no entry for the series of `holochainVersion`, the check is
+     * skipped with a warning.
+     *
+     * Example:
+     *
+     * ```ts
+     * compatibleDeps: {
+     *   '0.7': {
+     *     '@holochain/client': '0.21',
+     *     '@holochain/hc-spin-rust-utils': '0.700',
+     *   },
+     * }
+     * ```
+     */
+    compatibleDeps?: Record<string, Record<string, string>>;
     holochain: Sha256Hashes;
     lair: Sha256Hashes;
   };
