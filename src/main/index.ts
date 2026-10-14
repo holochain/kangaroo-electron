@@ -18,7 +18,7 @@ import { encode } from '@msgpack/msgpack';
 import { sha512 } from 'js-sha512';
 import {
   CallZomeRequest,
-  ZomeCallParamsSigned,
+  CallZomeRequestSigned,
   getNonceExpiration,
   randomNonce,
 } from '@holochain/client';
@@ -139,7 +139,7 @@ protocol.registerSchemesAsPrivileged([
 const handleSignZomeCall = async (
   _e: IpcMainInvokeEvent,
   request: CallZomeRequest,
-): Promise<ZomeCallParamsSigned> => {
+): Promise<CallZomeRequestSigned> => {
   if (!ZOME_CALL_SIGNER) throw new Error('Zome call signer undefined.');
   if (!request.provenance)
     return Promise.reject(
@@ -164,7 +164,7 @@ const handleSignZomeCall = async (
     Array.from(request.provenance),
   );
 
-  const signedZomeCall: ZomeCallParamsSigned = {
+  const signedZomeCall: CallZomeRequestSigned = {
     bytes: zomeCallBytes,
     signature: Uint8Array.from(signature),
   };
